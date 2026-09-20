@@ -5,6 +5,7 @@
 package com.desgroup.eventlogistics;
 
 import com.desgroup.ui.LoginFrame;
+import com.desgroup.ui.LoginFrame2;
 import java.awt.EventQueue;
 import javax.swing.UIManager;
 
@@ -31,53 +32,83 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         desktopPane = new javax.swing.JDesktopPane();
-        menuBar = new javax.swing.JMenuBar();
-        editMenu = new javax.swing.JMenu();
-        cutMenuItem = new javax.swing.JMenuItem();
-        copyMenuItem = new javax.swing.JMenuItem();
-        pasteMenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
-        helpMenu = new javax.swing.JMenu();
-        contentMenuItem = new javax.swing.JMenuItem();
-        aboutMenuItem = new javax.swing.JMenuItem();
+        menuEventLogistic = new javax.swing.JMenuBar();
+        mnuLogistic = new javax.swing.JMenu();
+        mniShowAssignments = new javax.swing.JMenuItem();
+        mniShowSalary = new javax.swing.JMenuItem();
+        mniShowUser = new javax.swing.JMenuItem();
+        mnuCoordinator = new javax.swing.JMenu();
+        mniManageLogistic = new javax.swing.JMenuItem();
+        mniShowAssignmentsCoor = new javax.swing.JMenuItem();
+        mniShowSalaryCoor = new javax.swing.JMenuItem();
+        mnuManager = new javax.swing.JMenu();
+        mniManageEvents = new javax.swing.JMenuItem();
+        mniManageCoordinators = new javax.swing.JMenuItem();
+        mnuOptions = new javax.swing.JMenu();
+        mniLogOut = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        editMenu.setMnemonic('e');
-        editMenu.setText("Edit");
+        mnuLogistic.setMnemonic('e');
+        mnuLogistic.setText("Logistico");
 
-        cutMenuItem.setMnemonic('t');
-        cutMenuItem.setText("Cut");
-        editMenu.add(cutMenuItem);
+        mniShowAssignments.setMnemonic('t');
+        mniShowAssignments.setText("Ver eventos asignados");
+        mniShowAssignments.addActionListener(this::mniShowAssignmentsActionPerformed);
+        mnuLogistic.add(mniShowAssignments);
 
-        copyMenuItem.setMnemonic('y');
-        copyMenuItem.setText("Copy");
-        editMenu.add(copyMenuItem);
+        mniShowSalary.setMnemonic('y');
+        mniShowSalary.setText("Ver sueldo");
+        mnuLogistic.add(mniShowSalary);
 
-        pasteMenuItem.setMnemonic('p');
-        pasteMenuItem.setText("Paste");
-        editMenu.add(pasteMenuItem);
+        mniShowUser.setMnemonic('p');
+        mniShowUser.setText("Ver usuario");
+        mnuLogistic.add(mniShowUser);
 
-        deleteMenuItem.setMnemonic('d');
-        deleteMenuItem.setText("Delete");
-        editMenu.add(deleteMenuItem);
+        menuEventLogistic.add(mnuLogistic);
 
-        menuBar.add(editMenu);
+        mnuCoordinator.setMnemonic('h');
+        mnuCoordinator.setText("Cordinador");
 
-        helpMenu.setMnemonic('h');
-        helpMenu.setText("Help");
+        mniManageLogistic.setMnemonic('c');
+        mniManageLogistic.setText("Administrar logisticos");
+        mnuCoordinator.add(mniManageLogistic);
 
-        contentMenuItem.setMnemonic('c');
-        contentMenuItem.setText("Contents");
-        helpMenu.add(contentMenuItem);
+        mniShowAssignmentsCoor.setMnemonic('a');
+        mniShowAssignmentsCoor.setText("Ver eventos asignados");
+        mniShowAssignmentsCoor.addActionListener(this::mniShowAssignmentsCoorActionPerformed);
+        mnuCoordinator.add(mniShowAssignmentsCoor);
 
-        aboutMenuItem.setMnemonic('a');
-        aboutMenuItem.setText("About");
-        helpMenu.add(aboutMenuItem);
+        mniShowSalaryCoor.setMnemonic('a');
+        mniShowSalaryCoor.setText("Ver eventos asignados");
+        mniShowSalaryCoor.addActionListener(this::mniShowSalaryCoorActionPerformed);
+        mnuCoordinator.add(mniShowSalaryCoor);
 
-        menuBar.add(helpMenu);
+        menuEventLogistic.add(mnuCoordinator);
 
-        setJMenuBar(menuBar);
+        mnuManager.setMnemonic('e');
+        mnuManager.setText("Manager");
+
+        mniManageEvents.setMnemonic('t');
+        mniManageEvents.setText("Administrar eventos");
+        mnuManager.add(mniManageEvents);
+
+        mniManageCoordinators.setMnemonic('y');
+        mniManageCoordinators.setText("Administrar Coordinadores");
+        mnuManager.add(mniManageCoordinators);
+
+        menuEventLogistic.add(mnuManager);
+
+        mnuOptions.setMnemonic('e');
+        mnuOptions.setText("Opciones");
+
+        mniLogOut.setMnemonic('t');
+        mniLogOut.setText("Cerrar sesión");
+        mnuOptions.add(mniLogOut);
+
+        menuEventLogistic.add(mnuOptions);
+
+        setJMenuBar(menuEventLogistic);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -87,11 +118,23 @@ public class Main extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
+            .addComponent(desktopPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void mniShowAssignmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniShowAssignmentsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mniShowAssignmentsActionPerformed
+
+    private void mniShowAssignmentsCoorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniShowAssignmentsCoorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mniShowAssignmentsCoorActionPerformed
+
+    private void mniShowSalaryCoorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniShowSalaryCoorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mniShowSalaryCoorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -132,20 +175,25 @@ public class Main extends javax.swing.JFrame {
                 break;
             }
         }
-        EventQueue.invokeLater(() -> new LoginFrame().setVisible(true));
+        EventQueue.invokeLater(() -> new LoginFrame2().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem aboutMenuItem;
-    private javax.swing.JMenuItem contentMenuItem;
-    private javax.swing.JMenuItem copyMenuItem;
-    private javax.swing.JMenuItem cutMenuItem;
-    private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JDesktopPane desktopPane;
-    private javax.swing.JMenu editMenu;
-    private javax.swing.JMenu helpMenu;
-    private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem pasteMenuItem;
+    private javax.swing.JMenuBar menuEventLogistic;
+    private javax.swing.JMenuItem mniLogOut;
+    private javax.swing.JMenuItem mniManageCoordinators;
+    private javax.swing.JMenuItem mniManageEvents;
+    private javax.swing.JMenuItem mniManageLogistic;
+    private javax.swing.JMenuItem mniShowAssignments;
+    private javax.swing.JMenuItem mniShowAssignmentsCoor;
+    private javax.swing.JMenuItem mniShowSalary;
+    private javax.swing.JMenuItem mniShowSalaryCoor;
+    private javax.swing.JMenuItem mniShowUser;
+    private javax.swing.JMenu mnuCoordinator;
+    private javax.swing.JMenu mnuLogistic;
+    private javax.swing.JMenu mnuManager;
+    private javax.swing.JMenu mnuOptions;
     // End of variables declaration//GEN-END:variables
 
 }
