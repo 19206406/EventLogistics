@@ -38,6 +38,15 @@ public class StaffService {
         staff.setPassword(password);
 
     }
+    
+    public Staff login(String email, String password) {
+        Staff staff = repository.getStaffByEmail(email);
+
+        if (staff != null && staff.getPassword().equals(password)) {
+            return staff;
+        }
+        return null;
+    }
 
     // no se si mostrar evento le corresponde a este servicio o incluso.
     // si le corresponde a eventos.
