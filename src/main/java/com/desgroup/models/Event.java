@@ -16,7 +16,6 @@ public class Event {
     private Place place;
     private String state;
     private LocalDate date;
-    // no se si la necesitamos y mejor solo con la fecha.
     private int startTime;
 
     public Event(String name, Place place, String state, LocalDate date, int startTime) {

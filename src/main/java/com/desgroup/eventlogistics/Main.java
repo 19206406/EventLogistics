@@ -91,6 +91,7 @@ public class Main extends javax.swing.JFrame {
 
         mniManageEvents.setMnemonic('t');
         mniManageEvents.setText("Administrar eventos");
+        mniManageEvents.addActionListener(this::mniManageEventsActionPerformed);
         mnuManager.add(mniManageEvents);
 
         mniManageCoordinators.setMnemonic('y');
@@ -135,6 +136,10 @@ public class Main extends javax.swing.JFrame {
     private void mniShowSalaryCoorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniShowSalaryCoorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_mniShowSalaryCoorActionPerformed
+
+    private void mniManageEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniManageEventsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mniManageEventsActionPerformed
 
     /**
      * @param args the command line arguments
