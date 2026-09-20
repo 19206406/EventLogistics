@@ -4,9 +4,10 @@
  */
 package com.desgroup.eventlogistics;
 
-import com.desgroup.ui.LoginFrame;
 import com.desgroup.ui.LoginFrame2;
+import com.desgroup.ui.ManageLogisticFrame;
 import java.awt.EventQueue;
+import javax.swing.JDesktopPane;
 import javax.swing.UIManager;
 
 /**
@@ -14,11 +15,12 @@ import javax.swing.UIManager;
  * @author urreg
  */
 public class Main extends javax.swing.JFrame {
-
     /**
      * Creates new form Main
      */
     public Main() {
+        desktopPane = new JDesktopPane();
+        setContentPane(desktopPane);
         initComponents();
     }
 
@@ -72,6 +74,7 @@ public class Main extends javax.swing.JFrame {
 
         mniManageLogistic.setMnemonic('c');
         mniManageLogistic.setText("Administrar logisticos");
+        mniManageLogistic.addActionListener(this::mniManageLogisticActionPerformed);
         mnuCoordinator.add(mniManageLogistic);
 
         mniShowAssignmentsCoor.setMnemonic('a');
@@ -114,11 +117,11 @@ public class Main extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE)
+            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 982, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
+            .addComponent(desktopPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
         );
 
         pack();
@@ -136,6 +139,18 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_mniShowSalaryCoorActionPerformed
 
+    private void mniManageLogisticActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniManageLogisticActionPerformed
+        // TODO add your handling code here:
+        mniManageLogistic.addActionListener(e -> openManageLogistic());
+    }//GEN-LAST:event_mniManageLogisticActionPerformed
+
+    
+    private void openManageLogistic() {
+        ManageLogisticFrame manageLogistic = new ManageLogisticFrame(this);
+        desktopPane.add(manageLogistic);
+        manageLogistic.setVisible(true);
+    }
+    
     /**
      * @param args the command line arguments
      */
