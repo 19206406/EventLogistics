@@ -44,6 +44,9 @@
                 <Property name="mnemonic" type="int" value="99"/>
                 <Property name="text" type="java.lang.String" value="Administrar logisticos"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mniManageLogisticActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mniShowAssignmentsCoor">
               <Properties>
@@ -128,12 +131,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="desktopPane" pref="687" max="32767" attributes="0"/>
+          <Component id="desktopPane" pref="982" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="desktopPane" alignment="1" pref="495" max="32767" attributes="0"/>
+          <Component id="desktopPane" alignment="1" pref="618" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
