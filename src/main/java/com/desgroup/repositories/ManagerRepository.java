@@ -9,11 +9,26 @@ public class ManagerRepository {
 
     private List<Manager> managers;
     private int nextId;
+    private static ManagerRepository instance;
 
     public ManagerRepository() {
         managers = new ArrayList<>();
         nextId = 0;
+        createManagerAdministrator();
     }
+    
+    public static ManagerRepository getInstance() {
+        if (instance == null) {
+            instance = new ManagerRepository();   // solo se crea la PRIMERA vez
+        }
+        return instance;   // las siguientes veces, se devuelve la misma instancia ya existente
+    }
+    
+    private void createManagerAdministrator(){
+        Manager admin = new Manager("EventLogistics",nextId++,"Administrador","admin",3001234,"Gerente","admin123",5000000.00);
+        managers.add(admin);
+    }
+
 
     public List<Manager> getAll() {
         return new ArrayList<>(managers);
