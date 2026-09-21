@@ -18,7 +18,7 @@ public class LogisticOpcion extends javax.swing.JInternalFrame {
      */
     public LogisticOpcion(Logistic logistic) {
         super("Opcion Logistico",false,true,false,false);
-        initComponents();
+        initializeComponents();
         this.logistic = logistic;
         setSize(320, 260);
         setLocation(100, 60);

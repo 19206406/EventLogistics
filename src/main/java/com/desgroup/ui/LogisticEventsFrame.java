@@ -19,7 +19,6 @@ public class LogisticEventsFrame extends javax.swing.JInternalFrame {
         super("Eventos del logistico", false,true,false,false);
         setSize(350, 250);
         setLocation(120, 80);
-        initComponents();
         
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
