@@ -19,10 +19,13 @@ C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\jav
 C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\repositories\LogisticRepository.java
 C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\repositories\ManagerRepository.java
 C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\repositories\StaffRepository.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\ui\CreateLogisticFrame.java
 C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\ui\LoginFrame.java
 C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\ui\LoginFrame2.java
 C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\ui\LogisticEventsFrame.java
 C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\ui\LogisticOpcion.java
 C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\ui\LogisticSalaryFrame.java
 C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\ui\LogisticUserFrame.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\ui\ManageLogisticFrame.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\ui\UpdatedLogisticFrame.java
 C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\utils\MessagesUi.java
