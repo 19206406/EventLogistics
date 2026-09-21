@@ -261,7 +261,7 @@ public class LoginFrame extends javax.swing.JFrame {
                     return;
                 }
 
-                coordinatorService.createCoordinator(nombre, email, telefono, "Coordinador", password, empresa);
+                //coordinatorService.createCoordinator(nombre, email, telefono, "Coordinador", password, empresa);
 
                 JOptionPane.showMessageDialog(this, "Coordinador creado exitosamente");
 
@@ -350,7 +350,7 @@ public class LoginFrame extends javax.swing.JFrame {
                 return;
             }
 
-            logisticService.createLogistic(nombre, email, telefono, "Logistico", zona, rol, password);
+            //logisticService.createLogistic(nombre, email, telefono, "Logistico", zona, rol, password);
 
             JOptionPane.showMessageDialog(this, "Logistico creado exitosamente");
 

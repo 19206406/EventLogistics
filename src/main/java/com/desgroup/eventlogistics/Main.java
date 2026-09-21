@@ -137,20 +137,20 @@ public class Main extends javax.swing.JFrame {
 
     private void mniShowUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniShowUserActionPerformed
         // TODO add your handling code here: 
-    if (!(CurrentUser instanceof Logistic)) {
-    javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para logísticos");
-    return;
-    }
+        if (!(CurrentUser instanceof Logistic)) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para logísticos");
+            return;
+        }
     
-    Logistic logistic = (Logistic) CurrentUser;
-    LogisticOpcion frame = new LogisticOpcion(logistic);
-    desktopPane.add(frame);
-    frame.setVisible(true);
-    try {
-        frame.setSelected(true);
-    } catch (java.beans.PropertyVetoException e) {
-        e.printStackTrace();
-    }
+        Logistic logistic = (Logistic) CurrentUser;
+        LogisticOpcion frame = new LogisticOpcion(logistic);
+        desktopPane.add(frame);
+        frame.setVisible(true);
+        try {
+            frame.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {
+            e.printStackTrace();
+        }
         
     }//GEN-LAST:event_mniShowUserActionPerformed
 
