@@ -18,11 +18,12 @@ public class Logistic extends Staff {
     }
 
     public Logistic(int idStaff, String name, String email, String phone, String position, String password, String zone,
-            String role, int score) {
+            String role, int score, int workingHours) {
         super(idStaff, name, email, phone, position, password);
         this.zone = zone;
         this.role = role;
         this.score = score;
+        this.workingHours = workingHours;
     }
 
     public String getZone() {

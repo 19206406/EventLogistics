@@ -24,8 +24,8 @@ import javax.swing.JTextField;
  *
  * @author urreg
  */
-public class LogisticFormFrame extends JInternalFrame  {
-   private final LogisticService logisticService;
+public class LogisticFormFrame extends JInternalFrame {
+    private final LogisticService logisticService;
     private final Logistic logisticToEdit;
     private final Runnable onSaved;
 
@@ -36,10 +36,12 @@ public class LogisticFormFrame extends JInternalFrame  {
     private JTextField positionField;
     private JTextField zoneField;
     private JTextField roleField;
+    private JTextField scoreField;
+    private JTextField workingHoursField;
 
     public LogisticFormFrame(LogisticService logisticService, Logistic logisticToEdit, Runnable onSaved) {
         super(logisticToEdit == null ? "Crear logistico" : "Actualizar logistico",
-                false, true, false, false);
+                true, true, true, true);
         this.logisticService = logisticService;
         this.logisticToEdit = logisticToEdit;
         this.onSaved = onSaved;
@@ -48,7 +50,7 @@ public class LogisticFormFrame extends JInternalFrame  {
         if (logisticToEdit != null) {
             fillFields();
         }
-        setSize(440, 420);
+        setSize(480, 460);
         setLocation(200, 60);
     }
 
@@ -60,10 +62,13 @@ public class LogisticFormFrame extends JInternalFrame  {
         positionField = new JTextField(20);
         zoneField = new JTextField(20);
         roleField = new JTextField(20);
+        workingHoursField = new JTextField(20);
+        scoreField = new JTextField(20);
 
-        String[] labels = {"Nombre:", "Correo:", "Telefono:", "Password:", "Posición:", "Zona:", "Rol:"};
-        JComponent[] fields = {nameField, emailField, phoneField, passwordField,
-            positionField, zoneField, roleField};
+        String[] labels = { "Nombre:", "Correo:", "Telefono:", "Password:", "Posición:", "Zona:", "Rol:", "Puntuación:",
+                "Horas:" };
+        JComponent[] fields = { nameField, emailField, phoneField, passwordField,
+                positionField, zoneField, roleField, scoreField, workingHoursField };
 
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
@@ -107,6 +112,8 @@ public class LogisticFormFrame extends JInternalFrame  {
         positionField.setText(logisticToEdit.getPosition());
         zoneField.setText(logisticToEdit.getZone());
         roleField.setText(logisticToEdit.getRole());
+        scoreField.setText(Integer.toString(logisticToEdit.getScore()));
+        workingHoursField.setText(Integer.toString(logisticToEdit.getWorkingHours()));
     }
 
     private void save() {
@@ -117,6 +124,8 @@ public class LogisticFormFrame extends JInternalFrame  {
         String position = positionField.getText().trim();
         String zone = zoneField.getText().trim();
         String role = roleField.getText().trim();
+        int score = Integer.parseInt(scoreField.getText().trim());
+        int workingHours = Integer.parseInt(workingHoursField.getText().trim());
 
         if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty()
                 || position.isEmpty() || zone.isEmpty() || role.isEmpty()) {
@@ -133,10 +142,10 @@ public class LogisticFormFrame extends JInternalFrame  {
         }
 
         if (logisticToEdit == null) {
-            logisticService.createLogistic(name, email, phone, position, zone, role, password);
+            logisticService.createLogistic(name, email, phone, position, zone, role, password, score, workingHours);
         } else {
-            logisticService.updatedLogistic(logisticToEdit.getIdStaff(),
-                    name, email, phone, position, zone, role, password);
+            logisticService.updatedLogistic(workingHours, name, email, phone, position, zone, role, password, score,
+                    workingHours);
         }
         onSaved.run();
         dispose();
@@ -144,5 +153,5 @@ public class LogisticFormFrame extends JInternalFrame  {
 
     private void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
-    }     
+    }
 }

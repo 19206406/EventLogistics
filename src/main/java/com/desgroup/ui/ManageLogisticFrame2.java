@@ -59,7 +59,7 @@ public class ManageLogisticFrame2 extends JInternalFrame {
         buttonPanel.add(deleteButton);
         mainPanel.add(buttonPanel, BorderLayout.NORTH);
 
-        String[] columns = {"Id", "Nombre", "Email", "Telefono", "Posición", "Zona", "Rol", "Puntuación"};
+        String[] columns = {"Id", "Nombre", "Email", "Telefono", "Posición", "Zona", "Rol", "Puntuación", "Horas"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -83,7 +83,7 @@ public class ManageLogisticFrame2 extends JInternalFrame {
             // AJUSTAR los getters a los nombres reales de tu clase Logistic
             tableModel.addRow(new Object[]{
                 l.getIdStaff(), l.getName(), l.getEmail(), l.getPhone(),
-                l.getPosition(), l.getZone(), l.getRole(), l.getScore()
+                l.getPosition(), l.getZone(), l.getRole(), l.getScore(), l.getWorkingHours()
             });
         }
     }

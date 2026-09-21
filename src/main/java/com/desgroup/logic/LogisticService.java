@@ -25,16 +25,14 @@ public class LogisticService implements IStaffSalary {
     }
 
     public void createLogistic(String name, String email, String phone, String position, String zone,
-            String role,
-            String password) {
-        Logistic logistic = new Logistic(0, name, email, phone, position, password, zone, role, 4);
+            String role, String password, int score, int workingHours) {
+        Logistic logistic = new Logistic(0, name, email, phone, position, password, zone, role, score, workingHours);
         repository.create(logistic);
     }
 
     public void updatedLogistic(int id, String name, String email, String phone, String position, String zone,
-            String role,
-            String password) {
-        Logistic logistic = new Logistic(id, name, email, phone, position, password, zone, role, 8);
+            String role, String password, int score, int workingHours) {
+        Logistic logistic = new Logistic(id, name, email, phone, position, password, zone, role, score, workingHours);
         repository.updated(logistic);
     }
 
@@ -52,6 +50,10 @@ public class LogisticService implements IStaffSalary {
     public double calculateSalary(int id) {
         Logistic logistic = repository.getById(id);
         int hoursWorked = logistic.getWorkingHours();
-        return hoursWorked * hourlyRate;
+        double salary = hoursWorked * hourlyRate;
+        logistic.setSalary(salary);
+        repository.updated(logistic);
+
+        return salary;
     }
 }
