@@ -4,6 +4,7 @@
  */
 package com.desgroup.ui;
 
+import com.desgroup.logic.EventService;
 import com.desgroup.logic.LogisticService;
 import com.desgroup.models.Logistic;
 import com.desgroup.models.Staff;
@@ -24,11 +25,13 @@ import javax.swing.JOptionPane;
 public class MainFrame extends JFrame {
     private JDesktopPane desktopPane;
     private final LogisticService logisticService;
+    private final EventService eventService; 
     private Staff currentUser; 
 
-    public MainFrame(LogisticService logisticService, Staff currentUser) {
+    public MainFrame(LogisticService logisticService, EventService eventService, Staff currentUser) {
         this.logisticService = logisticService;
         this.currentUser = currentUser; 
+        this.eventService = eventService; 
         initComponents();
     }
 
@@ -75,6 +78,11 @@ public class MainFrame extends JFrame {
 
         // ---------- Menú Manager ----------
         JMenu menuManager = new JMenu("Manager");
+        
+        JMenuItem itemManageEvents = new JMenuItem("Administrar eventos");
+        itemManageEvents.addActionListener(e -> openManageEvents());
+        menuManager.add(itemManageEvents);
+        
         // AQUÍ van los ítems del rol Manager (mismo patrón que en Logistico).
         menuBar.add(menuManager);
 
@@ -110,6 +118,11 @@ public class MainFrame extends JFrame {
         } catch (java.beans.PropertyVetoException e) {
             e.printStackTrace();
         }
+    }
+    
+    private void openManageEvents() {
+        openSingleFrame(ManagerEvent.class,
+                () -> new ManagerEvent(eventService));
     }
 
     /**
