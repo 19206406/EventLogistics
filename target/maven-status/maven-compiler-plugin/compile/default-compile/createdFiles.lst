@@ -14,6 +14,7 @@ com\desgroup\logic\StaffService.class
 com\desgroup\repositories\EventAssignmentRepository.class
 com\desgroup\eventlogistics\Main.class
 com\desgroup\logic\CoordinatorService.class
+com\desgroup\ui\LogisticsHours.class
 com\desgroup\repositories\CoordinatorRepository.class
 com\desgroup\ui\LoginFrame.class
 com\desgroup\ui\LogisticOpcion.class

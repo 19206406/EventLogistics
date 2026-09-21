@@ -3,37 +3,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package com.desgroup.ui;
-import com.desgroup.models.Logistic;
-import javax.swing.*;
-import java.awt.*;
+
 /**
  *
  * @author juand
  */
-public class LogisticEventsFrame extends javax.swing.JInternalFrame {
+public class LogisticsHours extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form LogisticEventsFrame
+     * Creates new form LogisticsHours
      */
-    public LogisticEventsFrame(Logistic logistic) {
-        super("Eventos del logistico", false,true,false,false);
-        setSize(350, 250);
-        setLocation(120, 80);
-        
-        
-        JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        panel.add(new JLabel("Eventos asignados a " + logistic.getName() + " (pendiente conectar EventAssignmentService)"));
-        panel.add(new JLabel("Nombre: " + logistic.getName()));
-        panel.add(new JLabel("Email: " + logistic.getEmail()));
-        panel.add(new JLabel("Teléfono: " + logistic.getPhone()));
-        panel.add(new JLabel("Posición: " + logistic.getPosition()));
-        panel.add(new JLabel("Zona: " + logistic.getZone()));
-        panel.add(new JLabel("Rol: " + logistic.getRole()));
-        panel.add(new JLabel("Puntaje: " + logistic.getScore()));
-
-        
-        add(panel);
+    public LogisticsHours() {
+        initComponents();
     }
 
     /**

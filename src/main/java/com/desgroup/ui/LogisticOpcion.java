@@ -18,10 +18,10 @@ public class LogisticOpcion extends javax.swing.JInternalFrame {
      */
     public LogisticOpcion(Logistic logistic) {
         super("Opcion Logistico",false,true,false,false);
-        initComponents();
         this.logistic = logistic;
         setSize(320, 260);
         setLocation(100, 60);
+        initializeComponents();
     }
     
     private void initializeComponents(){
@@ -29,12 +29,14 @@ public class LogisticOpcion extends javax.swing.JInternalFrame {
         panel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
         
         JButton btnEventos = new JButton("Ver eventos");
+        JButton btnHoras = new JButton ("Ver Horas");
         JButton btnSueldo = new JButton("Ver sueldo");
         JButton btnUsuario = new JButton("Ver usuario");
         JButton btnVolver = new JButton("Volver");
         
         btnEventos.addActionListener(e -> abrir(new LogisticEventsFrame(logistic)));
         btnSueldo.addActionListener(e -> abrir(new LogisticSalaryFrame(logistic)));
+        //btnHoras.addActionListener(e->abrir(new LogisticsHours(Logistic)));
         btnUsuario.addActionListener(e -> abrir(new LogisticUserFrame(logistic)));
         btnVolver.addActionListener(e -> dispose());
 
