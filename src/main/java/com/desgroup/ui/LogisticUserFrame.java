@@ -19,16 +19,20 @@ public class LogisticUserFrame extends javax.swing.JInternalFrame {
      * Creates new form LogisticUserFrame
      */
     public LogisticUserFrame(Logistic logistic ) {
-        super("Sueldo del Logístico", false, true, false, false);
-        setSize(280, 150);
-        setLocation(140, 100);
+        super("Datos del Logístico", true, true, true, true);
+        setSize(300, 260);
+        setLocation(130, 90);
 
-        LogisticService service = new LogisticService();
-        double sueldo = service.calculateSalary(logistic.getIdStaff());
+        JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5));
+        panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        panel.add(new JLabel("Sueldo calculado: $" + sueldo));
+        panel.add(new JLabel("Nombre: " + logistic.getName()));
+        panel.add(new JLabel("Email: " + logistic.getEmail()));
+        panel.add(new JLabel("Teléfono: " + logistic.getPhone()));
+        panel.add(new JLabel("Posición: " + logistic.getPosition()));
+        panel.add(new JLabel("Zona: " + logistic.getZone()));
+        panel.add(new JLabel("Rol: " + logistic.getRole()));
+        panel.add(new JLabel("Puntaje: " + logistic.getScore()));
 
         add(panel);
     }

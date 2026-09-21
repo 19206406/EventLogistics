@@ -5,6 +5,7 @@
 package com.desgroup.eventlogistics;
 
 import com.desgroup.models.Logistic;
+import com.desgroup.models.Coordinator;
 import com.desgroup.ui.LoginFrame2;
 import com.desgroup.ui.LogisticOpcion;
 import java.awt.EventQueue;
@@ -136,10 +137,11 @@ public class Main extends javax.swing.JFrame {
 
     private void mniShowUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniShowUserActionPerformed
         // TODO add your handling code here: 
-        if (!(CurrentUser instanceof Logistic)) {
+        /**if (!(CurrentUser instanceof Logistic)) {
             javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para logísticos");
             return;
         }
+       
     
         Logistic logistic = (Logistic) CurrentUser;
         LogisticOpcion frame = new LogisticOpcion(logistic);
@@ -149,7 +151,7 @@ public class Main extends javax.swing.JFrame {
             frame.setSelected(true);
         } catch (java.beans.PropertyVetoException e) {
             e.printStackTrace();
-        }
+        }*/
         
     }//GEN-LAST:event_mniShowUserActionPerformed
 

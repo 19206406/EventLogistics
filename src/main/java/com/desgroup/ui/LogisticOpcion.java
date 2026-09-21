@@ -17,7 +17,7 @@ public class LogisticOpcion extends javax.swing.JInternalFrame {
      * Creates new form LogisticOpcion
      */
     public LogisticOpcion(Logistic logistic) {
-        super("Opcion Logistico",false,true,false,false);
+        super("Opcion Logistico",true,true,true,true);
         initializeComponents();
         this.logistic = logistic;
         setSize(320, 260);

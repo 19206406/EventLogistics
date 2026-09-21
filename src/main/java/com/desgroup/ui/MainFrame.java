@@ -17,7 +17,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-
+import com.desgroup.models.Coordinator;
+import com.desgroup.models.Manager;
 /**
  *
  * @author urreg
@@ -63,8 +64,9 @@ public class MainFrame extends JFrame {
         menuBar.add(menuLogistic);
 
         // ---------- Menú Coordinador ----------
+       
         JMenu menuCoordinator = new JMenu("Coordinador");
-
+        
         JMenuItem itemManageLogistics = new JMenuItem("Administrar logisticos");
         itemManageLogistics.addActionListener(e -> openManageLogistics());
         menuCoordinator.add(itemManageLogistics);
@@ -99,6 +101,10 @@ public class MainFrame extends JFrame {
     // ---------- Apertura de sesiones (un método open por cada sesión) ----------
 
     private void openManageLogistics() {
+        if(!(currentUser instanceof Manager)){
+            javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para Coordinadores");
+            return;
+        }
         openSingleFrame(ManageLogisticFrame2.class,
                 () -> new ManageLogisticFrame2(logisticService, desktopPane));
     }
@@ -121,6 +127,10 @@ public class MainFrame extends JFrame {
     }
     
     private void openManageEvents() {
+        if(!(currentUser instanceof Manager)){
+            javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para Gerentes");
+            return;
+        }
         openSingleFrame(ManagerEvent.class,
                 () -> new ManagerEvent(eventService));
     }
