@@ -11,8 +11,9 @@ package com.desgroup.models;
 public class Coordinator extends Staff {
     private String company;
 
-    public Coordinator(String name, String email, int phone, String position, String password, String company) {
-        super(name, email, phone, position, password);
+    public Coordinator(int idStaff, String name, String email, String phone, String position, String password,
+            String company) {
+        super(idStaff, name, email, phone, position, password);
         this.company = company;
     }
 

@@ -24,15 +24,17 @@ public class LogisticService implements IStaffSalary {
         return repository.getById(id);
     }
 
-    public void createLogistic(String name, String email, int phone, String position, String zone, String role,
+    public void createLogistic(String name, String email, String phone, String position, String zone,
+            String role,
             String password) {
-        Logistic logistic = new Logistic(name, email, phone, position, zone, role, password);
+        Logistic logistic = new Logistic(0, name, email, phone, position, password, zone, role, 4);
         repository.create(logistic);
     }
 
-    public void updatedLogistic(String name, String email, int phone, String position, String zone, String role,
+    public void updatedLogistic(String name, String email, String phone, String position, String zone,
+            String role,
             String password) {
-        Logistic logistic = new Logistic(name, email, phone, position, zone, role, password);
+        Logistic logistic = new Logistic(0, name, email, phone, position, password, zone, role, 8);
         repository.updated(logistic);
     }
 

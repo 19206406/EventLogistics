@@ -19,7 +19,8 @@ public class Event {
     // no se si la necesitamos y mejor solo con la fecha.
     private int startTime;
 
-    public Event(String name, Place place, String state, LocalDate date, int startTime) {
+    public Event(int idEvent, String name, Place place, String state, LocalDate date, int startTime) {
+        this.idEvent = idEvent;
         this.name = name;
         this.place = place;
         this.state = state;
