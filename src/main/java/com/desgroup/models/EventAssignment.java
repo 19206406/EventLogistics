@@ -16,7 +16,8 @@ public class EventAssignment {
     public EventAssignment() {
     }
 
-    public EventAssignment(int idStaff, int idEvent) {
+    public EventAssignment(int idAssignment, int idStaff, int idEvent) {
+        this.idAssignment = idAssignment;
         this.idStaff = idStaff;
         this.idEvent = idEvent;
     }

@@ -4,6 +4,8 @@
  */
 package com.desgroup.ui;
 
+import com.desgroup.logic.CoordinatorService;
+import com.desgroup.logic.EventAssignmentService;
 import com.desgroup.logic.EventService;
 import com.desgroup.logic.LogisticService;
 import com.desgroup.models.Logistic;
@@ -27,12 +29,17 @@ public class MainFrame extends JFrame {
     private JDesktopPane desktopPane;
     private final LogisticService logisticService;
     private final EventService eventService; 
+    private final EventAssignmentService assignmentService; 
+    private final CoordinatorService coordinatorService; 
     private Staff currentUser; 
 
-    public MainFrame(LogisticService logisticService, EventService eventService, Staff currentUser) {
+    public MainFrame(LogisticService logisticService, EventService eventService,
+            EventAssignmentService assignmentService, CoordinatorService coordinatorService, Staff currentUser) {
         this.logisticService = logisticService;
         this.currentUser = currentUser; 
         this.eventService = eventService; 
+        this.coordinatorService = coordinatorService; 
+        this.assignmentService = assignmentService; 
         initComponents();
     }
 
@@ -50,12 +57,8 @@ public class MainFrame extends JFrame {
     private JMenuBar buildMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
-        // ---------- Menú Logistico ----------
+        // Menú logistico 
         JMenu menuLogistic = new JMenu("Logistico");
-        // AQUÍ van los ítems del rol Logistico. Patrón para cada uno:
-        //   JMenuItem itemX = new JMenuItem("Texto");
-        //   itemX.addActionListener(e -> openX());
-        //   menuLogistic.add(itemX);
         
         JMenuItem itemLogisticOption = new JMenuItem("Ver perfil");
         itemLogisticOption.addActionListener(e -> openLogisticOption());
@@ -63,7 +66,7 @@ public class MainFrame extends JFrame {
         
         menuBar.add(menuLogistic);
 
-        // ---------- Menú Coordinador ----------
+        // Menú Coordinador
        
         JMenu menuCoordinator = new JMenu("Coordinador");
         
@@ -72,23 +75,25 @@ public class MainFrame extends JFrame {
         menuCoordinator.add(itemManageLogistics);
 
         JMenuItem itemAssignedEvents = new JMenuItem("Ver eventos asignados");
-        // AQUÍ: cuando exista la sesión, cambia el listener por openAssignedEvents()
-        itemAssignedEvents.addActionListener(e -> showNotAvailableYet());
+        itemAssignedEvents.addActionListener(e -> openViewEventsAssignmentCoordinator());
         menuCoordinator.add(itemAssignedEvents);
+        
+        JMenuItem itemViewCoordinatorProfile = new JMenuItem("Ver perfil");
+        itemViewCoordinatorProfile.addActionListener(e -> openCooridinatorProfile());
+        menuCoordinator.add(itemViewCoordinatorProfile);
 
         menuBar.add(menuCoordinator);
 
-        // ---------- Menú Manager ----------
+        // Menú Manager
         JMenu menuManager = new JMenu("Manager");
         
         JMenuItem itemManageEvents = new JMenuItem("Administrar eventos");
         itemManageEvents.addActionListener(e -> openManageEvents());
         menuManager.add(itemManageEvents);
         
-        // AQUÍ van los ítems del rol Manager (mismo patrón que en Logistico).
         menuBar.add(menuManager);
 
-        // ---------- Menú Opciones ----------
+        //  Menú Opciones 
         JMenu menuOptions = new JMenu("Opciones");
         JMenuItem itemExit = new JMenuItem("Salir");
         itemExit.addActionListener(e -> System.exit(0));
@@ -97,11 +102,19 @@ public class MainFrame extends JFrame {
 
         return menuBar;
     }
-
-    // ---------- Apertura de sesiones (un método open por cada sesión) ----------
+    
+    // Coordinators 
+    private void openViewEventsAssignmentCoordinator() {
+        if (!(currentUser instanceof Coordinator)) {
+            JOptionPane.showMessageDialog(this, "Esta opción es solo para Coordinadores");
+            return;
+        }
+        openSingleFrame(ViewEventsAssignmentCoordinator.class, 
+                () -> new ViewEventsAssignmentCoordinator(assignmentService, eventService, currentUser));
+    }
 
     private void openManageLogistics() {
-        if(!(currentUser instanceof Manager)){
+        if(!(currentUser instanceof Coordinator)){
             javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para Coordinadores");
             return;
         }
@@ -109,6 +122,19 @@ public class MainFrame extends JFrame {
                 () -> new ManageLogisticFrame2(logisticService, desktopPane));
     }
     
+    private void openCooridinatorProfile() {
+        if(!(currentUser instanceof Coordinator)){
+            javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para Coordinadores");
+            return;
+        }
+        
+        Coordinator coordinator = (Coordinator) currentUser; 
+        ViewCoordinatorProfile frame = new ViewCoordinatorProfile(coordinator, coordinatorService); 
+        desktopPane.add(frame); 
+        frame.setVisible(true); 
+    }
+    
+    // Logistics 
     private void openLogisticOption() {
         if (!(currentUser instanceof Logistic)) {
             javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para logísticos");
@@ -126,6 +152,7 @@ public class MainFrame extends JFrame {
         }
     }
     
+    // Managers 
     private void openManageEvents() {
         if(!(currentUser instanceof Manager)){
             javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para Gerentes");
@@ -155,10 +182,10 @@ public class MainFrame extends JFrame {
         newFrame.setVisible(true);
     }
 
-    private void showNotAvailableYet() {
-        JOptionPane.showMessageDialog(this, "Esta sesión aún no está disponible.",
-                "En construcción", JOptionPane.INFORMATION_MESSAGE);
-    }
+//    private void showNotAvailableYet() {
+//        JOptionPane.showMessageDialog(this, "Esta sesión aún no está disponible.",
+//                "En construcción", JOptionPane.INFORMATION_MESSAGE);
+//    }
 
     public JDesktopPane getDesktopPane() {
         return desktopPane;

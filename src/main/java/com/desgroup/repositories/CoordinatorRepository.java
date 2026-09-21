@@ -18,8 +18,8 @@ public class CoordinatorRepository {
 
     private void initializeLogistics() {
 
-        coordinators.add(new Coordinator(nextId++, "Juliana", "juliana@gmail.com", "3025896", "Coordinadora",
-                "Juliana123", "EventLogistic"));
+        coordinators.add(new Coordinator(nextId++, "Robert", "robert@gmail.com", "3025896", "Coordinadora",
+                "robert123", "EventLogistic"));
 
         coordinators.add(new Coordinator(nextId++, "Carolina", "carolina@gmail.com", "3014732", "Coordinadora",
                 "Carolina123", "EventLogistic"));

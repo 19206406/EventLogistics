@@ -52,7 +52,7 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
         btnEliminarEvento = new javax.swing.JButton();
         btnConsultarLugar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblManageEvent = new javax.swing.JTable();
 
         btnCrearEvento.setText("Crear Evento");
         btnCrearEvento.addActionListener(this::btnCrearEventoActionPerformed);
@@ -66,7 +66,7 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
         btnConsultarLugar.setText("Consultar  Lugar");
         btnConsultarLugar.addActionListener(this::btnConsultarLugarActionPerformed);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblManageEvent.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -85,7 +85,7 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblManageEvent);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -182,14 +182,14 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
                 return false;
             }
         };
-        jTable1.setModel(tableModel);
-        jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        jTable1.setRowHeight(24);
-        jTable1.getColumnModel().getColumn(0).setPreferredWidth(40);
-        jTable1.getColumnModel().getColumn(1).setPreferredWidth(170);
-        jTable1.getColumnModel().getColumn(2).setPreferredWidth(90);
-        jTable1.getColumnModel().getColumn(3).setPreferredWidth(90);
-        jTable1.getColumnModel().getColumn(4).setPreferredWidth(60);
+        tblManageEvent.setModel(tableModel);
+        tblManageEvent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tblManageEvent.setRowHeight(24);
+        tblManageEvent.getColumnModel().getColumn(0).setPreferredWidth(40);
+        tblManageEvent.getColumnModel().getColumn(1).setPreferredWidth(170);
+        tblManageEvent.getColumnModel().getColumn(2).setPreferredWidth(90);
+        tblManageEvent.getColumnModel().getColumn(3).setPreferredWidth(90);
+        tblManageEvent.getColumnModel().getColumn(4).setPreferredWidth(60);
     }
 
     // Vuelve a llenar la tabla con los eventos del servicio. Es público porque
@@ -211,7 +211,7 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
     // Devuelve el evento de la fila seleccionada o null (avisando al usuario)
     // si no hay ninguna seleccionada.
     private Event getSelectedEvent(String action) {
-        int row = jTable1.getSelectedRow();
+        int row = tblManageEvent.getSelectedRow();
         if (row == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione un evento para " + action + ".",
                     "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -235,6 +235,6 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEditarEvento;
     private javax.swing.JButton btnEliminarEvento;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblManageEvent;
     // End of variables declaration//GEN-END:variables
 }

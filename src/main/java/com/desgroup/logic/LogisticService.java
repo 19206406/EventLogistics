@@ -50,7 +50,6 @@ public class LogisticService implements IStaffSalary {
 
     @Override
     public double calculateSalary(int id) {
-
         Logistic logistic = repository.getById(id);
         int hoursWorked = logistic.getWorkingHours();
         return hoursWorked * hourlyRate;

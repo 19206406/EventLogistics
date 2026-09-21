@@ -18,7 +18,7 @@ public class LogisticUserFrame extends javax.swing.JInternalFrame {
     /**
      * Creates new form LogisticUserFrame
      */
-    public LogisticUserFrame(Logistic logistic ) {
+    public LogisticUserFrame(Logistic logistic) {
         super("Datos del Logístico", true, true, true, true);
         setSize(300, 260);
         setLocation(130, 90);

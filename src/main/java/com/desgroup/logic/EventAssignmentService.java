@@ -28,7 +28,7 @@ public class EventAssignmentService {
         if (repository.exists(idStaff, idEvent))
             return;
 
-        EventAssignment newAssignment = new EventAssignment(idStaff, idEvent);
+        EventAssignment newAssignment = new EventAssignment(0, idStaff, idEvent);
         repository.create(newAssignment);
     }
 

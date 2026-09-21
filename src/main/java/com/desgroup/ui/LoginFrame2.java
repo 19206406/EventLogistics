@@ -5,6 +5,8 @@
 package com.desgroup.ui;
 
 import com.desgroup.eventlogistics.Main;
+import com.desgroup.logic.CoordinatorService;
+import com.desgroup.logic.EventAssignmentService;
 import com.desgroup.logic.EventService;
 import com.desgroup.logic.LogisticService;
 import com.desgroup.logic.StaffService;
@@ -115,7 +117,7 @@ public class LoginFrame2 extends javax.swing.JFrame {
             //main.setVisible(true);
             //dispose(); 
             
-            MainFrame mainFrame = new MainFrame(new LogisticService(), new EventService(), isSuccess);
+            MainFrame mainFrame = new MainFrame(new LogisticService(), new EventService(), new EventAssignmentService(), new CoordinatorService(), isSuccess);
             mainFrame.setVisible(true);
             dispose();
         } else {

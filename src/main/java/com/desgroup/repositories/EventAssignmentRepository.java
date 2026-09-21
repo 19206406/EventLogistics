@@ -12,6 +12,14 @@ public class EventAssignmentRepository {
     public EventAssignmentRepository() {
         assignments = new ArrayList<>();
         nextId = 0;
+        initializeEventAssignment(); 
+    }
+    
+    private void initializeEventAssignment() {
+        assignments.add(new EventAssignment(nextId++, 0, 1)); 
+        assignments.add(new EventAssignment(nextId++, 0, 2)); 
+        assignments.add(new EventAssignment(nextId++, 0, 3)); 
+        assignments.add(new EventAssignment(nextId++, 0, 4)); 
     }
 
     public List<EventAssignment> getAll() {
