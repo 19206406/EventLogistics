@@ -25,7 +25,7 @@ public class ManagerRepository {
     }
 
     private void createManagerAdministrator() {
-        Manager admin = new Manager(nextId, "Abelardo", "adim", "1234232342", "Gerente", "admin123", "EventLogistic");
+        Manager admin = new Manager(nextId, "Abelardo", "admin", "1234232342", "Gerente", "admin123", "EventLogistic");
         managers.add(admin);
     }
 

@@ -5,7 +5,6 @@
 package com.desgroup.eventlogistics;
 
 import com.desgroup.models.Logistic;
-import com.desgroup.ui.LoginFrame;
 import com.desgroup.ui.LoginFrame2;
 import com.desgroup.ui.LogisticOpcion;
 import java.awt.EventQueue;

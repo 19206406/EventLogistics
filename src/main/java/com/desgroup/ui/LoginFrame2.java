@@ -5,6 +5,7 @@
 package com.desgroup.ui;
 
 import com.desgroup.eventlogistics.Main;
+import com.desgroup.logic.LogisticService;
 import com.desgroup.logic.StaffService;
 import com.desgroup.utils.MessagesUi;
 import com.desgroup.models.Staff;
@@ -109,9 +110,13 @@ public class LoginFrame2 extends javax.swing.JFrame {
         Staff isSuccess = service.login(email, password);
 
         if (isSuccess != null) {
-            Main main = new Main(isSuccess); 
-            main.setVisible(true);
-            dispose(); 
+            //Main main = new Main(isSuccess); 
+            //main.setVisible(true);
+            //dispose(); 
+            
+            MainFrame mainFrame = new MainFrame(new LogisticService(), isSuccess);
+            mainFrame.setVisible(true);
+            dispose();
         } else {
             MessagesUi.showError(this, "A ocurrido un error al iniciar sesión intenta de nuevo.");
         }
