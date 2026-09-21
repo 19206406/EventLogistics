@@ -61,7 +61,6 @@ public class ViewCoordinatorProfile extends javax.swing.JInternalFrame {
         
         double salary = coordinatorService.calculateSalary(coordinator.getIdStaff()); 
         
-        
         JLabel lblName = new JLabel("Nombre: " + this.coordinator.getName()); 
         JLabel lblEmail = new JLabel("Email: " + this.coordinator.getEmail()); 
         JLabel lblPhone = new JLabel("Teléfono: " + this.coordinator.getPhone()); 
