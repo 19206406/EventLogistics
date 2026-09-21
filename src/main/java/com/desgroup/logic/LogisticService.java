@@ -31,10 +31,10 @@ public class LogisticService implements IStaffSalary {
         repository.create(logistic);
     }
 
-    public void updatedLogistic(String name, String email, String phone, String position, String zone,
+    public void updatedLogistic(int id, String name, String email, String phone, String position, String zone,
             String role,
             String password) {
-        Logistic logistic = new Logistic(0, name, email, phone, position, password, zone, role, 8);
+        Logistic logistic = new Logistic(id, name, email, phone, position, password, zone, role, 8);
         repository.updated(logistic);
     }
 
