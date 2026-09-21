@@ -51,4 +51,8 @@ public class EventService {
 
         return events;
     }
+    
+    public void deleteEventById(int id) {
+        repository.delete(id);
+    }
 }
