@@ -10,10 +10,11 @@ package com.desgroup.models;
  */
 public class Manager extends Staff {
 
-    public String company; 
+    private String company;
 
-    public Manager(String company, int id, String name, String email, int phone, String position, String password, double salary) {
-        super(id, name, email, phone, position, password, salary);
+    public Manager(int idStaff, String name, String email, String phone, String position, String password,
+            String company) {
+        super(idStaff, name, email, phone, position, password);
         this.company = company;
     }
 

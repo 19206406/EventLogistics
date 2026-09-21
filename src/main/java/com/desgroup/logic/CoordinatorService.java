@@ -28,16 +28,16 @@ public class CoordinatorService implements IStaffSalary {
         return repository.getById(id);
     }
 
-    public void createCoordinator(String name, String email, int phone, String position, String password,
+    public void createCoordinator(String name, String email, String phone, String position, String password,
             String company) {
-        Coordinator logistic = new Coordinator(name, email, phone, position, password, company);
-        repository.create(logistic);
+        Coordinator coordinator = new Coordinator(0, name, email, phone, position, password, company);
+        repository.create(coordinator);
     }
 
-    public void updatedCoordinator(String name, String email, int phone, String position, String password,
+    public void updatedCoordinator(String name, String email, String phone, String position, String password,
             String company) {
-        Coordinator logistic = new Coordinator(name, email, phone, position, password, company);
-        repository.updated(logistic);
+        Coordinator coordinator = new Coordinator(0, name, email, phone, position, password, company);
+        repository.updated(coordinator);
     }
 
     public void deleteCoordinator(int id) {

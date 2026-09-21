@@ -14,26 +14,15 @@ public class Logistic extends Staff {
     private String role;
     private int score;
 
-    public Logistic(String zone, int workingHours, String role, int score, int id, String name, String email, int phone,
-            String position, String password, double salary) {
-        super(id, name, email, phone, position, password, salary);
+    public Logistic() {
+    }
+
+    public Logistic(int idStaff, String name, String email, String phone, String position, String password, String zone,
+            String role, int score) {
+        super(idStaff, name, email, phone, position, password);
         this.zone = zone;
-        this.workingHours = workingHours;
         this.role = role;
         this.score = score;
-    }
-
-    public Logistic(int id, String name, String email, int phone, String position, String password, double salary) {
-        super(id, name, email, phone, position, password, salary);
-    }
-
-    public Logistic(String name, String email, int phone, String position, String zone, String role, String password) {
-        super(name, email, phone, position, password);
-        this.zone = zone;
-        this.role = role;
-    }
-
-    public Logistic() {
     }
 
     public String getZone() {

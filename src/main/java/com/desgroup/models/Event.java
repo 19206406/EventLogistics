@@ -18,7 +18,8 @@ public class Event {
     private LocalDate date;
     private int startTime;
 
-    public Event(String name, Place place, String state, LocalDate date, int startTime) {
+    public Event(int idEvent, String name, Place place, String state, LocalDate date, int startTime) {
+        this.idEvent = idEvent;
         this.name = name;
         this.place = place;
         this.state = state;

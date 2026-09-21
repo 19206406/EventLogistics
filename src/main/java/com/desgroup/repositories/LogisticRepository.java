@@ -12,6 +12,43 @@ public class LogisticRepository {
     public LogisticRepository() {
         logistics = new ArrayList<>();
         nextId = 0;
+        initializeLogistics();
+    }
+
+    private void initializeLogistics() {
+
+        logistics.add(new Logistic(nextId++, "Sebastian", "sebastian@gmail.com", "3005389", "Logistico", "sebas123",
+                "Norte", "Vigilancia", 4));
+
+        logistics.add(new Logistic(nextId++, "Sebastian", "sebastian@gmail.com", "3005389", "Logistico", "sebas123",
+                "Norte", "Vigilancia", 4));
+
+        logistics.add(new Logistic(nextId++, "Camilo", "camilo@gmail.com", "3014527", "Logistico", "camilo123",
+                "Sur", "Transporte", 6));
+
+        logistics.add(new Logistic(nextId++, "Andres", "andres@gmail.com", "3027814", "Logistico", "andres123",
+                "Centro", "Montaje", 8));
+
+        logistics.add(new Logistic(nextId++, "Mateo", "mateo@gmail.com", "3036251", "Logistico", "mateo123",
+                "Occidente", "Seguridad", 5));
+
+        logistics.add(new Logistic(nextId++, "Nicolas", "nicolas@gmail.com", "3049183", "Logistico", "nicolas123",
+                "Oriente", "Sonido", 7));
+
+        logistics.add(new Logistic(nextId++, "Daniel", "daniel@gmail.com", "3053476", "Logistico", "daniel123",
+                "Norte", "Iluminacion", 9));
+
+        logistics.add(new Logistic(nextId++, "Juan", "juan@gmail.com", "3065829", "Logistico", "juan123",
+                "Sur", "Vigilancia", 3));
+
+        logistics.add(new Logistic(nextId++, "Felipe", "felipe@gmail.com", "3072145", "Logistico", "felipe123",
+                "Centro", "Transporte", 10));
+
+        logistics.add(new Logistic(nextId++, "Santiago", "santiago@gmail.com", "3087632", "Logistico", "santiago123",
+                "Occidente", "Montaje", 6));
+
+        logistics.add(new Logistic(nextId++, "Julian", "julian@gmail.com", "3094258", "Logistico", "julian123",
+                "Oriente", "Seguridad", 8));
     }
 
     public List<Logistic> getAll() {

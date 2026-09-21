@@ -28,7 +28,7 @@ public class EventService {
     public void createEvent(String name, String state, LocalDate date, int startTime, String country,
             String city, String placeName, String address, int capacity) {
         Place place = new Place(country, city, placeName, address, capacity);
-        Event newEvent = new Event(placeName, place, state, date, startTime);
+        Event newEvent = new Event(capacity, placeName, place, state, date, startTime);
         repository.create(newEvent);
     }
 
@@ -36,7 +36,7 @@ public class EventService {
     public void updatedEvent(String name, String state, LocalDate date, int startTime, String country,
             String city, String placeName, String address, int capacity) {
         Place place = new Place(country, city, placeName, address, capacity);
-        Event event = new Event(name, place, state, date, startTime);
+        Event event = new Event(capacity, placeName, place, state, date, startTime);
         repository.updated(event);
     }
 

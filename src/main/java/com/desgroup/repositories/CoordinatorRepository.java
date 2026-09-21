@@ -13,6 +13,41 @@ public class CoordinatorRepository {
     public CoordinatorRepository() {
         coordinators = new ArrayList<>();
         nextId = 0;
+        initializeLogistics();
+    }
+
+    private void initializeLogistics() {
+
+        coordinators.add(new Coordinator(nextId++, "Juliana", "juliana@gmail.com", "3025896", "Coordinadora",
+                "Juliana123", "EventLogistic"));
+
+        coordinators.add(new Coordinator(nextId++, "Carolina", "carolina@gmail.com", "3014732", "Coordinadora",
+                "Carolina123", "EventLogistic"));
+
+        coordinators.add(new Coordinator(nextId++, "Valentina", "valentina@gmail.com", "3008254", "Coordinadora",
+                "Valentina123", "EventLogistic"));
+
+        coordinators.add(new Coordinator(nextId++, "Daniela", "daniela@gmail.com", "3046918", "Coordinadora",
+                "Daniela123", "EventLogistic"));
+
+        coordinators.add(new Coordinator(nextId++, "Maria", "maria@gmail.com", "3052376", "Coordinadora",
+                "Maria123", "EventLogistic"));
+
+        coordinators.add(new Coordinator(nextId++, "Gabriela", "gabriela@gmail.com", "3065149", "Coordinadora",
+                "Gabriela123", "EventLogistic"));
+
+        coordinators.add(new Coordinator(nextId++, "Natalia", "natalia@gmail.com", "3078263", "Coordinadora",
+                "Natalia123", "EventLogistic"));
+
+        coordinators.add(new Coordinator(nextId++, "Paula", "paula@gmail.com", "3083497", "Coordinadora",
+                "Paula123", "EventLogistic"));
+
+        coordinators.add(new Coordinator(nextId++, "Laura", "laura@gmail.com", "3096721", "Coordinadora",
+                "Laura123", "EventLogistic"));
+
+        coordinators.add(new Coordinator(nextId++, "Alejandra", "alejandra@gmail.com", "3104586", "Coordinadora",
+                "Alejandra123", "EventLogistic"));
+
     }
 
     public List<Coordinator> getAll() {

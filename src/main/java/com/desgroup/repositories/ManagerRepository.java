@@ -16,19 +16,18 @@ public class ManagerRepository {
         nextId = 0;
         createManagerAdministrator();
     }
-    
+
     public static ManagerRepository getInstance() {
         if (instance == null) {
-            instance = new ManagerRepository();   // solo se crea la PRIMERA vez
+            instance = new ManagerRepository(); // solo se crea la PRIMERA vez
         }
-        return instance;   // las siguientes veces, se devuelve la misma instancia ya existente
-    }
-    
-    private void createManagerAdministrator(){
-        Manager admin = new Manager("EventLogistics",nextId++,"Administrador","admin",3001234,"Gerente","admin123",5000000.00);
-        managers.add(admin);
+        return instance; // las siguientes veces, se devuelve la misma instancia ya existente
     }
 
+    private void createManagerAdministrator() {
+        Manager admin = new Manager(nextId, "Abelardo", "adim", "1234232342", "Gerente", "admin123", "EventLogistic");
+        managers.add(admin);
+    }
 
     public List<Manager> getAll() {
         return new ArrayList<>(managers);
