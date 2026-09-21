@@ -7,7 +7,7 @@ package com.desgroup.ui;
 import com.desgroup.eventlogistics.Main;
 import com.desgroup.logic.StaffService;
 import com.desgroup.utils.MessagesUi;
-
+import com.desgroup.models.Staff;
 /**
  *
  * @author urreg
@@ -22,7 +22,8 @@ public class LoginFrame2 extends javax.swing.JFrame {
      * Creates new form LoginFrame2
      */
     public LoginFrame2() {
-        service = new StaffService(); 
+        service = new StaffService();
+        
         initComponents();
     }
 
@@ -103,12 +104,12 @@ public class LoginFrame2 extends javax.swing.JFrame {
 
         String email = txtEmail.getText();
         // creo que esto no se puede pero es para ejemplo.
-        String password = pwdPassword.getText();
+        String password = new String(pwdPassword.getPassword());
 
-        boolean isSuccess = service.staffLogin(email, password);
+        Staff isSuccess = service.login(email, password);
 
-        if (isSuccess) {
-            Main main = new Main(); 
+        if (isSuccess != null) {
+            Main main = new Main(isSuccess); 
             main.setVisible(true);
             dispose(); 
         } else {

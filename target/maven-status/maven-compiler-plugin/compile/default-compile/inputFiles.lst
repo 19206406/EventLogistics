@@ -1,24 +1,28 @@
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\eventlogistics\Main.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\interfaces\IStaffSalary.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\logic\AuthenticateService.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\logic\CoordinatorService.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\logic\EventAssignmentService.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\logic\EventService.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\logic\LogisticService.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\logic\StaffService.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\models\Coordinator.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\models\Event.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\models\EventAssignment.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\models\Logistic.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\models\Manager.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\models\Place.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\models\Staff.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\repositories\CoordinatorRepository.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\repositories\EventAssignmentRepository.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\repositories\EventRepository.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\repositories\LogisticRepository.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\repositories\ManagerRepository.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\repositories\StaffRepository.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\ui\LoginFrame.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\ui\LoginFrame2.java
-C:\Users\urreg\Desktop\Universidad\Tercer semestre - Sistemas\Tecnicas de programación y laboratorio\Codigo\Trabajos\EventLogistics\src\main\java\com\desgroup\utils\MessagesUi.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\eventlogistics\Main.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\interfaces\IStaffSalary.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\logic\AuthenticateService.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\logic\CoordinatorService.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\logic\EventAssignmentService.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\logic\EventService.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\logic\LogisticService.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\logic\StaffService.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\models\Coordinator.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\models\Event.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\models\EventAssignment.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\models\Logistic.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\models\Manager.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\models\Place.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\models\Staff.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\repositories\CoordinatorRepository.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\repositories\EventAssignmentRepository.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\repositories\EventRepository.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\repositories\LogisticRepository.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\repositories\ManagerRepository.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\repositories\StaffRepository.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\ui\LoginFrame.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\ui\LoginFrame2.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\ui\LogisticEventsFrame.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\ui\LogisticOpcion.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\ui\LogisticSalaryFrame.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\ui\LogisticUserFrame.java
+C:\Users\juand\OneDrive\Escritorio\eventos_logistica\EventLogistics\src\main\java\com\desgroup\utils\MessagesUi.java

@@ -4,21 +4,26 @@
  */
 package com.desgroup.eventlogistics;
 
+import com.desgroup.models.Logistic;
 import com.desgroup.ui.LoginFrame;
 import com.desgroup.ui.LoginFrame2;
+import com.desgroup.ui.LogisticOpcion;
 import java.awt.EventQueue;
 import javax.swing.UIManager;
+import com.desgroup.models.Staff;
 
 /**
  *
  * @author urreg
  */
 public class Main extends javax.swing.JFrame {
-
+    private LogisticOpcion frame;
+    private Staff CurrentUser;
     /**
      * Creates new form Main
      */
-    public Main() {
+    public Main(Staff CurrentUser) {
+        this.CurrentUser = CurrentUser;
         initComponents();
     }
 
@@ -34,8 +39,6 @@ public class Main extends javax.swing.JFrame {
         desktopPane = new javax.swing.JDesktopPane();
         menuEventLogistic = new javax.swing.JMenuBar();
         mnuLogistic = new javax.swing.JMenu();
-        mniShowAssignments = new javax.swing.JMenuItem();
-        mniShowSalary = new javax.swing.JMenuItem();
         mniShowUser = new javax.swing.JMenuItem();
         mnuCoordinator = new javax.swing.JMenu();
         mniManageLogistic = new javax.swing.JMenuItem();
@@ -52,17 +55,9 @@ public class Main extends javax.swing.JFrame {
         mnuLogistic.setMnemonic('e');
         mnuLogistic.setText("Logistico");
 
-        mniShowAssignments.setMnemonic('t');
-        mniShowAssignments.setText("Ver eventos asignados");
-        mniShowAssignments.addActionListener(this::mniShowAssignmentsActionPerformed);
-        mnuLogistic.add(mniShowAssignments);
-
-        mniShowSalary.setMnemonic('y');
-        mniShowSalary.setText("Ver sueldo");
-        mnuLogistic.add(mniShowSalary);
-
         mniShowUser.setMnemonic('p');
-        mniShowUser.setText("Ver usuario");
+        mniShowUser.setText("Ver perfil");
+        mniShowUser.addActionListener(this::mniShowUserActionPerformed);
         mnuLogistic.add(mniShowUser);
 
         menuEventLogistic.add(mnuLogistic);
@@ -125,21 +120,39 @@ public class Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void mniShowAssignmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniShowAssignmentsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_mniShowAssignmentsActionPerformed
-
     private void mniShowAssignmentsCoorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniShowAssignmentsCoorActionPerformed
         // TODO add your handling code here:
+        
+        
     }//GEN-LAST:event_mniShowAssignmentsCoorActionPerformed
 
     private void mniShowSalaryCoorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniShowSalaryCoorActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_mniShowSalaryCoorActionPerformed
 
     private void mniManageEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniManageEventsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_mniManageEventsActionPerformed
+
+    private void mniShowUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniShowUserActionPerformed
+        // TODO add your handling code here: 
+    if (!(CurrentUser instanceof Logistic)) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para logísticos");
+    return;
+    }
+    
+    Logistic logistic = (Logistic) CurrentUser;
+    LogisticOpcion frame = new LogisticOpcion(logistic);
+    desktopPane.add(frame);
+    frame.setVisible(true);
+    try {
+        frame.setSelected(true);
+    } catch (java.beans.PropertyVetoException e) {
+        e.printStackTrace();
+    }
+        
+    }//GEN-LAST:event_mniShowUserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -190,9 +203,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem mniManageCoordinators;
     private javax.swing.JMenuItem mniManageEvents;
     private javax.swing.JMenuItem mniManageLogistic;
-    private javax.swing.JMenuItem mniShowAssignments;
     private javax.swing.JMenuItem mniShowAssignmentsCoor;
-    private javax.swing.JMenuItem mniShowSalary;
     private javax.swing.JMenuItem mniShowSalaryCoor;
     private javax.swing.JMenuItem mniShowUser;
     private javax.swing.JMenu mnuCoordinator;
