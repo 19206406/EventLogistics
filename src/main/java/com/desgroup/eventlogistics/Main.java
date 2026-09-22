@@ -4,7 +4,7 @@
  */
 package com.desgroup.eventlogistics;
 
-import com.desgroup.ui.LoginFrame2;
+import com.desgroup.ui.LoginFrame;
 import java.awt.EventQueue;
 import javax.swing.UIManager;
 
@@ -82,7 +82,7 @@ public class Main extends javax.swing.JFrame {
                 break;
             }
         }
-        EventQueue.invokeLater(() -> new LoginFrame2().setVisible(true));
+        EventQueue.invokeLater(() -> new LoginFrame().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

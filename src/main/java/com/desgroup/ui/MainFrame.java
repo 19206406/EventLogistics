@@ -10,11 +10,8 @@ import com.desgroup.logic.EventService;
 import com.desgroup.logic.LogisticService;
 import com.desgroup.models.Logistic;
 import com.desgroup.models.Staff;
-import java.beans.PropertyVetoException;
-import java.util.function.Supplier;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -33,7 +30,7 @@ public class MainFrame extends JFrame {
     private final EventAssignmentService assignmentService;
     private final CoordinatorService coordinatorService;
     private final Staff currentUser;
-    private LoginFrame2 Back; 
+    private LoginFrame Back;
 
     public MainFrame(LogisticService logisticService, EventService eventService,
             EventAssignmentService assignmentService, CoordinatorService coordinatorService, Staff currentUser) {
@@ -61,16 +58,15 @@ public class MainFrame extends JFrame {
 
         // Menú logistico
         JMenu menuLogistic = new JMenu("Logistico");
-        
+
         JMenuItem itemEventsAssignedLogistic = new JMenuItem("Ver eventos asignados");
         itemEventsAssignedLogistic.addActionListener(e -> openViewEventsAssignment());
         menuLogistic.add(itemEventsAssignedLogistic);
 
-
         JMenuItem itemViewCooridnatorProfile = new JMenuItem("Ver perfil");
         itemViewCooridnatorProfile.addActionListener(e -> openLogisticProfile());
         menuLogistic.add(itemViewCooridnatorProfile);
-        
+
         menuBar.add(menuLogistic);
 
         // Menú Coordinador
@@ -112,12 +108,14 @@ public class MainFrame extends JFrame {
 
     // Coordinators
     private void openViewEventsAssignment() {
-        if (!(currentUser instanceof Coordinator)&& !(currentUser instanceof Logistic)) {
+        if (!(currentUser instanceof Coordinator) && !(currentUser instanceof Logistic)) {
             JOptionPane.showMessageDialog(this, "Esta opción es solo para Coordinadores y Logisticos");
             return;
         }
-        openSingleFrame(ViewEventsAssignmentCoordinator.class,
-                () -> new ViewEventsAssignmentCoordinator(assignmentService, eventService, currentUser));
+        ViewEventsAssignmentCoordinator frame = new ViewEventsAssignmentCoordinator(assignmentService, eventService,
+                currentUser);
+        desktopPane.add(frame);
+        frame.setVisible(true);
     }
 
     private void openManageLogistics() {
@@ -125,8 +123,9 @@ public class MainFrame extends JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para Coordinadores");
             return;
         }
-        openSingleFrame(ManageLogisticFrame.class,
-                () -> new ManageLogisticFrame(logisticService, desktopPane));
+        ManageLogisticFrame frame = new ManageLogisticFrame(logisticService, desktopPane);
+        desktopPane.add(frame);
+        frame.setVisible(true);
     }
 
     private void openCooridinatorProfile() {
@@ -142,7 +141,7 @@ public class MainFrame extends JFrame {
     }
 
     // Logistics
-    
+
     private void openLogisticProfile() {
         if (!(currentUser instanceof Logistic)) {
             javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para Logisticos");
@@ -161,38 +160,19 @@ public class MainFrame extends JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para Gerentes");
             return;
         }
-        openSingleFrame(ManagerEvent.class,
-                () -> new ManagerEvent(eventService));
+        ManagerEvent frame = new ManagerEvent(eventService);
+        desktopPane.add(frame);
+        frame.setVisible(true);
     }
 
-    /**
-     * Abre la sesión, o trae al frente la que ya está abierta para no duplicarla.
-     */
-    private <T extends JInternalFrame> void openSingleFrame(Class<T> type, Supplier<T> factory) {
-        for (JInternalFrame frame : desktopPane.getAllFrames()) {
-            if (type.isInstance(frame)) {
-                try {
-                    frame.setIcon(false);
-                    frame.setSelected(true);
-                } catch (PropertyVetoException ignored) {
-                }
-                frame.toFront();
-                return;
-            }
-        }
-        T newFrame = factory.get();
-        desktopPane.add(newFrame);
-        newFrame.setVisible(true);
-    }
-    
     public void returnBack() {
-        Back = new LoginFrame2(); 
-        Back.setVisible(true); 
-        this.dispose(); 
+        Back = new LoginFrame();
+        Back.setVisible(true);
+        this.dispose();
     }
 
     public JDesktopPane getDesktopPane() {
         return desktopPane;
     }
-    
+
 }

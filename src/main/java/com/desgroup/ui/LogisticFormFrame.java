@@ -42,8 +42,7 @@ public class LogisticFormFrame extends JInternalFrame {
 
     
     public LogisticFormFrame(LogisticService logisticService, Logistic logisticToEdit, ManageLogisticFrame parentFrame) {
-        super(logisticToEdit == null ? "Crear logistico" : "Actualizar logistico",
-                true, true, true, true);
+        super(getTitle(logisticToEdit), true, true, true, true);
         this.logisticService = logisticService;
         this.logisticToEdit = logisticToEdit;
         this.parentFrame = parentFrame; 
@@ -54,6 +53,14 @@ public class LogisticFormFrame extends JInternalFrame {
         }
         setSize(480, 460);
         setLocation(200, 60);
+    }
+    
+    private static String getTitle(Logistic logisticToEdit) {
+        if (logisticToEdit == null) {
+            return "Crear logistico";
+        } else {
+            return "Actualizar logistico";
+        }
     }
 
     private void initComponents() {

@@ -16,16 +16,16 @@ import com.desgroup.models.Staff;
  *
  * @author urreg
  */
-public class LoginFrame2 extends javax.swing.JFrame {
+public class LoginFrame extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginFrame2.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginFrame.class.getName());
 
     private StaffService service; 
     
     /**
      * Creates new form LoginFrame2
      */
-    public LoginFrame2() {
+    public LoginFrame() {
         service = new StaffService();
         
         initComponents();
@@ -148,7 +148,7 @@ public class LoginFrame2 extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new LoginFrame2().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new LoginFrame().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
