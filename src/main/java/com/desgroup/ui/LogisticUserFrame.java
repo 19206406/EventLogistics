@@ -30,8 +30,8 @@ public class LogisticUserFrame extends javax.swing.JInternalFrame {
         setSize(300, 260);
         setLocation(130, 90);
 
-        JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5));
-        panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        JPanel contentPanel = new JPanel(new GridLayout(0, 1, 5, 5));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
         logisticService.calculateSalary(logistic.getIdStaff());
 
@@ -44,16 +44,16 @@ public class LogisticUserFrame extends javax.swing.JInternalFrame {
         JLabel lblSalary = new JLabel("Salario: " + logistic.getSalary());
         JLabel lblScore = new JLabel("Puntaje: " + this.logistic.getScore());
 
-        panel.add(lblName);
-        panel.add(lblEmail);
-        panel.add(lblPhone);
-        panel.add(lblPosition);
-        panel.add(lblZone);
-        panel.add(lblRole);
-        panel.add(lblSalary);
-        panel.add(lblScore);
+        contentPanel.add(lblName);
+        contentPanel.add(lblEmail);
+        contentPanel.add(lblPhone);
+        contentPanel.add(lblPosition);
+        contentPanel.add(lblZone);
+        contentPanel.add(lblRole);
+        contentPanel.add(lblSalary);
+        contentPanel.add(lblScore);
 
-        panel.add(panel);
+        contentPanel.add(contentPanel);
     }
 
     @SuppressWarnings("unchecked")

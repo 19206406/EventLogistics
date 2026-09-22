@@ -79,8 +79,8 @@ public class LogisticFormFrame extends JInternalFrame {
         JComponent[] fields = { nameField, emailField, phoneField, passwordField,
                 positionField, zoneField, roleField, scoreField, workingHoursField };
 
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
+        JPanel contentPanel = new JPanel(new GridBagLayout());
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(7, 5, 7, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -89,10 +89,10 @@ public class LogisticFormFrame extends JInternalFrame {
             gbc.gridx = 0;
             gbc.gridy = i;
             gbc.weightx = 0;
-            panel.add(new JLabel(labels[i]), gbc);
+            contentPanel.add(new JLabel(labels[i]), gbc);
             gbc.gridx = 1;
             gbc.weightx = 1;
-            panel.add(fields[i], gbc);
+            contentPanel.add(fields[i], gbc);
         }
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -107,9 +107,9 @@ public class LogisticFormFrame extends JInternalFrame {
         gbc.gridy = labels.length;
         gbc.gridwidth = 2;
         gbc.weightx = 0;
-        panel.add(buttonPanel, gbc);
+        contentPanel.add(buttonPanel, gbc);
 
-        add(panel);
+        add(contentPanel);
     }
 
     private void fillFields() {

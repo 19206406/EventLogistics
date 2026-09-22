@@ -33,24 +33,24 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnCrearEvento = new javax.swing.JButton();
-        btnEditarEvento = new javax.swing.JButton();
-        btnEliminarEvento = new javax.swing.JButton();
-        btnConsultarLugar = new javax.swing.JButton();
+        btnCreateEvent = new javax.swing.JButton();
+        btnEditEvent = new javax.swing.JButton();
+        btnDeleteEvent = new javax.swing.JButton();
+        btnConsultPlace = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblManageEvent = new javax.swing.JTable();
 
-        btnCrearEvento.setText("Crear Evento");
-        btnCrearEvento.addActionListener(this::btnCrearEventoActionPerformed);
+        btnCreateEvent.setText("Crear Evento");
+        btnCreateEvent.addActionListener(this::btnCreateEventActionPerformed);
 
-        btnEditarEvento.setText("Editar Evento");
-        btnEditarEvento.addActionListener(this::btnEditarEventoActionPerformed);
+        btnEditEvent.setText("Editar Evento");
+        btnEditEvent.addActionListener(this::btnEditEventActionPerformed);
 
-        btnEliminarEvento.setText("Eliminar evento");
-        btnEliminarEvento.addActionListener(this::btnEliminarEventoActionPerformed);
+        btnDeleteEvent.setText("Eliminar evento");
+        btnDeleteEvent.addActionListener(this::btnDeleteEventActionPerformed);
 
-        btnConsultarLugar.setText("Consultar  Lugar");
-        btnConsultarLugar.addActionListener(this::btnConsultarLugarActionPerformed);
+        btnConsultPlace.setText("Consultar  Lugar");
+        btnConsultPlace.addActionListener(this::btnConsultPlaceActionPerformed);
 
         tblManageEvent.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -82,13 +82,13 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnCrearEvento)
+                        .addComponent(btnCreateEvent)
                         .addGap(18, 18, 18)
-                        .addComponent(btnEditarEvento)
+                        .addComponent(btnEditEvent)
                         .addGap(18, 18, 18)
-                        .addComponent(btnEliminarEvento)
+                        .addComponent(btnDeleteEvent)
                         .addGap(18, 18, 18)
-                        .addComponent(btnConsultarLugar)))
+                        .addComponent(btnConsultPlace)))
                 .addContainerGap(42, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -96,10 +96,10 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCrearEvento)
-                    .addComponent(btnEditarEvento)
-                    .addComponent(btnEliminarEvento)
-                    .addComponent(btnConsultarLugar))
+                    .addComponent(btnCreateEvent)
+                    .addComponent(btnEditEvent)
+                    .addComponent(btnDeleteEvent)
+                    .addComponent(btnConsultPlace))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
@@ -108,18 +108,18 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCrearEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearEventoActionPerformed
+    private void btnCreateEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateEventActionPerformed
         openForm(null);
-    }//GEN-LAST:event_btnCrearEventoActionPerformed
+    }//GEN-LAST:event_btnCreateEventActionPerformed
 
-    private void btnEditarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarEventoActionPerformed
+    private void btnEditEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditEventActionPerformed
         Event selected = getSelectedEvent("editar");
         if (selected != null) {
             openForm(selected);
         }
-    }//GEN-LAST:event_btnEditarEventoActionPerformed
+    }//GEN-LAST:event_btnEditEventActionPerformed
 
-    private void btnEliminarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarEventoActionPerformed
+    private void btnDeleteEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteEventActionPerformed
         Event selected = getSelectedEvent("eliminar");
         if (selected == null) {
             return;
@@ -134,9 +134,9 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
             service.deleteEventById(selected.getIdEvent());
             loadEvents();
         }
-    }//GEN-LAST:event_btnEliminarEventoActionPerformed
+    }//GEN-LAST:event_btnDeleteEventActionPerformed
 
-    private void btnConsultarLugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarLugarActionPerformed
+    private void btnConsultPlaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultPlaceActionPerformed
         Event selected = getSelectedEvent("consultar su lugar");
         if (selected == null) {
             return;
@@ -151,7 +151,7 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
 
         JOptionPane.showMessageDialog(this, detail,
                 "Lugar del evento \"" + selected.getName() + "\"", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_btnConsultarLugarActionPerformed
+    }//GEN-LAST:event_btnConsultPlaceActionPerformed
 
     private void setupTable() {
         String[] columns = {"Id", "Nombre", "Estado", "Fecha", "Hora"};
@@ -203,10 +203,10 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnConsultarLugar;
-    private javax.swing.JButton btnCrearEvento;
-    private javax.swing.JButton btnEditarEvento;
-    private javax.swing.JButton btnEliminarEvento;
+    private javax.swing.JButton btnConsultPlace;
+    private javax.swing.JButton btnCreateEvent;
+    private javax.swing.JButton btnDeleteEvent;
+    private javax.swing.JButton btnEditEvent;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblManageEvent;
     // End of variables declaration//GEN-END:variables

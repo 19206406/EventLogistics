@@ -11,7 +11,6 @@ import com.desgroup.logic.EventAssignmentService;
 import com.desgroup.logic.EventService;
 import com.desgroup.logic.LogisticService;
 import com.desgroup.logic.StaffService;
-import com.desgroup.utils.MessagesUi;
 import com.desgroup.models.Staff;
 
 /**

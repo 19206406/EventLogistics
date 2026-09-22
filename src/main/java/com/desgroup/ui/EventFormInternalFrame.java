@@ -20,7 +20,6 @@ import javax.swing.JTextField;
 import com.desgroup.logic.EventService;
 import com.desgroup.models.Event;
 import com.desgroup.models.Place;
-import com.desgroup.utils.MessagesUi;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
@@ -183,7 +182,6 @@ public class EventFormInternalFrame extends JInternalFrame {
         }
 
         if (!capacityText.matches("\\d{1,9}") || Integer.parseInt(capacityText) == 0) {
-            MessagesUi.showError(this, "La capacidad debe ser un número entero mayor que 0.");
             JOptionPane.showMessageDialog(this,
                     "La capacidad debe ser un número entero mayor que 0.",
                     "Advertencia", JOptionPane.WARNING_MESSAGE);
