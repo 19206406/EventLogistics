@@ -2,10 +2,11 @@
 
 ## Integrantes
 
-- Sebastian Urrego Graciano
-- Juan David Ortiz Diaz
-- Olger Rafael Mercado Álvarez
-- Esteban
+- Ballesteros Sanchez Juan Esteban
+- Mercado Álvarez Olger Rafael
+- Ortiz Diaz Juan David 
+- Urrego Graciano Sebastian 
+
 
 ## Descripción
 
