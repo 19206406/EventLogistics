@@ -30,6 +30,7 @@ public class LogisticFormFrame extends JInternalFrame {
     private final Runnable onSaved;
 
     private JTextField nameField;
+    
     private JTextField emailField;
     private JTextField phoneField;
     private JPasswordField passwordField;
@@ -39,6 +40,7 @@ public class LogisticFormFrame extends JInternalFrame {
     private JTextField scoreField;
     private JTextField workingHoursField;
 
+    
     public LogisticFormFrame(LogisticService logisticService, Logistic logisticToEdit, Runnable onSaved) {
         super(logisticToEdit == null ? "Crear logistico" : "Actualizar logistico",
                 true, true, true, true);
@@ -56,6 +58,7 @@ public class LogisticFormFrame extends JInternalFrame {
 
     private void initComponents() {
         nameField = new JTextField(20);
+        
         emailField = new JTextField(20);
         phoneField = new JTextField(20);
         passwordField = new JPasswordField(20);
@@ -104,12 +107,12 @@ public class LogisticFormFrame extends JInternalFrame {
     }
 
     private void fillFields() {
-        // AJUSTAR los getters a los nombres reales de tu clase Logistic
         nameField.setText(logisticToEdit.getName());
         emailField.setText(logisticToEdit.getEmail());
         phoneField.setText(logisticToEdit.getPhone());
         passwordField.setText(logisticToEdit.getPassword());
-        positionField.setText(logisticToEdit.getPosition());
+        //positionField.setText(logisticToEdit.getPosition());
+        //positionField.setText("Lgistico");
         zoneField.setText(logisticToEdit.getZone());
         roleField.setText(logisticToEdit.getRole());
         scoreField.setText(Integer.toString(logisticToEdit.getScore()));
@@ -121,8 +124,10 @@ public class LogisticFormFrame extends JInternalFrame {
         String email = emailField.getText().trim();
         String phone = phoneField.getText().trim();
         String password = new String(passwordField.getPassword());
-        String position = positionField.getText().trim();
+        String position = "Logistico"; 
+        //String position = positionField.getText().trim();
         String zone = zoneField.getText().trim();
+        
         String role = roleField.getText().trim();
         int score = Integer.parseInt(scoreField.getText().trim());
         int workingHours = Integer.parseInt(workingHoursField.getText().trim());
@@ -144,7 +149,7 @@ public class LogisticFormFrame extends JInternalFrame {
         if (logisticToEdit == null) {
             logisticService.createLogistic(name, email, phone, position, zone, role, password, score, workingHours);
         } else {
-            logisticService.updatedLogistic(workingHours, name, email, phone, position, zone, role, password, score,
+            logisticService.updatedLogistic(logisticToEdit.getIdStaff(), name, email, phone, position, zone, role, password, score,
                     workingHours);
         }
         onSaved.run();

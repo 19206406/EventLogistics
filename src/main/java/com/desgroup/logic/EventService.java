@@ -28,15 +28,16 @@ public class EventService {
     public void createEvent(String name, String state, LocalDate date, int startTime, String country,
             String city, String placeName, String address, int capacity) {
         Place place = new Place(country, city, placeName, address, capacity);
-        Event newEvent = new Event(capacity, placeName, place, state, date, startTime);
+        Event newEvent = new Event(capacity, name, place, state, date, startTime);
         repository.create(newEvent);
     }
 
     // de igual forma pasa igual que en la creación
-    public void updatedEvent(String name, String state, LocalDate date, int startTime, String country,
+    public void updatedEvent(int idEvent, String name, String state, LocalDate date, int startTime, String country,
             String city, String placeName, String address, int capacity) {
         Place place = new Place(country, city, placeName, address, capacity);
-        Event event = new Event(capacity, placeName, place, state, date, startTime);
+        Event event = new Event(capacity, name, place, state, date, startTime);
+        event.setIdEvent(idEvent); 
         repository.updated(event);
     }
 

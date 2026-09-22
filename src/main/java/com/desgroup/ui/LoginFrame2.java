@@ -29,6 +29,7 @@ public class LoginFrame2 extends javax.swing.JFrame {
         service = new StaffService();
         
         initComponents();
+        setLocationRelativeTo(null); 
     }
 
     /**

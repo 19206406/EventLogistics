@@ -59,7 +59,7 @@ public class ManageLogisticFrame2 extends JInternalFrame {
         buttonPanel.add(deleteButton);
         mainPanel.add(buttonPanel, BorderLayout.NORTH);
 
-        String[] columns = {"Id", "Nombre", "Email", "Telefono", "Posición", "Zona", "Rol", "Puntuación", "Horas"};
+        String[] columns = {"Id", "Nombre", "Email", "Telefono", "Cargo", "Zona", "Rol", "Puntuación", "Horas"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {

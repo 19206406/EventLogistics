@@ -33,6 +33,7 @@ public class MainFrame extends JFrame {
     private final EventAssignmentService assignmentService;
     private final CoordinatorService coordinatorService;
     private Staff currentUser;
+    private LoginFrame2 Back; 
 
     public MainFrame(LogisticService logisticService, EventService eventService,
             EventAssignmentService assignmentService, CoordinatorService coordinatorService, Staff currentUser) {
@@ -102,7 +103,7 @@ public class MainFrame extends JFrame {
         // Menú Opciones
         JMenu menuOptions = new JMenu("Opciones");
         JMenuItem itemExit = new JMenuItem("Salir");
-        itemExit.addActionListener(e -> System.exit(0));
+        itemExit.addActionListener(e -> returnBack());
         menuOptions.add(itemExit);
         menuBar.add(menuOptions);
 
@@ -188,8 +189,15 @@ public class MainFrame extends JFrame {
     // JOptionPane.showMessageDialog(this, "Esta sesión aún no está disponible.",
     // "En construcción", JOptionPane.INFORMATION_MESSAGE);
     // }
+    
+    public void returnBack() {
+        Back = new LoginFrame2(); 
+        Back.setVisible(true); 
+        this.dispose(); 
+    }
 
     public JDesktopPane getDesktopPane() {
         return desktopPane;
     }
+    
 }
