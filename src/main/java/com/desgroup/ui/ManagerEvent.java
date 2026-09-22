@@ -13,7 +13,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Ventana interna (dentro del JDesktopPane de Main) para administrar eventos.
  *
  * @author Olger Mercado
  */

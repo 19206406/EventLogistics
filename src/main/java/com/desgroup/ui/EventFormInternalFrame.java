@@ -47,8 +47,7 @@ public class EventFormInternalFrame extends JInternalFrame {
     private JTextField txtCapacity;
 
     public EventFormInternalFrame(EventService service, ManagerEvent managerEvent, Event event) {
-        super(event == null ? "Crear evento" : "Editar evento — ID: " + event.getIdEvent(),
-                false, true, false, false);
+        super(getTitle(event), false, true, false, false);
         this.service = service;
         this.managerEvent = managerEvent;
         this.event = event;
@@ -59,6 +58,14 @@ public class EventFormInternalFrame extends JInternalFrame {
         pack();
         setLocation(60, 40);
     }
+    
+    private static String getTitle(Event event) {
+        if (event == null) {
+            return "Crear evento";
+        } else {
+            return "Editar evento — ID: " + event.getIdEvent();
+        }
+    }   
 
     private void initComponents() {
         JPanel panel = new JPanel(new GridBagLayout());

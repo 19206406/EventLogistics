@@ -32,7 +32,7 @@ public class MainFrame extends JFrame {
     private final EventService eventService;
     private final EventAssignmentService assignmentService;
     private final CoordinatorService coordinatorService;
-    private Staff currentUser;
+    private final Staff currentUser;
     private LoginFrame2 Back; 
 
     public MainFrame(LogisticService logisticService, EventService eventService,
@@ -125,8 +125,8 @@ public class MainFrame extends JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para Coordinadores");
             return;
         }
-        openSingleFrame(ManageLogisticFrame2.class,
-                () -> new ManageLogisticFrame2(logisticService, desktopPane));
+        openSingleFrame(ManageLogisticFrame.class,
+                () -> new ManageLogisticFrame(logisticService, desktopPane));
     }
 
     private void openCooridinatorProfile() {
@@ -184,11 +184,6 @@ public class MainFrame extends JFrame {
         desktopPane.add(newFrame);
         newFrame.setVisible(true);
     }
-
-    // private void showNotAvailableYet() {
-    // JOptionPane.showMessageDialog(this, "Esta sesión aún no está disponible.",
-    // "En construcción", JOptionPane.INFORMATION_MESSAGE);
-    // }
     
     public void returnBack() {
         Back = new LoginFrame2(); 

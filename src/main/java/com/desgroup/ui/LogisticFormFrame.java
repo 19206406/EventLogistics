@@ -27,7 +27,7 @@ import javax.swing.JTextField;
 public class LogisticFormFrame extends JInternalFrame {
     private final LogisticService logisticService;
     private final Logistic logisticToEdit;
-    private final Runnable onSaved;
+    private final ManageLogisticFrame parentFrame; 
 
     private JTextField nameField;
     
@@ -41,12 +41,12 @@ public class LogisticFormFrame extends JInternalFrame {
     private JTextField workingHoursField;
 
     
-    public LogisticFormFrame(LogisticService logisticService, Logistic logisticToEdit, Runnable onSaved) {
+    public LogisticFormFrame(LogisticService logisticService, Logistic logisticToEdit, ManageLogisticFrame parentFrame) {
         super(logisticToEdit == null ? "Crear logistico" : "Actualizar logistico",
                 true, true, true, true);
         this.logisticService = logisticService;
         this.logisticToEdit = logisticToEdit;
-        this.onSaved = onSaved;
+        this.parentFrame = parentFrame; 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponents();
         if (logisticToEdit != null) {
@@ -152,7 +152,8 @@ public class LogisticFormFrame extends JInternalFrame {
             logisticService.updatedLogistic(logisticToEdit.getIdStaff(), name, email, phone, position, zone, role, password, score,
                     workingHours);
         }
-        onSaved.run();
+        
+        parentFrame.loadLogistics(); 
         dispose();
     }
 
