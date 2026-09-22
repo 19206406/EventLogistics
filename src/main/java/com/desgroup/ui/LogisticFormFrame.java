@@ -68,7 +68,11 @@ public class LogisticFormFrame extends JInternalFrame {
         emailField = new JTextField(20);
         phoneField = new JTextField(20);
         passwordField = new JPasswordField(20);
+        
         positionField = new JTextField(20);
+        positionField.setText("Logistico");
+        positionField.setEditable(false);
+        
         zoneField = new JTextField(20);
         roleField = new JTextField(20);
         workingHoursField = new JTextField(20);

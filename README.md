@@ -4,9 +4,8 @@
 
 - Ballesteros Sanchez Juan Esteban
 - Mercado Álvarez Olger Rafael
-- Ortiz Diaz Juan David 
-- Urrego Graciano Sebastian 
-
+- Ortiz Diaz Juan David
+- Urrego Graciano Sebastian
 
 ## Descripción
 
@@ -73,3 +72,7 @@ Por esta razón, se debe ingresar con cada diferente tipo de usuario: Logístico
 **Usuario o correo:** admin
 
 **Contraseña:** admin123
+
+### Repositorio (Github)
+
+[https://github.com/19206406/EventLogistics](mailto:https://github.com/19206406/EventLogistics)
