@@ -74,8 +74,8 @@ public class CoordinatorRepository {
     }
 
     public void create(Coordinator coordinator) {
-        coordinator.setIdStaff(nextId++); // agregar id antes de agregar
-        coordinators.add(coordinator); // agregar
+        coordinator.setIdStaff(nextId++); 
+        coordinators.add(coordinator); 
     }
 
     public void updated(Coordinator coordinator) {

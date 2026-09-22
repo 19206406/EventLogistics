@@ -4,37 +4,37 @@
  */
 package com.desgroup.ui;
 
-import com.desgroup.logic.EventService;
-import com.desgroup.models.Event;
-import com.desgroup.models.Place;
-import com.desgroup.utils.MessagesUi;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.Arrays;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import com.desgroup.logic.EventService;
+import com.desgroup.models.Event;
+import com.desgroup.models.Place;
+import com.desgroup.utils.MessagesUi;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 
 /**
  *
  * @author urreg
  */
 public class EventFormInternalFrame extends JInternalFrame {
-    // Estados que se ofrecen en el combo. Si se necesitan otros, se cambian aquí.
-    public static final String[] STATES = {"Programado", "En curso", "Finalizado", "Cancelado"};
+    public static final String[] STATES = { "Programado", "En curso", "Finalizado", "Cancelado" };
 
     private final EventService service;
     private final ManagerEvent managerEvent;
-    private final Event event; // null = se está creando un evento nuevo
+    private final Event event;
 
     private JTextField txtName;
     private JComboBox<String> cmbState;
@@ -58,14 +58,14 @@ public class EventFormInternalFrame extends JInternalFrame {
         pack();
         setLocation(60, 40);
     }
-    
+
     private static String getTitle(Event event) {
         if (event == null) {
             return "Crear evento";
         } else {
             return "Editar evento — ID: " + event.getIdEvent();
         }
-    }   
+    }
 
     private void initComponents() {
         JPanel panel = new JPanel(new GridBagLayout());
@@ -126,12 +126,9 @@ public class EventFormInternalFrame extends JInternalFrame {
         panel.add(field, gbc);
     }
 
-    // Carga en el formulario los datos actuales del evento que se va a editar.
     private void fillFields(Event event) {
         txtName.setText(event.getName());
 
-        // si el estado no está en la lista (por ejemplo lo creó otro módulo) se agrega
-        // para no perderlo al guardar
         if (event.getState() != null && !Arrays.asList(STATES).contains(event.getState())) {
             cmbState.addItem(event.getState());
         }
@@ -163,26 +160,33 @@ public class EventFormInternalFrame extends JInternalFrame {
 
         if (name.isEmpty() || dateText.isEmpty() || hourText.isEmpty() || country.isEmpty() || city.isEmpty()
                 || placeName.isEmpty() || address.isEmpty() || capacityText.isEmpty()) {
-            MessagesUi.showError(this, "Todos los campos son obligatorios.");
+            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         LocalDate date;
         try {
-            date = LocalDate.parse(dateText); // formato ISO: AAAA-MM-DD
+            date = LocalDate.parse(dateText);
         } catch (DateTimeParseException ex) {
-            MessagesUi.showError(this, "La fecha no es válida. Use el formato AAAA-MM-DD (por ejemplo 2026-10-25).");
+            JOptionPane.showMessageDialog(this,
+                    "La fecha no es válida. Use el formato AAAA-MM-DD (por ejemplo 2026-10-25).",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // \\d{1,2} y \\d{1,9} limitan la cantidad de dígitos, así parseInt nunca se desborda
         if (!hourText.matches("\\d{1,2}") || Integer.parseInt(hourText) > 23) {
-            MessagesUi.showError(this, "La hora debe ser un número entero entre 0 y 23.");
+            JOptionPane.showMessageDialog(this,
+                    "La hora debe ser un número entero entre 0 y 23.",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         if (!capacityText.matches("\\d{1,9}") || Integer.parseInt(capacityText) == 0) {
             MessagesUi.showError(this, "La capacidad debe ser un número entero mayor que 0.");
+            JOptionPane.showMessageDialog(this,
+                    "La capacidad debe ser un número entero mayor que 0.",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -191,8 +195,9 @@ public class EventFormInternalFrame extends JInternalFrame {
 
         if (event == null) {
             service.createEvent(name, state, date, startTime, country, city, placeName, address, capacity);
-        } else {            
-            service.updatedEvent(event.getIdEvent(), name, state, date, startTime, country, city, placeName, address, capacity);
+        } else {
+            service.updatedEvent(event.getIdEvent(), name, state, date, startTime, country, city, placeName, address,
+                    capacity);
         }
 
         managerEvent.loadEvents();

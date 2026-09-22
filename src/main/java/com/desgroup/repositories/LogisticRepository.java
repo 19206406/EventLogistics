@@ -75,8 +75,8 @@ public class LogisticRepository {
     }
 
     public void create(Logistic logistic) {
-        logistic.setIdStaff(nextId++); // agregar id antes de agregar
-        logistics.add(logistic); // agregar
+        logistic.setIdStaff(nextId++); 
+        logistics.add(logistic); 
     }
 
     public void updated(Logistic logistic) {

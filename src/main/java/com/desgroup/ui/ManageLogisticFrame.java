@@ -75,12 +75,10 @@ public class ManageLogisticFrame extends JInternalFrame {
         add(mainPanel);
     }
 
-    /** Recarga la tabla desde el servicio. Se pasa como callback al formulario. */
     public void loadLogistics() {
         tableModel.setRowCount(0);
         List<Logistic> logistics = logisticService.getAllLogistics();
         for (Logistic l : logistics) {
-            // AJUSTAR los getters a los nombres reales de tu clase Logistic
             tableModel.addRow(new Object[]{
                 l.getIdStaff(), l.getName(), l.getEmail(), l.getPhone(),
                 l.getPosition(), l.getZone(), l.getRole(), l.getScore(), l.getWorkingHours()

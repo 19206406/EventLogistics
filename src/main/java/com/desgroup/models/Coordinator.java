@@ -11,15 +11,15 @@ package com.desgroup.models;
 public class Coordinator extends Staff {
     private String company;
 
+    public Coordinator() {
+    }
+    
     public Coordinator(int idStaff, String name, String email, String phone, String position, String password,
             String company) {
         super(idStaff, name, email, phone, position, password);
         this.company = company;
     }
-
-    public Coordinator() {
-    }
-
+    
     public String getCompany() {
         return company;
     }

@@ -70,7 +70,6 @@ public class MainFrame extends JFrame {
         menuBar.add(menuLogistic);
 
         // Menú Coordinador
-
         JMenu menuCoordinator = new JMenu("Coordinador");
 
         JMenuItem itemManageLogistics = new JMenuItem("Administrar logisticos");
@@ -101,6 +100,7 @@ public class MainFrame extends JFrame {
         JMenuItem itemExit = new JMenuItem("Salir");
         itemExit.addActionListener(e -> returnBack());
         menuOptions.add(itemExit);
+
         menuBar.add(menuOptions);
 
         return menuBar;
@@ -120,7 +120,7 @@ public class MainFrame extends JFrame {
 
     private void openManageLogistics() {
         if (!(currentUser instanceof Coordinator)) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para Coordinadores");
+            JOptionPane.showMessageDialog(this, "Esta opción es solo para Coordinadores");
             return;
         }
         ManageLogisticFrame frame = new ManageLogisticFrame(logisticService, desktopPane);
@@ -130,7 +130,7 @@ public class MainFrame extends JFrame {
 
     private void openCooridinatorProfile() {
         if (!(currentUser instanceof Coordinator)) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para Coordinadores");
+            JOptionPane.showMessageDialog(this, "Esta opción es solo para Coordinadores");
             return;
         }
 
@@ -141,10 +141,9 @@ public class MainFrame extends JFrame {
     }
 
     // Logistics
-
     private void openLogisticProfile() {
         if (!(currentUser instanceof Logistic)) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para Logisticos");
+            JOptionPane.showMessageDialog(this, "Esta opción es solo para Logisticos");
             return;
         }
 
@@ -157,7 +156,7 @@ public class MainFrame extends JFrame {
     // Managers
     private void openManageEvents() {
         if (!(currentUser instanceof Manager)) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Esta opción es solo para Gerentes");
+            JOptionPane.showMessageDialog(this, "Esta opción es solo para Gerentes");
             return;
         }
         ManagerEvent frame = new ManagerEvent(eventService);

@@ -19,9 +19,9 @@ public class ManagerRepository {
 
     public static ManagerRepository getInstance() {
         if (instance == null) {
-            instance = new ManagerRepository(); // solo se crea la PRIMERA vez
+            instance = new ManagerRepository(); 
         }
-        return instance; // las siguientes veces, se devuelve la misma instancia ya existente
+        return instance; 
     }
 
     private void createManagerAdministrator() {
@@ -53,8 +53,8 @@ public class ManagerRepository {
     }
 
     public void create(Manager manager) {
-        manager.setIdStaff(nextId++); // agregar id antes de agregar
-        managers.add(manager); // agregar
+        manager.setIdStaff(nextId++); 
+        managers.add(manager); 
     }
 
     public void updated(Manager manager) {

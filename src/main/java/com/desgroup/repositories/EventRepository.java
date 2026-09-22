@@ -68,9 +68,9 @@ public class EventRepository {
     }
 
     public void create(Event event) {
-        event.setIdEvent(nextId++); // agregar id antes de agregar
+        event.setIdEvent(nextId++); 
         event.getPlace().setIdPlace(placeId++);
-        events.add(event); // agregar
+        events.add(event); 
     }
 
     public void updated(Event event) {

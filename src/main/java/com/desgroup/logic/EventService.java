@@ -24,7 +24,6 @@ public class EventService {
         return repository.getById(id);
     }
 
-    // directamente se crea tanto el evento como el lugar donde este va ser
     public void createEvent(String name, String state, LocalDate date, int startTime, String country,
             String city, String placeName, String address, int capacity) {
         Place place = new Place(country, city, placeName, address, capacity);
@@ -32,7 +31,6 @@ public class EventService {
         repository.create(newEvent);
     }
 
-    // de igual forma pasa igual que en la creación
     public void updatedEvent(int idEvent, String name, String state, LocalDate date, int startTime, String country,
             String city, String placeName, String address, int capacity) {
         Place place = new Place(country, city, placeName, address, capacity);
@@ -41,15 +39,11 @@ public class EventService {
         repository.updated(event);
     }
 
-    // lista de ids de eventos y trae la información de estos para mostrar por
-    // ejemplo asignaciones de una persona
     public List<Event> getEventsByArrayIds(List<Integer> ids) {
         List<Event> events = new ArrayList<>();
-
         for (int id : ids) {
             events.add(repository.getById(id));
         }
-
         return events;
     }
     
