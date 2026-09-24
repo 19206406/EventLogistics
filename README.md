@@ -10,7 +10,7 @@
 ## Descripción
 
 El proyecto que se desarrolló se trata sobre un sistema que se encarga de administrar eventos que deben contener personal logístico. Este sistema se encarga de administrar el personal necesario para cada evento. Además, permite gestionar los eventos en los cuales se debe contar con el personal necesario para atender dicho evento.
-
+     
 ## Funciones principales
 
 Actualmente, el sistema no contiene todas las funcionalidades requeridas; sin embargo, ya contiene algunas funcionalidades principales. Entre ellas se tiene el ingreso de cada tipo de usuario (Logístico, Coordinador y Manager) al sistema, en el cual cada uno solo puede ejecutar las acciones a las que tiene acceso, teniendo en cuenta su rol.
