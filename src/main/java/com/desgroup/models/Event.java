@@ -74,5 +74,4 @@ public class Event {
     public void setStartTime(int startTime) {
         this.startTime = startTime;
     }
-
 }

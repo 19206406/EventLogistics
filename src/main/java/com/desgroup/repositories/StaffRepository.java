@@ -58,8 +58,4 @@ public class StaffRepository {
         return managerRepository.getByEmail(email);
 
     }
-
-    public void updated(Staff staff) {
-    }
-
 }

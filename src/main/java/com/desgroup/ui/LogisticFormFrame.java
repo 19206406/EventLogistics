@@ -27,7 +27,7 @@ import javax.swing.JTextField;
 public class LogisticFormFrame extends JInternalFrame {
     private final LogisticService logisticService;
     private final Logistic logisticToEdit;
-    private final Runnable onSaved;
+    private final ManageLogisticFrame parentFrame;
 
     private JTextField nameField;
     private JTextField emailField;
@@ -39,12 +39,12 @@ public class LogisticFormFrame extends JInternalFrame {
     private JTextField scoreField;
     private JTextField workingHoursField;
 
-    public LogisticFormFrame(LogisticService logisticService, Logistic logisticToEdit, Runnable onSaved) {
-        super(logisticToEdit == null ? "Crear logistico" : "Actualizar logistico",
-                true, true, true, true);
+    public LogisticFormFrame(LogisticService logisticService, Logistic logisticToEdit,
+            ManageLogisticFrame parentFrame) {
+        super(getTitle(logisticToEdit), true, true, true, true);
         this.logisticService = logisticService;
         this.logisticToEdit = logisticToEdit;
-        this.onSaved = onSaved;
+        this.parentFrame = parentFrame;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponents();
         if (logisticToEdit != null) {
@@ -54,12 +54,25 @@ public class LogisticFormFrame extends JInternalFrame {
         setLocation(200, 60);
     }
 
+    private static String getTitle(Logistic logisticToEdit) {
+        if (logisticToEdit == null) {
+            return "Crear logistico";
+        } else {
+            return "Actualizar logistico";
+        }
+    }
+
     private void initComponents() {
         nameField = new JTextField(20);
+
         emailField = new JTextField(20);
         phoneField = new JTextField(20);
         passwordField = new JPasswordField(20);
+        
         positionField = new JTextField(20);
+        positionField.setText("Logistico");
+        positionField.setEditable(false);
+        
         zoneField = new JTextField(20);
         roleField = new JTextField(20);
         workingHoursField = new JTextField(20);
@@ -70,8 +83,8 @@ public class LogisticFormFrame extends JInternalFrame {
         JComponent[] fields = { nameField, emailField, phoneField, passwordField,
                 positionField, zoneField, roleField, scoreField, workingHoursField };
 
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
+        JPanel contentPanel = new JPanel(new GridBagLayout());
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(7, 5, 7, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -80,10 +93,10 @@ public class LogisticFormFrame extends JInternalFrame {
             gbc.gridx = 0;
             gbc.gridy = i;
             gbc.weightx = 0;
-            panel.add(new JLabel(labels[i]), gbc);
+            contentPanel.add(new JLabel(labels[i]), gbc);
             gbc.gridx = 1;
             gbc.weightx = 1;
-            panel.add(fields[i], gbc);
+            contentPanel.add(fields[i], gbc);
         }
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -98,18 +111,16 @@ public class LogisticFormFrame extends JInternalFrame {
         gbc.gridy = labels.length;
         gbc.gridwidth = 2;
         gbc.weightx = 0;
-        panel.add(buttonPanel, gbc);
+        contentPanel.add(buttonPanel, gbc);
 
-        add(panel);
+        add(contentPanel);
     }
 
     private void fillFields() {
-        // AJUSTAR los getters a los nombres reales de tu clase Logistic
         nameField.setText(logisticToEdit.getName());
         emailField.setText(logisticToEdit.getEmail());
         phoneField.setText(logisticToEdit.getPhone());
         passwordField.setText(logisticToEdit.getPassword());
-        positionField.setText(logisticToEdit.getPosition());
         zoneField.setText(logisticToEdit.getZone());
         roleField.setText(logisticToEdit.getRole());
         scoreField.setText(Integer.toString(logisticToEdit.getScore()));
@@ -121,37 +132,38 @@ public class LogisticFormFrame extends JInternalFrame {
         String email = emailField.getText().trim();
         String phone = phoneField.getText().trim();
         String password = new String(passwordField.getPassword());
-        String position = positionField.getText().trim();
+        String position = "Logistico";
         String zone = zoneField.getText().trim();
+
         String role = roleField.getText().trim();
         int score = Integer.parseInt(scoreField.getText().trim());
         int workingHours = Integer.parseInt(workingHoursField.getText().trim());
 
         if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty()
                 || position.isEmpty() || zone.isEmpty() || role.isEmpty()) {
-            showError("Todos los campos son obligatorios.");
+            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
         if (!email.contains("@")) {
-            showError("El correo no es válido.");
+            JOptionPane.showMessageDialog(this, "El correo no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         if (!phone.matches("\\d+")) {
-            showError("El telefono debe contener solo números.");
+            JOptionPane.showMessageDialog(this, "El telefono debe contener solo números.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         if (logisticToEdit == null) {
             logisticService.createLogistic(name, email, phone, position, zone, role, password, score, workingHours);
         } else {
-            logisticService.updatedLogistic(workingHours, name, email, phone, position, zone, role, password, score,
+            logisticService.updatedLogistic(logisticToEdit.getIdStaff(), name, email, phone, position, zone, role,
+                    password, score,
                     workingHours);
         }
-        onSaved.run();
-        dispose();
-    }
 
-    private void showError(String message) {
-        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+        parentFrame.loadLogistics();
+        dispose();
     }
 }

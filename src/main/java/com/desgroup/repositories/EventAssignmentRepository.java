@@ -49,8 +49,8 @@ public class EventAssignmentRepository {
     }
 
     public void create(EventAssignment assignment) {
-        assignment.setIdAssignment(nextId++); // agregar id antes de agregar
-        assignments.add(assignment); // agregar
+        assignment.setIdAssignment(nextId++); 
+        assignments.add(assignment); 
     }
 
     public void updated(EventAssignment assignment) {
