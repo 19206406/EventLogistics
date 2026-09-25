@@ -27,8 +27,6 @@ import javax.swing.table.DefaultTableModel;
 public class ManageLogisticFrame extends JInternalFrame {
     private final LogisticService logisticService;
     private final JDesktopPane desktopPane;
-    private JTable logisticTable;
-    private DefaultTableModel tableModel;
 
     public ManageLogisticFrame(LogisticService logisticService, JDesktopPane desktopPane) {
         super("Administrar logisticos", true, true, true, true);
@@ -127,4 +125,7 @@ public class ManageLogisticFrame extends JInternalFrame {
             loadLogistics();
         }
     }
+    
+    private JTable logisticTable;
+    private DefaultTableModel tableModel;
 }

@@ -30,20 +30,9 @@ import java.util.Arrays;
  */
 public class EventFormInternalFrame extends JInternalFrame {
     public static final String[] STATES = { "Programado", "En curso", "Finalizado", "Cancelado" };
-
     private final EventService service;
     private final ManagerEvent managerEvent;
     private final Event event;
-
-    private JTextField txtName;
-    private JComboBox<String> cmbState;
-    private JTextField txtDate;
-    private JTextField txtHour;
-    private JTextField txtCountry;
-    private JTextField txtCity;
-    private JTextField txtPlaceName;
-    private JTextField txtAddress;
-    private JTextField txtCapacity;
 
     public EventFormInternalFrame(EventService service, ManagerEvent managerEvent, Event event) {
         super(getTitle(event), false, true, false, false);
@@ -201,4 +190,14 @@ public class EventFormInternalFrame extends JInternalFrame {
         managerEvent.loadEvents();
         dispose();
     }
+    
+    private JTextField txtName;
+    private JComboBox<String> cmbState;
+    private JTextField txtDate;
+    private JTextField txtHour;
+    private JTextField txtCountry;
+    private JTextField txtCity;
+    private JTextField txtPlaceName;
+    private JTextField txtAddress;
+    private JTextField txtCapacity;
 }

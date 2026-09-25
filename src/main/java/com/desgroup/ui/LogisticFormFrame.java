@@ -29,16 +29,6 @@ public class LogisticFormFrame extends JInternalFrame {
     private final Logistic logisticToEdit;
     private final ManageLogisticFrame parentFrame;
 
-    private JTextField nameField;
-    private JTextField emailField;
-    private JTextField phoneField;
-    private JPasswordField passwordField;
-    private JTextField positionField;
-    private JTextField zoneField;
-    private JTextField roleField;
-    private JTextField scoreField;
-    private JTextField workingHoursField;
-
     public LogisticFormFrame(LogisticService logisticService, Logistic logisticToEdit,
             ManageLogisticFrame parentFrame) {
         super(getTitle(logisticToEdit), true, true, true, true);
@@ -65,15 +55,12 @@ public class LogisticFormFrame extends JInternalFrame {
 
     private void initComponents() {
         nameField = new JTextField(20);
-
         emailField = new JTextField(20);
         phoneField = new JTextField(20);
         passwordField = new JPasswordField(20);
-        
         positionField = new JTextField(20);
         positionField.setText("Logistico");
         positionField.setEditable(false);
-        
         zoneField = new JTextField(20);
         roleField = new JTextField(20);
         workingHoursField = new JTextField(20);
@@ -167,4 +154,14 @@ public class LogisticFormFrame extends JInternalFrame {
         parentFrame.loadLogistics();
         dispose();
     }
+    
+    private JTextField nameField;
+    private JTextField emailField;
+    private JTextField phoneField;
+    private JPasswordField passwordField;
+    private JTextField positionField;
+    private JTextField zoneField;
+    private JTextField roleField;
+    private JTextField scoreField;
+    private JTextField workingHoursField;
 }
