@@ -49,6 +49,7 @@ public class LogisticFormFrame extends JInternalFrame {
         initComponents();
         if (logisticToEdit != null) {
             fillFields();
+            
         }
         setSize(480, 460);
         setLocation(200, 60);

@@ -23,7 +23,7 @@ public class ViewEventsAssignmentCoordinator extends javax.swing.JInternalFrame 
 
     private final EventAssignmentService assignmentService; 
     private final EventService eventService; 
-    private Staff currentUser; 
+    private final Staff currentUser; 
     private DefaultTableModel tableModel; 
     
     public ViewEventsAssignmentCoordinator(EventAssignmentService assignmentService, EventService eventService, Staff currentUser) {
@@ -142,13 +142,11 @@ public class ViewEventsAssignmentCoordinator extends javax.swing.JInternalFrame 
         tblViewAssignment.getColumnModel().getColumn(4).setPreferredWidth(60);
     }
     
-    public void loadAssignedEvents() {
+    private void loadAssignedEvents() {
         tableModel.setRowCount(0);
-        System.out.println(currentUser.getIdStaff());
         List<EventAssignment> eventIds = assignmentService.getAssignmentsByStaffId(currentUser.getIdStaff());
         for (EventAssignment assignment : eventIds) {
             Event event = eventService.getEventById(assignment.getIdEvent());
-            System.out.println(event);
             if (event == null) {
                 continue;
             }

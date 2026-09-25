@@ -66,12 +66,15 @@ public class ManageLogisticFrame extends JInternalFrame {
                 return false;
             }
         };
-        logisticTable = new JTable(tableModel);
+        
+        JTable tableManageLogistic = new JTable(tableModel); 
+        logisticTable = tableManageLogistic;
         logisticTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         logisticTable.setRowHeight(24);
         logisticTable.getColumnModel().getColumn(0).setPreferredWidth(40);
-
-        mainPanel.add(new JScrollPane(logisticTable), BorderLayout.CENTER);
+        
+        JScrollPane scrollPanelTable = new JScrollPane(logisticTable); 
+        mainPanel.add(scrollPanelTable, BorderLayout.CENTER);
         add(mainPanel);
     }
 

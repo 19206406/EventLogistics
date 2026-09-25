@@ -169,9 +169,4 @@ public class MainFrame extends JFrame {
         Back.setVisible(true);
         this.dispose();
     }
-
-    public JDesktopPane getDesktopPane() {
-        return desktopPane;
-    }
-
 }
