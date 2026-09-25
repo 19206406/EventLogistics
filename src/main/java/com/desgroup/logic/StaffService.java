@@ -4,8 +4,7 @@ import com.desgroup.models.Staff;
 import com.desgroup.repositories.StaffRepository;
 
 public class StaffService {
-    // debo de preguntar si esto se puede o como puedo consultar esta maricada
-    // osea como tengo los empleados completos para el inicio de sesión
+    
     private StaffRepository repository;
 
     public StaffService() {
@@ -49,6 +48,4 @@ public class StaffService {
         return null;
     }
 
-    // no se si mostrar evento le corresponde a este servicio o incluso.
-    // si le corresponde a eventos.
 }
