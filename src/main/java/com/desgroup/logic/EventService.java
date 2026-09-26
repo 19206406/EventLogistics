@@ -4,11 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.models.Event;
 import com.desgroup.models.Place;
 import com.desgroup.repositories.EventRepository;
 
-public class EventService {
+public class EventService implements IEventService {
 
     private EventRepository repository;
 
@@ -35,7 +36,7 @@ public class EventService {
             String city, String placeName, String address, int capacity) {
         Place place = new Place(country, city, placeName, address, capacity);
         Event event = new Event(capacity, name, place, state, date, startTime);
-        event.setIdEvent(idEvent); 
+        event.setIdEvent(idEvent);
         repository.updated(event);
     }
 
@@ -46,7 +47,7 @@ public class EventService {
         }
         return events;
     }
-    
+
     public void deleteEventById(int id) {
         repository.delete(id);
     }

@@ -4,6 +4,7 @@
  */
 package com.desgroup.repositories;
 
+import com.desgroup.interfaces.repositoriesInterfaces.IStaffRepository;
 import com.desgroup.models.Staff;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author urreg
  */
-public class StaffRepository {
+public class StaffRepository implements IStaffRepository {
     private LogisticRepository logisticRepository;
     private CoordinatorRepository coordinatorRepository;
     private ManagerRepository managerRepository;

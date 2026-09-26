@@ -2,10 +2,11 @@ package com.desgroup.logic;
 
 import java.util.List;
 
+import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
 import com.desgroup.models.EventAssignment;
 import com.desgroup.repositories.EventAssignmentRepository;
 
-public class EventAssignmentService {
+public class EventAssignmentService implements IEventAssignmentService {
 
     private EventAssignmentRepository repository;
 

@@ -1,10 +1,11 @@
 package com.desgroup.logic;
 
+import com.desgroup.interfaces.logicInterfaces.IStaffService;
 import com.desgroup.models.Staff;
 import com.desgroup.repositories.StaffRepository;
 
-public class StaffService {
-    
+public class StaffService implements IStaffService {
+
     private StaffRepository repository;
 
     public StaffService() {
@@ -23,14 +24,14 @@ public class StaffService {
 
     public boolean staffLogin(String email, String password) {
         Staff staff = repository.getStaffByEmail(email);
-        
-        if (staff == null) 
-            return false; 
-        
-        if (email.equals("admin") && password.equals("admin123"))
-            return true; 
 
-        return staff.getEmail().equals(email) && staff.getPassword().equals(password); 
+        if (staff == null)
+            return false;
+
+        if (email.equals("admin") && password.equals("admin123"))
+            return true;
+
+        return staff.getEmail().equals(email) && staff.getPassword().equals(password);
     }
 
     public void changeStaffPassword(int id, String password) {
@@ -38,7 +39,7 @@ public class StaffService {
         staff.setPassword(password);
 
     }
-    
+
     public Staff login(String email, String password) {
         Staff staff = repository.getStaffByEmail(email);
 

@@ -3,9 +3,10 @@ package com.desgroup.repositories;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.desgroup.interfaces.repositoriesInterfaces.ICoordinatorRepository;
 import com.desgroup.models.Coordinator;
 
-public class CoordinatorRepository {
+public class CoordinatorRepository implements ICoordinatorRepository {
 
     private List<Coordinator> coordinators;
     private int nextId;
@@ -74,8 +75,8 @@ public class CoordinatorRepository {
     }
 
     public void create(Coordinator coordinator) {
-        coordinator.setIdStaff(nextId++); 
-        coordinators.add(coordinator); 
+        coordinator.setIdStaff(nextId++);
+        coordinators.add(coordinator);
     }
 
     public void updated(Coordinator coordinator) {

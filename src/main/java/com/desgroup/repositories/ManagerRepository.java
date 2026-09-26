@@ -3,9 +3,10 @@ package com.desgroup.repositories;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.desgroup.interfaces.repositoriesInterfaces.IManagerRepository;
 import com.desgroup.models.Manager;
 
-public class ManagerRepository {
+public class ManagerRepository implements IManagerRepository {
 
     private List<Manager> managers;
     private int nextId;
@@ -19,9 +20,9 @@ public class ManagerRepository {
 
     public static ManagerRepository getInstance() {
         if (instance == null) {
-            instance = new ManagerRepository(); 
+            instance = new ManagerRepository();
         }
-        return instance; 
+        return instance;
     }
 
     private void createManagerAdministrator() {
@@ -53,8 +54,8 @@ public class ManagerRepository {
     }
 
     public void create(Manager manager) {
-        manager.setIdStaff(nextId++); 
-        managers.add(manager); 
+        manager.setIdStaff(nextId++);
+        managers.add(manager);
     }
 
     public void updated(Manager manager) {

@@ -3,12 +3,13 @@ package com.desgroup.logic;
 import java.util.List;
 
 import com.desgroup.interfaces.IStaffSalary;
+import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
 import com.desgroup.models.Coordinator;
 import com.desgroup.models.EventAssignment;
 import com.desgroup.repositories.CoordinatorRepository;
 import com.desgroup.repositories.EventAssignmentRepository;
 
-public class CoordinatorService implements IStaffSalary {
+public class CoordinatorService implements IStaffSalary, ICoordinatorService {
 
     private CoordinatorRepository repository;
     private EventAssignmentRepository assignmentRepository;

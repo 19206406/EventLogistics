@@ -3,23 +3,24 @@ package com.desgroup.repositories;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.models.EventAssignment;
 
-public class EventAssignmentRepository {
+public class EventAssignmentRepository implements IEventAssignmentRepository {
     private List<EventAssignment> assignments;
     private int nextId;
 
     public EventAssignmentRepository() {
         assignments = new ArrayList<>();
         nextId = 0;
-        initializeEventAssignment(); 
+        initializeEventAssignment();
     }
-    
+
     private void initializeEventAssignment() {
-        assignments.add(new EventAssignment(nextId++, 0, 1)); 
-        assignments.add(new EventAssignment(nextId++, 0, 2)); 
-        assignments.add(new EventAssignment(nextId++, 0, 3)); 
-        assignments.add(new EventAssignment(nextId++, 0, 4)); 
+        assignments.add(new EventAssignment(nextId++, 0, 1));
+        assignments.add(new EventAssignment(nextId++, 0, 2));
+        assignments.add(new EventAssignment(nextId++, 0, 3));
+        assignments.add(new EventAssignment(nextId++, 0, 4));
     }
 
     public List<EventAssignment> getAll() {
@@ -49,8 +50,8 @@ public class EventAssignmentRepository {
     }
 
     public void create(EventAssignment assignment) {
-        assignment.setIdAssignment(nextId++); 
-        assignments.add(assignment); 
+        assignment.setIdAssignment(nextId++);
+        assignments.add(assignment);
     }
 
     public void updated(EventAssignment assignment) {

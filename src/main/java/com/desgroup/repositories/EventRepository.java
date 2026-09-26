@@ -4,10 +4,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.desgroup.interfaces.repositoriesInterfaces.IEventRepository;
 import com.desgroup.models.Event;
 import com.desgroup.models.Place;
 
-public class EventRepository {
+public class EventRepository implements IEventRepository {
 
     private List<Event> events;
     private int nextId;
@@ -68,9 +69,9 @@ public class EventRepository {
     }
 
     public void create(Event event) {
-        event.setIdEvent(nextId++); 
+        event.setIdEvent(nextId++);
         event.getPlace().setIdPlace(placeId++);
-        events.add(event); 
+        events.add(event);
     }
 
     public void updated(Event event) {

@@ -3,10 +3,11 @@ package com.desgroup.logic;
 import java.util.List;
 
 import com.desgroup.interfaces.IStaffSalary;
+import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.models.Logistic;
 import com.desgroup.repositories.LogisticRepository;
 
-public class LogisticService implements IStaffSalary {
+public class LogisticService implements IStaffSalary, ILogisticService {
 
     private LogisticRepository repository;
     private double hourlyRate;

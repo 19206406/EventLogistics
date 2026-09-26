@@ -3,9 +3,10 @@ package com.desgroup.repositories;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.desgroup.interfaces.repositoriesInterfaces.ILogisticRepository;
 import com.desgroup.models.Logistic;
 
-public class LogisticRepository {
+public class LogisticRepository implements ILogisticRepository {
     private List<Logistic> logistics;
     private int nextId;
 
@@ -75,8 +76,8 @@ public class LogisticRepository {
     }
 
     public void create(Logistic logistic) {
-        logistic.setIdStaff(nextId++); 
-        logistics.add(logistic); 
+        logistic.setIdStaff(nextId++);
+        logistics.add(logistic);
     }
 
     public void updated(Logistic logistic) {
