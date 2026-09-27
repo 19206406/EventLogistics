@@ -4,7 +4,7 @@
  */
 package com.desgroup.ui;
 
-import com.desgroup.logic.LogisticService;
+import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.models.Logistic;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -25,10 +25,10 @@ import javax.swing.table.DefaultTableModel;
  * @author urreg
  */
 public class ManageLogisticFrame extends JInternalFrame {
-    private final LogisticService logisticService;
+    private final ILogisticService logisticService;
     private final JDesktopPane desktopPane;
 
-    public ManageLogisticFrame(LogisticService logisticService, JDesktopPane desktopPane) {
+    public ManageLogisticFrame(ILogisticService logisticService, JDesktopPane desktopPane) {
         super("Administrar logisticos", true, true, true, true);
         this.logisticService = logisticService;
         this.desktopPane = desktopPane;
@@ -57,21 +57,21 @@ public class ManageLogisticFrame extends JInternalFrame {
         buttonPanel.add(deleteLogisticButton);
         mainPanel.add(buttonPanel, BorderLayout.NORTH);
 
-        String[] columns = {"Id", "Nombre", "Email", "Telefono", "Cargo", "Zona", "Rol", "Puntuación", "Horas"};
+        String[] columns = { "Id", "Nombre", "Email", "Telefono", "Cargo", "Zona", "Rol", "Puntuación", "Horas" };
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        
-        JTable tableManageLogistic = new JTable(tableModel); 
+
+        JTable tableManageLogistic = new JTable(tableModel);
         logisticTable = tableManageLogistic;
         logisticTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         logisticTable.setRowHeight(24);
         logisticTable.getColumnModel().getColumn(0).setPreferredWidth(40);
-        
-        JScrollPane scrollPanelTable = new JScrollPane(logisticTable); 
+
+        JScrollPane scrollPanelTable = new JScrollPane(logisticTable);
         mainPanel.add(scrollPanelTable, BorderLayout.CENTER);
         add(mainPanel);
     }
@@ -80,9 +80,9 @@ public class ManageLogisticFrame extends JInternalFrame {
         tableModel.setRowCount(0);
         List<Logistic> logistics = logisticService.getAllLogistics();
         for (Logistic l : logistics) {
-            tableModel.addRow(new Object[]{
-                l.getIdStaff(), l.getName(), l.getEmail(), l.getPhone(),
-                l.getPosition(), l.getZone(), l.getRole(), l.getScore(), l.getWorkingHours()
+            tableModel.addRow(new Object[] {
+                    l.getIdStaff(), l.getName(), l.getEmail(), l.getPhone(),
+                    l.getPosition(), l.getZone(), l.getRole(), l.getScore(), l.getWorkingHours()
             });
         }
     }
@@ -125,7 +125,7 @@ public class ManageLogisticFrame extends JInternalFrame {
             loadLogistics();
         }
     }
-    
+
     private JTable logisticTable;
     private DefaultTableModel tableModel;
 }

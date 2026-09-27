@@ -4,6 +4,12 @@
  */
 package com.desgroup.ui;
 
+import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
+import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
+import com.desgroup.interfaces.logicInterfaces.IEventService;
+import com.desgroup.interfaces.logicInterfaces.ILogisticService;
+import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
+import com.desgroup.interfaces.logicInterfaces.IStaffService;
 import com.desgroup.logic.CoordinatorService;
 import com.desgroup.logic.EventAssignmentService;
 import com.desgroup.logic.EventService;
@@ -25,20 +31,28 @@ import com.desgroup.models.Manager;
  */
 public class MainFrame extends JFrame {
     private JDesktopPane desktopPane;
-    private final LogisticService logisticService;
-    private final EventService eventService;
-    private final EventAssignmentService assignmentService;
-    private final CoordinatorService coordinatorService;
+
+    private final IStaffService staffService;
+    private final ILogisticService logisticService;
+    private final IEventService eventService;
+    private final IEventAssignmentService assignmentService;
+    private final ICoordinatorService coordinatorService;
+    private final IStaffSalary salaryService;
+
     private final Staff currentUser;
+
     private LoginFrame Back;
 
-    public MainFrame(LogisticService logisticService, EventService eventService,
-            EventAssignmentService assignmentService, CoordinatorService coordinatorService, Staff currentUser) {
+    public MainFrame(IStaffService staffService, ILogisticService logisticService, IEventService eventService,
+            IEventAssignmentService assignmentService, ICoordinatorService coordinatorService,
+            IStaffSalary salaryService, Staff currentUser) {
+        this.staffService = staffService;
         this.logisticService = logisticService;
-        this.currentUser = currentUser;
         this.eventService = eventService;
-        this.coordinatorService = coordinatorService;
         this.assignmentService = assignmentService;
+        this.coordinatorService = coordinatorService;
+        this.salaryService = salaryService;
+        this.currentUser = currentUser;
         initComponents();
     }
 
@@ -135,7 +149,7 @@ public class MainFrame extends JFrame {
         }
 
         Coordinator coordinator = (Coordinator) currentUser;
-        ViewCoordinatorProfile frame = new ViewCoordinatorProfile(coordinator, coordinatorService);
+        ViewCoordinatorProfile frame = new ViewCoordinatorProfile(coordinator, coordinatorService, salaryService);
         desktopPane.add(frame);
         frame.setVisible(true);
     }
@@ -148,7 +162,7 @@ public class MainFrame extends JFrame {
         }
 
         Logistic logistic = (Logistic) currentUser;
-        ViewLogisticProfile frame = new ViewLogisticProfile(logistic, logisticService);
+        ViewLogisticProfile frame = new ViewLogisticProfile(logistic, salaryService);
         desktopPane.add(frame);
         frame.setVisible(true);
     }
@@ -165,7 +179,8 @@ public class MainFrame extends JFrame {
     }
 
     public void returnBack() {
-        Back = new LoginFrame();
+        Back = new LoginFrame(staffService, logisticService, eventService, assignmentService,
+                coordinatorService, salaryService);
         Back.setVisible(true);
         this.dispose();
     }

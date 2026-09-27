@@ -4,7 +4,7 @@
  */
 package com.desgroup.ui;
 
-import com.desgroup.logic.LogisticService;
+import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
 import com.desgroup.models.Logistic;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
@@ -16,16 +16,17 @@ import javax.swing.JPanel;
  * @author urreg
  */
 public class ViewLogisticProfile extends javax.swing.JInternalFrame {
-    private final Logistic logistic;
-    private final LogisticService logisticService;
 
-    public ViewLogisticProfile(Logistic logistic, LogisticService logisticService) {
+    private final Logistic logistic;
+    private final IStaffSalary salaryService;
+
+    public ViewLogisticProfile(Logistic logistic, IStaffSalary salaryService) {
         super("Datos del Logístico", true, true, true, true);
         this.logistic = logistic;
-        this.logisticService = logisticService;
+        this.salaryService = salaryService;
         initializeComponents();
     }
-    
+
     private void initializeComponents() {
         setSize(300, 260);
         setLocation(130, 90);
@@ -33,7 +34,7 @@ public class ViewLogisticProfile extends javax.swing.JInternalFrame {
         JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5));
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        double salary = logisticService.calculateSalary(logistic.getIdStaff());
+        double salary = salaryService.calculateSalary(logistic.getIdStaff());
 
         JLabel lblName = new JLabel("Nombre: " + this.logistic.getName());
         JLabel lblEmail = new JLabel("Email: " + this.logistic.getEmail());
@@ -53,27 +54,25 @@ public class ViewLogisticProfile extends javax.swing.JInternalFrame {
         panel.add(lblSalary);
         panel.add(lblScore);
 
-        getContentPane().add(panel); 
+        getContentPane().add(panel);
     }
-    
+
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 394, Short.MAX_VALUE));
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 274, Short.MAX_VALUE));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

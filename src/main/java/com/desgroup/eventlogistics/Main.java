@@ -4,6 +4,23 @@
  */
 package com.desgroup.eventlogistics;
 
+import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
+import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
+import com.desgroup.interfaces.logicInterfaces.IEventService;
+import com.desgroup.interfaces.logicInterfaces.ILogisticService;
+import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
+import com.desgroup.interfaces.logicInterfaces.IStaffService;
+import com.desgroup.logic.CoordinatorService;
+import com.desgroup.logic.EventAssignmentService;
+import com.desgroup.logic.EventService;
+import com.desgroup.logic.LogisticService;
+import com.desgroup.logic.StaffService;
+import com.desgroup.repositories.CoordinatorRepository;
+import com.desgroup.repositories.EventAssignmentRepository;
+import com.desgroup.repositories.EventRepository;
+import com.desgroup.repositories.LogisticRepository;
+import com.desgroup.repositories.ManagerRepository;
+import com.desgroup.repositories.StaffRepository;
 import com.desgroup.ui.LoginFrame;
 import java.awt.EventQueue;
 import javax.swing.UIManager;
@@ -13,12 +30,14 @@ import javax.swing.UIManager;
  * @author urreg
  */
 public class Main extends javax.swing.JFrame {
+
     public Main() {
         initComponents();
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         desktopPane = new javax.swing.JDesktopPane();
@@ -30,13 +49,12 @@ public class Main extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 982, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 982, Short.MAX_VALUE));
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(desktopPane, javax.swing.GroupLayout.Alignment.TRAILING,
+                                javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -46,9 +64,13 @@ public class Main extends javax.swing.JFrame {
      */
     public static void main(String args[]) throws Exception {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
+        // (optional) ">
+        /*
+         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
+         * look and feel.
+         * For details see
+         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -66,15 +88,45 @@ public class Main extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        
+        // </editor-fold>
+
         for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
             if ("Nimbus".equals(info.getName())) {
                 UIManager.setLookAndFeel(info.getClassName());
                 break;
             }
         }
-        EventQueue.invokeLater(() -> new LoginFrame().setVisible(true));
+
+        LogisticRepository logisticRepository = new LogisticRepository();
+        CoordinatorRepository coordinatorRepository = new CoordinatorRepository();
+        ManagerRepository managerRepository = new ManagerRepository();
+        EventRepository eventRepository = new EventRepository();
+        EventAssignmentRepository eventAssignmentRepository = new EventAssignmentRepository();
+        StaffRepository staffRepository = new StaffRepository(
+                logisticRepository, coordinatorRepository, managerRepository);
+
+        LogisticService logisticServiceImpl = new LogisticService(logisticRepository);
+        CoordinatorService coordinatorServiceImpl = new CoordinatorService(coordinatorRepository,
+                eventAssignmentRepository);
+
+        IStaffService staffService = new StaffService(staffRepository);
+        ILogisticService logisticService = logisticServiceImpl;
+        IEventService eventService = new EventService(eventRepository);
+        IEventAssignmentService assignmentService = new EventAssignmentService(eventAssignmentRepository);
+        ICoordinatorService coordinatorService = coordinatorServiceImpl;
+
+        // OJO: decide aquí cuál IStaffSalary usas por defecto (logístico o
+        // coordinador),
+        // según lo que hayas resuelto en la conversación anterior sobre las 2
+        // interfaces
+        IStaffSalary salaryService = logisticServiceImpl; // o el que corresponda
+
+        EventQueue.invokeLater(() -> new LoginFrame(staffService,
+                logisticService,
+                eventService,
+                assignmentService,
+                coordinatorService,
+                salaryService).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

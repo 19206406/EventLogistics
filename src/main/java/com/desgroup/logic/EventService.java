@@ -5,16 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.desgroup.interfaces.logicInterfaces.IEventService;
+import com.desgroup.interfaces.repositoriesInterfaces.IEventRepository;
 import com.desgroup.models.Event;
 import com.desgroup.models.Place;
-import com.desgroup.repositories.EventRepository;
 
 public class EventService implements IEventService {
 
-    private EventRepository repository;
+    private final IEventRepository repository;
 
-    public EventService() {
-        repository = new EventRepository();
+    public EventService(IEventRepository repository) {
+        this.repository = repository;
     }
 
     public List<Event> getAllEvents() {
