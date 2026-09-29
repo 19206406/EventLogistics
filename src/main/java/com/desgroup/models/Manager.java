@@ -25,4 +25,9 @@ public class Manager extends Staff {
     public void setCompany(String company) {
         this.company = company;
     }
+
+    @Override
+    public boolean canAssign(Staff target) {
+        return target instanceof Coordinator;
+    }
 }

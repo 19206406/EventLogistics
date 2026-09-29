@@ -8,7 +8,7 @@ package com.desgroup.models;
  *
  * @author urreg
  */
-public class Staff {
+public abstract class Staff {
     private int idStaff;
     private String name;
     private String email;
@@ -84,4 +84,6 @@ public class Staff {
     public void setSalary(double salary) {
         this.salary = salary;
     }
+
+    public abstract boolean canAssign(Staff target);
 }

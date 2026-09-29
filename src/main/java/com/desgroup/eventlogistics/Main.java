@@ -105,14 +105,14 @@ public class Main extends javax.swing.JFrame {
         StaffRepository staffRepository = new StaffRepository(
                 logisticRepository, coordinatorRepository, managerRepository);
 
-        LogisticService logisticServiceImpl = new LogisticService(logisticRepository);
+        LogisticService logisticServiceImpl = new LogisticService(logisticRepository, eventAssignmentRepository);
         CoordinatorService coordinatorServiceImpl = new CoordinatorService(coordinatorRepository,
                 eventAssignmentRepository);
 
         IStaffService staffService = new StaffService(staffRepository);
         ILogisticService logisticService = logisticServiceImpl;
-        IEventService eventService = new EventService(eventRepository);
-        IEventAssignmentService assignmentService = new EventAssignmentService(eventAssignmentRepository);
+        IEventService eventService = new EventService(eventRepository, eventAssignmentRepository);
+        IEventAssignmentService assignmentService = new EventAssignmentService(eventAssignmentRepository, eventRepository, logisticRepository, coordinatorRepository);
         ICoordinatorService coordinatorService = coordinatorServiceImpl;
 
         // OJO: decide aquí cuál IStaffSalary usas por defecto (logístico o

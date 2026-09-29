@@ -4,16 +4,19 @@ import java.util.List;
 
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
+import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.interfaces.repositoriesInterfaces.ILogisticRepository;
 import com.desgroup.models.Logistic;
 
 public class LogisticService implements IStaffSalary, ILogisticService {
 
     private final ILogisticRepository repository;
-    private double hourlyRate;
+    private final IEventAssignmentRepository assignmentRepository;
+    private final double hourlyRate;
 
-    public LogisticService(ILogisticRepository repository) {
+    public LogisticService(ILogisticRepository repository, IEventAssignmentRepository assignmentRepository) {
         this.repository = repository;
+        this.assignmentRepository = assignmentRepository;
         hourlyRate = 10000.00;
     }
 
@@ -38,6 +41,7 @@ public class LogisticService implements IStaffSalary, ILogisticService {
     }
 
     public void deleteLogistic(int id) {
+        assignmentRepository.deleteByStaff(id);
         repository.delete(id);
     }
 

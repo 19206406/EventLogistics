@@ -57,4 +57,9 @@ public class Logistic extends Staff {
     public void setScore(int score) {
         this.score = score;
     }
+
+    @Override
+    public boolean canAssign(Staff target) {
+        return false;
+    }
 }

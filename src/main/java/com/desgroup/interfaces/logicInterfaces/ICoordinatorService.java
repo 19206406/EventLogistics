@@ -13,8 +13,8 @@ public interface ICoordinatorService {
         void createCoordinator(String name, String email, String phone, String position, String password,
                         String company);
 
-        void updatedCoordinator(String name, String email, String phone, String position, String password,
-                        String company);
+        void updatedCoordinator(int id, String name, String email, String phone,
+                                String position, String password, String company);
 
         void deleteCoordinator(int id);
 }

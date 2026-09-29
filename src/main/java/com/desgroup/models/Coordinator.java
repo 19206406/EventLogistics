@@ -13,18 +13,23 @@ public class Coordinator extends Staff {
 
     public Coordinator() {
     }
-    
+
     public Coordinator(int idStaff, String name, String email, String phone, String position, String password,
             String company) {
         super(idStaff, name, email, phone, position, password);
         this.company = company;
     }
-    
+
     public String getCompany() {
         return company;
     }
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    @Override
+    public boolean canAssign(Staff target) {
+        return target instanceof Logistic;
     }
 }
