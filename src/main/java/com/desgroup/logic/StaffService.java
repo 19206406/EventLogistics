@@ -1,15 +1,15 @@
 package com.desgroup.logic;
 
 import com.desgroup.interfaces.logicInterfaces.IStaffService;
+import com.desgroup.interfaces.repositoriesInterfaces.IStaffRepository;
 import com.desgroup.models.Staff;
-import com.desgroup.repositories.StaffRepository;
 
 public class StaffService implements IStaffService {
 
-    private StaffRepository repository;
+    private final IStaffRepository repository;
 
-    public StaffService() {
-        repository = new StaffRepository();
+    public StaffService(IStaffRepository repository) {
+        this.repository = repository;
     }
 
     public String showStaffPosition(int id) {

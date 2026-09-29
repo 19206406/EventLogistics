@@ -2,47 +2,48 @@ package com.desgroup.logic;
 
 import java.util.List;
 
-import com.desgroup.interfaces.IStaffSalary;
 import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
+import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
+import com.desgroup.interfaces.repositoriesInterfaces.ICoordinatorRepository;
+import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.models.Coordinator;
 import com.desgroup.models.EventAssignment;
-import com.desgroup.repositories.CoordinatorRepository;
-import com.desgroup.repositories.EventAssignmentRepository;
 
 public class CoordinatorService implements IStaffSalary, ICoordinatorService {
 
-    private CoordinatorRepository repository;
-    private EventAssignmentRepository assignmentRepository;
+    private final ICoordinatorRepository coordinatorRepository;
+    private final IEventAssignmentRepository assignmentRepository;
     private double priceAssignment;
 
-    public CoordinatorService() {
-        repository = new CoordinatorRepository();
-        assignmentRepository = new EventAssignmentRepository();
+    public CoordinatorService(ICoordinatorRepository coordinatorRepository,
+            IEventAssignmentRepository assignmentRepository) {
+        this.coordinatorRepository = coordinatorRepository;
+        this.assignmentRepository = assignmentRepository;
         priceAssignment = 400000.00;
     }
 
     public List<Coordinator> getAllCoordinators() {
-        return repository.getAll();
+        return coordinatorRepository.getAll();
     }
 
     public Coordinator getCoordinatorById(int id) {
-        return repository.getById(id);
+        return coordinatorRepository.getById(id);
     }
 
     public void createCoordinator(String name, String email, String phone, String position, String password,
             String company) {
         Coordinator coordinator = new Coordinator(0, name, email, phone, position, password, company);
-        repository.create(coordinator);
+        coordinatorRepository.create(coordinator);
     }
 
     public void updatedCoordinator(String name, String email, String phone, String position, String password,
             String company) {
         Coordinator coordinator = new Coordinator(0, name, email, phone, position, password, company);
-        repository.updated(coordinator);
+        coordinatorRepository.updated(coordinator);
     }
 
     public void deleteCoordinator(int id) {
-        repository.delete(id);
+        coordinatorRepository.delete(id);
     }
 
     @Override

@@ -17,7 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import com.desgroup.logic.EventService;
+
+import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.models.Event;
 import com.desgroup.models.Place;
 import java.time.LocalDate;
@@ -30,11 +31,11 @@ import java.util.Arrays;
  */
 public class EventFormInternalFrame extends JInternalFrame {
     public static final String[] STATES = { "Programado", "En curso", "Finalizado", "Cancelado" };
-    private final EventService service;
+    private final IEventService service;
     private final ManagerEvent managerEvent;
     private final Event event;
 
-    public EventFormInternalFrame(EventService service, ManagerEvent managerEvent, Event event) {
+    public EventFormInternalFrame(IEventService service, ManagerEvent managerEvent, Event event) {
         super(getTitle(event), false, true, false, false);
         this.service = service;
         this.managerEvent = managerEvent;
@@ -190,7 +191,7 @@ public class EventFormInternalFrame extends JInternalFrame {
         managerEvent.loadEvents();
         dispose();
     }
-    
+
     private JTextField txtName;
     private JComboBox<String> cmbState;
     private JTextField txtDate;

@@ -4,6 +4,9 @@
  */
 package com.desgroup.repositories;
 
+import com.desgroup.interfaces.repositoriesInterfaces.ICoordinatorRepository;
+import com.desgroup.interfaces.repositoriesInterfaces.ILogisticRepository;
+import com.desgroup.interfaces.repositoriesInterfaces.IManagerRepository;
 import com.desgroup.interfaces.repositoriesInterfaces.IStaffRepository;
 import com.desgroup.models.Staff;
 import java.util.ArrayList;
@@ -14,17 +17,17 @@ import java.util.List;
  * @author urreg
  */
 public class StaffRepository implements IStaffRepository {
-    private LogisticRepository logisticRepository;
-    private CoordinatorRepository coordinatorRepository;
-    private ManagerRepository managerRepository;
-
     private List<Staff> staffs;
+    private final ILogisticRepository logisticRepository;
+    private final ICoordinatorRepository coordinatorRepository;
+    private final IManagerRepository managerRepository;
 
-    public StaffRepository() {
-        staffs = new ArrayList<>();
-        logisticRepository = new LogisticRepository();
-        coordinatorRepository = new CoordinatorRepository();
-        managerRepository = new ManagerRepository();
+    public StaffRepository(ILogisticRepository logisticRepository,
+            ICoordinatorRepository coordinatorRepository,
+            IManagerRepository managerRepository) {
+        this.logisticRepository = logisticRepository;
+        this.coordinatorRepository = coordinatorRepository;
+        this.managerRepository = managerRepository;
     }
 
     public List<Staff> getAll() {

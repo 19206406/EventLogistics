@@ -3,15 +3,15 @@ package com.desgroup.logic;
 import java.util.List;
 
 import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
+import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.models.EventAssignment;
-import com.desgroup.repositories.EventAssignmentRepository;
 
 public class EventAssignmentService implements IEventAssignmentService {
 
-    private EventAssignmentRepository repository;
+    private final IEventAssignmentRepository repository;
 
-    public EventAssignmentService() {
-        repository = new EventAssignmentRepository();
+    public EventAssignmentService(IEventAssignmentRepository repository) {
+        this.repository = repository;
     }
 
     public List<EventAssignment> getAllAssignment() {

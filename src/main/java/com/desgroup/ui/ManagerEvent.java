@@ -4,7 +4,7 @@
  */
 package com.desgroup.ui;
 
-import com.desgroup.logic.EventService;
+import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.models.Event;
 import com.desgroup.models.Place;
 import java.util.List;
@@ -17,10 +17,10 @@ import javax.swing.table.DefaultTableModel;
  * @author Olger Mercado
  */
 public class ManagerEvent extends javax.swing.JInternalFrame {
-    private final EventService service;
+    private final IEventService service;
     private DefaultTableModel tableModel;
 
-    public ManagerEvent(EventService service) {
+    public ManagerEvent(IEventService service) {
         super("Administrar eventos", true, true, true, true);
         this.service = service;
         initComponents();
@@ -30,7 +30,8 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         btnCreateEvent = new javax.swing.JButton();
@@ -53,22 +54,21 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
         btnConsultPlace.addActionListener(this::btnConsultPlaceActionPerformed);
 
         tblManageEvent.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Id", "Nombre ", "Estado", "Fecha", "Hora"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, true, true
+                new Object[][] {
+                        { null, null, null, null, null },
+                        { null, null, null, null, null },
+                        { null, null, null, null, null },
+                        { null, null, null, null, null }
+                },
+                new String[] {
+                        "Id", "Nombre ", "Estado", "Fecha", "Hora"
+                }) {
+            boolean[] canEdit = new boolean[] {
+                    false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         jScrollPane1.setViewportView(tblManageEvent);
@@ -76,50 +76,50 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnCreateEvent)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEditEvent)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnDeleteEvent)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnConsultPlace)))
-                .addContainerGap(42, Short.MAX_VALUE))
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jScrollPane1)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(btnCreateEvent)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(btnEditEvent)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(btnDeleteEvent)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(btnConsultPlace)))
+                                .addContainerGap(42, Short.MAX_VALUE)));
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCreateEvent)
-                    .addComponent(btnEditEvent)
-                    .addComponent(btnDeleteEvent)
-                    .addComponent(btnConsultPlace))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(btnCreateEvent)
+                                        .addComponent(btnEditEvent)
+                                        .addComponent(btnDeleteEvent)
+                                        .addComponent(btnConsultPlace))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31,
+                                        Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 410,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(22, 22, 22)));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCreateEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateEventActionPerformed
+    private void btnCreateEventActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnCreateEventActionPerformed
         openForm(null);
-    }//GEN-LAST:event_btnCreateEventActionPerformed
+    }// GEN-LAST:event_btnCreateEventActionPerformed
 
-    private void btnEditEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditEventActionPerformed
+    private void btnEditEventActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnEditEventActionPerformed
         Event selected = getSelectedEvent("editar");
         if (selected != null) {
             openForm(selected);
         }
-    }//GEN-LAST:event_btnEditEventActionPerformed
+    }// GEN-LAST:event_btnEditEventActionPerformed
 
-    private void btnDeleteEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteEventActionPerformed
+    private void btnDeleteEventActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnDeleteEventActionPerformed
         Event selected = getSelectedEvent("eliminar");
         if (selected == null) {
             return;
@@ -134,9 +134,9 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
             service.deleteEventById(selected.getIdEvent());
             loadEvents();
         }
-    }//GEN-LAST:event_btnDeleteEventActionPerformed
+    }// GEN-LAST:event_btnDeleteEventActionPerformed
 
-    private void btnConsultPlaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultPlaceActionPerformed
+    private void btnConsultPlaceActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnConsultPlaceActionPerformed
         Event selected = getSelectedEvent("consultar su lugar");
         if (selected == null) {
             return;
@@ -151,10 +151,10 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
 
         JOptionPane.showMessageDialog(this, detail,
                 "Lugar del evento \"" + selected.getName() + "\"", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_btnConsultPlaceActionPerformed
+    }// GEN-LAST:event_btnConsultPlaceActionPerformed
 
     private void setupTable() {
-        String[] columns = {"Id", "Nombre", "Estado", "Fecha", "Hora"};
+        String[] columns = { "Id", "Nombre", "Estado", "Fecha", "Hora" };
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -175,12 +175,12 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
         tableModel.setRowCount(0);
         List<Event> events = service.getAllEvents();
         for (Event event : events) {
-            tableModel.addRow(new Object[]{
-                event.getIdEvent(),
-                event.getName(),
-                event.getState(),
-                event.getDate(),
-                String.format("%02d:00", event.getStartTime())
+            tableModel.addRow(new Object[] {
+                    event.getIdEvent(),
+                    event.getName(),
+                    event.getState(),
+                    event.getDate(),
+                    String.format("%02d:00", event.getStartTime())
             });
         }
     }

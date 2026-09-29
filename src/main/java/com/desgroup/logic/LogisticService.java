@@ -2,18 +2,18 @@ package com.desgroup.logic;
 
 import java.util.List;
 
-import com.desgroup.interfaces.IStaffSalary;
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
+import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
+import com.desgroup.interfaces.repositoriesInterfaces.ILogisticRepository;
 import com.desgroup.models.Logistic;
-import com.desgroup.repositories.LogisticRepository;
 
 public class LogisticService implements IStaffSalary, ILogisticService {
 
-    private LogisticRepository repository;
+    private final ILogisticRepository repository;
     private double hourlyRate;
 
-    public LogisticService() {
-        repository = new LogisticRepository();
+    public LogisticService(ILogisticRepository repository) {
+        this.repository = repository;
         hourlyRate = 10000.00;
     }
 

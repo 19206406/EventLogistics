@@ -4,6 +4,8 @@
  */
 package com.desgroup.ui;
 
+import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
+import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
 import com.desgroup.logic.CoordinatorService;
 import com.desgroup.models.Coordinator;
 import java.awt.GridLayout;
@@ -17,32 +19,35 @@ import javax.swing.JPanel;
  */
 public class ViewCoordinatorProfile extends javax.swing.JInternalFrame {
 
-    private final Coordinator coordinator; 
-    private CoordinatorService coordinatorService; 
+    private final Coordinator coordinator;
+    private final ICoordinatorService coordinatorService;
+    private final IStaffSalary salaryService;
+
     /**
      * Creates new form ViewCoordinatorProfile
      */
-    public ViewCoordinatorProfile(Coordinator coordinator, CoordinatorService coordinatorService) {
-        super("Datos del logistico", true, true, true, true); 
-        this.coordinator = coordinator; 
-        this.coordinatorService = coordinatorService; 
+    public ViewCoordinatorProfile(Coordinator coordinator, ICoordinatorService coordinatorService,
+            IStaffSalary salaryService) {
+        super("Datos del logistico", true, true, true, true);
+        this.coordinator = coordinator;
+        this.coordinatorService = coordinatorService;
+        this.salaryService = salaryService;
         initializeComponents();
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 394, Short.MAX_VALUE));
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 274, Short.MAX_VALUE));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -53,22 +58,22 @@ public class ViewCoordinatorProfile extends javax.swing.JInternalFrame {
 
         JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5));
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        
-        double salary = coordinatorService.calculateSalary(coordinator.getIdStaff()); 
-        
-        JLabel lblName = new JLabel("Nombre: " + this.coordinator.getName()); 
-        JLabel lblEmail = new JLabel("Email: " + this.coordinator.getEmail()); 
-        JLabel lblPhone = new JLabel("Teléfono: " + this.coordinator.getPhone()); 
-        JLabel lblPosition = new JLabel("Posicion: " + this.coordinator.getPosition()); 
-        JLabel lblCompany = new JLabel("Empresa: " + this.coordinator.getCompany()); 
+
+        double salary = salaryService.calculateSalary(coordinator.getIdStaff());
+
+        JLabel lblName = new JLabel("Nombre: " + this.coordinator.getName());
+        JLabel lblEmail = new JLabel("Email: " + this.coordinator.getEmail());
+        JLabel lblPhone = new JLabel("Teléfono: " + this.coordinator.getPhone());
+        JLabel lblPosition = new JLabel("Posicion: " + this.coordinator.getPosition());
+        JLabel lblCompany = new JLabel("Empresa: " + this.coordinator.getCompany());
         JLabel lblSalary = new JLabel("Salario: " + salary);
-        
-        panel.add(lblName); 
-        panel.add(lblEmail); 
-        panel.add(lblPhone); 
-        panel.add(lblPosition); 
-        panel.add(lblCompany); 
-        panel.add(lblSalary); 
+
+        panel.add(lblName);
+        panel.add(lblEmail);
+        panel.add(lblPhone);
+        panel.add(lblPosition);
+        panel.add(lblCompany);
+        panel.add(lblSalary);
         add(panel);
     }
 

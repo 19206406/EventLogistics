@@ -4,7 +4,7 @@
  */
 package com.desgroup.ui;
 
-import com.desgroup.logic.LogisticService;
+import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.models.Logistic;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -25,11 +25,11 @@ import javax.swing.JTextField;
  * @author urreg
  */
 public class LogisticFormFrame extends JInternalFrame {
-    private final LogisticService logisticService;
+    private final ILogisticService logisticService;
     private final Logistic logisticToEdit;
     private final ManageLogisticFrame parentFrame;
 
-    public LogisticFormFrame(LogisticService logisticService, Logistic logisticToEdit,
+    public LogisticFormFrame(ILogisticService logisticService, Logistic logisticToEdit,
             ManageLogisticFrame parentFrame) {
         super(getTitle(logisticToEdit), true, true, true, true);
         this.logisticService = logisticService;
@@ -39,7 +39,7 @@ public class LogisticFormFrame extends JInternalFrame {
         initComponents();
         if (logisticToEdit != null) {
             fillFields();
-            
+
         }
         setSize(480, 460);
         setLocation(200, 60);
@@ -154,7 +154,7 @@ public class LogisticFormFrame extends JInternalFrame {
         parentFrame.loadLogistics();
         dispose();
     }
-    
+
     private JTextField nameField;
     private JTextField emailField;
     private JTextField phoneField;
