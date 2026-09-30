@@ -107,6 +107,10 @@ public class MainFrame extends JFrame {
         itemManageEvents.addActionListener(e -> openManageEvents());
         menuManager.add(itemManageEvents);
 
+        JMenuItem itemManageCoordinators = new JMenuItem("Administrar coordinadores");
+        itemManageCoordinators.addActionListener(e -> openManageCoordinators());
+        menuManager.add(itemManageCoordinators);
+
         menuBar.add(menuManager);
 
         // Menú Opciones
@@ -174,6 +178,16 @@ public class MainFrame extends JFrame {
             return;
         }
         ManagerEvent frame = new ManagerEvent(eventService);
+        desktopPane.add(frame);
+        frame.setVisible(true);
+    }
+
+    private void openManageCoordinators() {
+        if (!(currentUser instanceof Manager)) {
+            JOptionPane.showMessageDialog(this, "Esto opción es solo para Gerentes");
+        }
+
+        ManageCoordinatorFrame frame = new ManageCoordinatorFrame(coordinatorService, desktopPane);
         desktopPane.add(frame);
         frame.setVisible(true);
     }

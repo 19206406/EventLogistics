@@ -1,20 +1,19 @@
 package com.desgroup.repositories;
 
+import com.desgroup.interfaces.logicInterfaces.*;
 import com.desgroup.interfaces.repositoriesInterfaces.*;
 import com.desgroup.logic.*;
-import com.desgroup.models.Coordinator;
-import com.desgroup.models.Logistic;
-import com.desgroup.models.Manager;
 
 public final class AppContext {
     private static final AppContext INSTANCE = new AppContext();
     public static AppContext get() { return INSTANCE; }
 
-    public final StaffService staffService;
-    public final LogisticService logisticService;
-    public final CoordinatorService coordinatorService;
-    public final EventService eventService;
-    public final EventAssignmentService assignmentService;
+    public final IStaffService staffService;
+    public final ILogisticService logisticService;
+    public final ICoordinatorService coordinatorService;
+    public final IEventService eventService;
+    public final IEventAssignmentService assignmentService;
+    public final IStaffSalary salaryService;
 
     private AppContext() {
         ILogisticRepository logisticRepo = new LogisticRepository();
@@ -24,18 +23,13 @@ public final class AppContext {
         IEventRepository eventRepo = new EventRepository();
         IEventAssignmentRepository assignmentRepo = new EventAssignmentRepository();
 
+        LogisticService logisticServiceImpl = new LogisticService(logisticRepo, assignmentRepo);
+
         staffService = new StaffService(staffRepo);
-        logisticService = new LogisticService(logisticRepo, assignmentRepo);
+        logisticService = logisticServiceImpl;
         coordinatorService = new CoordinatorService(coordinatorRepo, assignmentRepo);
         eventService = new EventService(eventRepo, assignmentRepo);
         assignmentService = new EventAssignmentService(assignmentRepo, eventRepo, logisticRepo, coordinatorRepo);
-
-        // seed usando las reglas reales, con los usuarios del README
-        int eventId = eventRepo.getAll().get(0).getIdEvent();
-        Manager admin = managerRepo.getByEmail("admin");
-        Coordinator robert = coordinatorRepo.getByEmail("robert@gmail.com");
-        Logistic sebastian = logisticRepo.getByEmail("sebastian@gmail.com");
-        assignmentService.assign(admin, robert, eventId);
-        assignmentService.assign(robert, sebastian, eventId);
+        salaryService = logisticServiceImpl;
     }
 }

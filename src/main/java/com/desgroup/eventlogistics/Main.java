@@ -4,23 +4,7 @@
  */
 package com.desgroup.eventlogistics;
 
-import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
-import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
-import com.desgroup.interfaces.logicInterfaces.IEventService;
-import com.desgroup.interfaces.logicInterfaces.ILogisticService;
-import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
-import com.desgroup.interfaces.logicInterfaces.IStaffService;
-import com.desgroup.logic.CoordinatorService;
-import com.desgroup.logic.EventAssignmentService;
-import com.desgroup.logic.EventService;
-import com.desgroup.logic.LogisticService;
-import com.desgroup.logic.StaffService;
-import com.desgroup.repositories.CoordinatorRepository;
-import com.desgroup.repositories.EventAssignmentRepository;
-import com.desgroup.repositories.EventRepository;
-import com.desgroup.repositories.LogisticRepository;
-import com.desgroup.repositories.ManagerRepository;
-import com.desgroup.repositories.StaffRepository;
+import com.desgroup.repositories.AppContext;
 import com.desgroup.ui.LoginFrame;
 import java.awt.EventQueue;
 import javax.swing.UIManager;
@@ -97,36 +81,15 @@ public class Main extends javax.swing.JFrame {
             }
         }
 
-        LogisticRepository logisticRepository = new LogisticRepository();
-        CoordinatorRepository coordinatorRepository = new CoordinatorRepository();
-        ManagerRepository managerRepository = new ManagerRepository();
-        EventRepository eventRepository = new EventRepository();
-        EventAssignmentRepository eventAssignmentRepository = new EventAssignmentRepository();
-        StaffRepository staffRepository = new StaffRepository(
-                logisticRepository, coordinatorRepository, managerRepository);
+        AppContext ctx = AppContext.get();
 
-        LogisticService logisticServiceImpl = new LogisticService(logisticRepository, eventAssignmentRepository);
-        CoordinatorService coordinatorServiceImpl = new CoordinatorService(coordinatorRepository,
-                eventAssignmentRepository);
-
-        IStaffService staffService = new StaffService(staffRepository);
-        ILogisticService logisticService = logisticServiceImpl;
-        IEventService eventService = new EventService(eventRepository, eventAssignmentRepository);
-        IEventAssignmentService assignmentService = new EventAssignmentService(eventAssignmentRepository, eventRepository, logisticRepository, coordinatorRepository);
-        ICoordinatorService coordinatorService = coordinatorServiceImpl;
-
-        // OJO: decide aquí cuál IStaffSalary usas por defecto (logístico o
-        // coordinador),
-        // según lo que hayas resuelto en la conversación anterior sobre las 2
-        // interfaces
-        IStaffSalary salaryService = logisticServiceImpl; // o el que corresponda
-
-        EventQueue.invokeLater(() -> new LoginFrame(staffService,
-                logisticService,
-                eventService,
-                assignmentService,
-                coordinatorService,
-                salaryService).setVisible(true));
+        EventQueue.invokeLater(() -> new LoginFrame(
+                ctx.staffService,
+                ctx.logisticService,
+                ctx.eventService,
+                ctx.assignmentService,
+                ctx.coordinatorService,
+                ctx.salaryService).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

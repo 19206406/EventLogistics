@@ -47,6 +47,7 @@ public class ManageLogisticFrame extends JInternalFrame {
         JButton createLoggisticButton = new JButton("Crear logistico");
         JButton updateLogisticButton = new JButton("Actualizar logistico");
         JButton deleteLogisticButton = new JButton("Eliminar logistico");
+        JButton assignLogisticButton = new JButton("Asignar logisticos");
 
         createLoggisticButton.addActionListener(e -> openCreateForm());
         updateLogisticButton.addActionListener(e -> openUpdateForm());
@@ -55,6 +56,7 @@ public class ManageLogisticFrame extends JInternalFrame {
         buttonPanel.add(createLoggisticButton);
         buttonPanel.add(updateLogisticButton);
         buttonPanel.add(deleteLogisticButton);
+        buttonPanel.add(assignLogisticButton);
         mainPanel.add(buttonPanel, BorderLayout.NORTH);
 
         String[] columns = { "Id", "Nombre", "Email", "Telefono", "Cargo", "Zona", "Rol", "Puntuación", "Horas" };
