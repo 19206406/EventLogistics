@@ -1,7 +1,10 @@
 package com.desgroup.ui;
 
 import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
+import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
+import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.models.Coordinator;
+import com.desgroup.models.Staff;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -10,11 +13,18 @@ import java.util.List;
 
 public class ManageCoordinatorFrame extends JInternalFrame {
     private final ICoordinatorService coordinatorService;
+    private final IEventService eventService;
+    private final IEventAssignmentService assignmentService;
+    private final Staff currentUser;
     private final JDesktopPane desktopPane;
 
-    public ManageCoordinatorFrame(ICoordinatorService coordinatorService, JDesktopPane desktopPane) {
+    public ManageCoordinatorFrame(ICoordinatorService coordinatorService, IEventService eventService,
+            IEventAssignmentService assignmentService, Staff currentUser, JDesktopPane desktopPane) {
         super("Administrar coordinadores", true, true, true, true);
         this.coordinatorService = coordinatorService;
+        this.eventService = eventService;
+        this.assignmentService = assignmentService;
+        this.currentUser = currentUser;
         this.desktopPane = desktopPane;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponents();
@@ -115,15 +125,16 @@ public class ManageCoordinatorFrame extends JInternalFrame {
 
     private void openAssignForm() {
         int row = coordinatorTable.getSelectedRow();
-
-        JOptionPane.showMessageDialog(this, "Muy pronto estara esta funcionalidad.",
-                "Punto", JOptionPane.WARNING_MESSAGE);
-
-        if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione un coordinador para asignar.",
-                    "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
+        Coordinator selectedCoordinator = null;
+        if (row != -1) {
+            int id = (int) tableModel.getValueAt(row, 0);
+            selectedCoordinator = coordinatorService.getCoordinatorById(id);
         }
+
+        AssignCoordinatorToEvent form = new AssignCoordinatorToEvent(eventService, assignmentService,
+                coordinatorService, currentUser, selectedCoordinator);
+        desktopPane.add(form);
+        form.setVisible(true);
     }
 
     private JTable coordinatorTable;

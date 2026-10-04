@@ -4,8 +4,13 @@
  */
 package com.desgroup.ui;
 
+import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
+import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
+import com.desgroup.models.Coordinator;
 import com.desgroup.models.Logistic;
+import com.desgroup.models.Staff;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.util.List;
@@ -26,11 +31,18 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ManageLogisticFrame extends JInternalFrame {
     private final ILogisticService logisticService;
+    private final IEventService eventService;
+    private final IEventAssignmentService assignmentService;
+    private final Staff currentUser;
     private final JDesktopPane desktopPane;
 
-    public ManageLogisticFrame(ILogisticService logisticService, JDesktopPane desktopPane) {
+    public ManageLogisticFrame(ILogisticService logisticService, JDesktopPane desktopPane, IEventService eventService, IEventAssignmentService assignmentService,
+                               Staff currentUser) {
         super("Administrar logisticos", true, true, true, true);
         this.logisticService = logisticService;
+        this.eventService = eventService;
+        this.assignmentService = assignmentService;
+        this.currentUser = currentUser;
         this.desktopPane = desktopPane;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponents();
@@ -52,6 +64,7 @@ public class ManageLogisticFrame extends JInternalFrame {
         createLoggisticButton.addActionListener(e -> openCreateForm());
         updateLogisticButton.addActionListener(e -> openUpdateForm());
         deleteLogisticButton.addActionListener(e -> deleteSelectedLogistic());
+        assignLogisticButton.addActionListener(e -> openAssignForm());
 
         buttonPanel.add(createLoggisticButton);
         buttonPanel.add(updateLogisticButton);
@@ -126,6 +139,19 @@ public class ManageLogisticFrame extends JInternalFrame {
             logisticService.deleteLogistic(id);
             loadLogistics();
         }
+    }
+
+    private void openAssignForm() {
+        int row = logisticTable.getSelectedRow();
+        Logistic selectedLogistic = null;
+        if (row != -1) {
+            int id = (int) tableModel.getValueAt(row, 0);
+            selectedLogistic = logisticService.getLogisticById(id);
+        }
+
+        AssignLogisticToEvent form = new AssignLogisticToEvent(eventService, assignmentService, logisticService, currentUser, selectedLogistic);
+        desktopPane.add(form);
+        form.setVisible(true);
     }
 
     private JTable logisticTable;

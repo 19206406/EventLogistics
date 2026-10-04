@@ -2,7 +2,6 @@ package com.desgroup.ui;
 
 import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
 import com.desgroup.models.Coordinator;
-import com.desgroup.models.Logistic;
 
 import javax.swing.*;
 import java.awt.*;

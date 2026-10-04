@@ -141,7 +141,7 @@ public class MainFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Esta opción es solo para Coordinadores");
             return;
         }
-        ManageLogisticFrame frame = new ManageLogisticFrame(logisticService, desktopPane);
+        ManageLogisticFrame frame = new ManageLogisticFrame(logisticService, desktopPane, eventService, assignmentService, currentUser);
         desktopPane.add(frame);
         frame.setVisible(true);
     }
@@ -185,9 +185,11 @@ public class MainFrame extends JFrame {
     private void openManageCoordinators() {
         if (!(currentUser instanceof Manager)) {
             JOptionPane.showMessageDialog(this, "Esto opción es solo para Gerentes");
+            return;
         }
 
-        ManageCoordinatorFrame frame = new ManageCoordinatorFrame(coordinatorService, desktopPane);
+        ManageCoordinatorFrame frame = new ManageCoordinatorFrame(coordinatorService, eventService,
+                assignmentService, currentUser, desktopPane);
         desktopPane.add(frame);
         frame.setVisible(true);
     }

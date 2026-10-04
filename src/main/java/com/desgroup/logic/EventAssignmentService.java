@@ -141,7 +141,7 @@ public class EventAssignmentService implements IEventAssignmentService {
     private Event requireEvent(int eventId) {
         Event event = eventRepository.getById(eventId);
         if (event == null)
-            return null;
+            throw new BusinessException("The event does not exist.");
 
         return event;
     }
