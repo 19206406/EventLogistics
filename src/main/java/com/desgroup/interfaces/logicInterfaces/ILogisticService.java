@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.desgroup.models.Logistic;
 
-public interface ILogisticService {
+public interface ILogisticService extends IStaffSalary {
 
         List<Logistic> getAllLogistics();
 

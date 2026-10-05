@@ -13,7 +13,6 @@ public final class AppContext {
     public final ICoordinatorService coordinatorService;
     public final IEventService eventService;
     public final IEventAssignmentService assignmentService;
-    public final IStaffSalary salaryService;
 
     private AppContext() {
         ILogisticRepository logisticRepo = new LogisticRepository();
@@ -30,6 +29,5 @@ public final class AppContext {
         coordinatorService = new CoordinatorService(coordinatorRepo, assignmentRepo);
         eventService = new EventService(eventRepo, assignmentRepo);
         assignmentService = new EventAssignmentService(assignmentRepo, eventRepo, logisticRepo, coordinatorRepo);
-        salaryService = logisticServiceImpl;
     }
 }

@@ -58,7 +58,6 @@ public class LogisticService implements IStaffSalary, ILogisticService {
         double salary = hoursWorked * hourlyRate;
         logistic.setSalary(salary);
         repository.updated(logistic);
-
         return salary;
     }
 }

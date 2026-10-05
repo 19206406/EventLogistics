@@ -21,17 +21,14 @@ public class ViewCoordinatorProfile extends javax.swing.JInternalFrame {
 
     private final Coordinator coordinator;
     private final ICoordinatorService coordinatorService;
-    private final IStaffSalary salaryService;
 
     /**
      * Creates new form ViewCoordinatorProfile
      */
-    public ViewCoordinatorProfile(Coordinator coordinator, ICoordinatorService coordinatorService,
-            IStaffSalary salaryService) {
+    public ViewCoordinatorProfile(Coordinator coordinator, ICoordinatorService coordinatorService) {
         super("Datos del logistico", true, true, true, true);
         this.coordinator = coordinator;
         this.coordinatorService = coordinatorService;
-        this.salaryService = salaryService;
         initializeComponents();
     }
 
@@ -59,13 +56,13 @@ public class ViewCoordinatorProfile extends javax.swing.JInternalFrame {
         JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5));
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        double salary = salaryService.calculateSalary(coordinator.getIdStaff());
+        double salary = coordinatorService.calculateSalary(coordinator.getIdStaff());
 
-        JLabel lblName = new JLabel("Nombre: " + this.coordinator.getName());
-        JLabel lblEmail = new JLabel("Email: " + this.coordinator.getEmail());
-        JLabel lblPhone = new JLabel("Teléfono: " + this.coordinator.getPhone());
-        JLabel lblPosition = new JLabel("Posicion: " + this.coordinator.getPosition());
-        JLabel lblCompany = new JLabel("Empresa: " + this.coordinator.getCompany());
+        JLabel lblName = new JLabel("Nombre: " + coordinator.getName());
+        JLabel lblEmail = new JLabel("Email: " + coordinator.getEmail());
+        JLabel lblPhone = new JLabel("Teléfono: " + coordinator.getPhone());
+        JLabel lblPosition = new JLabel("Posicion: " + coordinator.getPosition());
+        JLabel lblCompany = new JLabel("Empresa: " + coordinator.getCompany());
         JLabel lblSalary = new JLabel("Salario: " + salary);
 
         panel.add(lblName);

@@ -50,8 +50,11 @@ public class CoordinatorService implements IStaffSalary, ICoordinatorService {
     @Override
     public double calculateSalary(int id) {
         List<EventAssignment> assignments = assignmentRepository.getAllByStaff(id);
-
-        return priceAssignment * assignments.size();
+        Coordinator coordinator = coordinatorRepository.getById(id);
+        double salary = priceAssignment * assignments.size();
+        coordinator.setSalary(salary);
+        coordinatorRepository.updated(coordinator);
+        return salary;
     }
 
 }

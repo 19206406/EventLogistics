@@ -16,6 +16,7 @@ import com.desgroup.logic.EventService;
 import com.desgroup.logic.LogisticService;
 import com.desgroup.models.Logistic;
 import com.desgroup.models.Staff;
+import java.beans.PropertyVetoException;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -37,21 +38,19 @@ public class MainFrame extends JFrame {
     private final IEventService eventService;
     private final IEventAssignmentService assignmentService;
     private final ICoordinatorService coordinatorService;
-    private final IStaffSalary salaryService;
 
     private final Staff currentUser;
 
     private LoginFrame Back;
+    private AssignedEventsInternalFrame assignedEventsFrame;
 
     public MainFrame(IStaffService staffService, ILogisticService logisticService, IEventService eventService,
-            IEventAssignmentService assignmentService, ICoordinatorService coordinatorService,
-            IStaffSalary salaryService, Staff currentUser) {
+            IEventAssignmentService assignmentService, ICoordinatorService coordinatorService, Staff currentUser) {
         this.staffService = staffService;
         this.logisticService = logisticService;
         this.eventService = eventService;
         this.assignmentService = assignmentService;
         this.coordinatorService = coordinatorService;
-        this.salaryService = salaryService;
         this.currentUser = currentUser;
         initComponents();
     }
@@ -74,12 +73,13 @@ public class MainFrame extends JFrame {
         JMenu menuLogistic = new JMenu("Logistico");
 
         JMenuItem itemEventsAssignedLogistic = new JMenuItem("Ver eventos asignados");
-        itemEventsAssignedLogistic.addActionListener(e -> openViewEventsAssignment());
+        itemEventsAssignedLogistic.addActionListener(
+                e -> openAssignedEvents(currentUser instanceof Logistic, "Esta opción es solo para Logisticos"));
         menuLogistic.add(itemEventsAssignedLogistic);
 
-        JMenuItem itemViewCooridnatorProfile = new JMenuItem("Ver perfil");
-        itemViewCooridnatorProfile.addActionListener(e -> openLogisticProfile());
-        menuLogistic.add(itemViewCooridnatorProfile);
+        JMenuItem itemViewLogisticProfile = new JMenuItem("Ver perfil");
+        itemViewLogisticProfile.addActionListener(e -> openLogisticProfile());
+        menuLogistic.add(itemViewLogisticProfile);
 
         menuBar.add(menuLogistic);
 
@@ -91,7 +91,8 @@ public class MainFrame extends JFrame {
         menuCoordinator.add(itemManageLogistics);
 
         JMenuItem itemEventsAssignedCoordinator = new JMenuItem("Ver eventos asignados");
-        itemEventsAssignedCoordinator.addActionListener(e -> openViewEventsAssignment());
+        itemEventsAssignedCoordinator.addActionListener(
+                e -> openAssignedEvents(currentUser instanceof Coordinator, "Esta opción es solo para Coordinadores"));
         menuCoordinator.add(itemEventsAssignedCoordinator);
 
         JMenuItem itemViewCoordinatorProfile = new JMenuItem("Ver perfil");
@@ -124,18 +125,27 @@ public class MainFrame extends JFrame {
         return menuBar;
     }
 
-    // Coordinators
-    private void openViewEventsAssignment() {
-        if (!(currentUser instanceof Coordinator) && !(currentUser instanceof Logistic)) {
-            JOptionPane.showMessageDialog(this, "Esta opción es solo para Coordinadores y Logisticos");
+    // Coordinators and Logistics
+    private void openAssignedEvents(boolean hasAccess, String deniedMessage) {
+        if (!hasAccess) {
+            JOptionPane.showMessageDialog(this, deniedMessage);
             return;
         }
-        ViewEventsAssignmentCoordinator frame = new ViewEventsAssignmentCoordinator(assignmentService, eventService,
-                currentUser);
-        desktopPane.add(frame);
-        frame.setVisible(true);
+        if (assignedEventsFrame != null && !assignedEventsFrame.isClosed()) {
+            assignedEventsFrame.toFront();
+            try {
+                assignedEventsFrame.setSelected(true);
+            } catch (PropertyVetoException ignored) {
+                // The frame stays open in front even if selection is vetoed
+            }
+            return;
+        }
+        assignedEventsFrame = new AssignedEventsInternalFrame(assignmentService, eventService, currentUser);
+        desktopPane.add(assignedEventsFrame);
+        assignedEventsFrame.setVisible(true);
     }
 
+    // Coordinators
     private void openManageLogistics() {
         if (!(currentUser instanceof Coordinator)) {
             JOptionPane.showMessageDialog(this, "Esta opción es solo para Coordinadores");
@@ -153,7 +163,7 @@ public class MainFrame extends JFrame {
         }
 
         Coordinator coordinator = (Coordinator) currentUser;
-        ViewCoordinatorProfile frame = new ViewCoordinatorProfile(coordinator, coordinatorService, salaryService);
+        ViewCoordinatorProfile frame = new ViewCoordinatorProfile(coordinator, coordinatorService);
         desktopPane.add(frame);
         frame.setVisible(true);
     }
@@ -166,7 +176,7 @@ public class MainFrame extends JFrame {
         }
 
         Logistic logistic = (Logistic) currentUser;
-        ViewLogisticProfile frame = new ViewLogisticProfile(logistic, salaryService);
+        ViewLogisticProfile frame = new ViewLogisticProfile(logistic, logisticService);
         desktopPane.add(frame);
         frame.setVisible(true);
     }
@@ -196,7 +206,7 @@ public class MainFrame extends JFrame {
 
     public void returnBack() {
         Back = new LoginFrame(staffService, logisticService, eventService, assignmentService,
-                coordinatorService, salaryService);
+                coordinatorService);
         Back.setVisible(true);
         this.dispose();
     }
