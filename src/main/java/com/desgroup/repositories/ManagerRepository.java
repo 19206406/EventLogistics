@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.desgroup.interfaces.repositoriesInterfaces.IManagerRepository;
 import com.desgroup.models.Manager;
+import com.desgroup.utils.StaffIdGenerator;
 
 public class ManagerRepository implements IManagerRepository {
 
@@ -26,7 +27,7 @@ public class ManagerRepository implements IManagerRepository {
     }
 
     private void createManagerAdministrator() {
-        Manager admin = new Manager(nextId, "Abelardo", "admin", "1234232342", "Gerente", "admin123", "EventLogistic");
+        Manager admin = new Manager(StaffIdGenerator.next(), "Abelardo", "admin", "1234232342", "Gerente", "admin123", "EventLogistic");
         managers.add(admin);
     }
 

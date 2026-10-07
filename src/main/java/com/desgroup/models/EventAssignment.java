@@ -4,6 +4,8 @@
  */
 package com.desgroup.models;
 
+import com.desgroup.utils.StaffRole;
+
 /**
  *
  * @author urreg
@@ -13,6 +15,9 @@ public class EventAssignment {
     private int idStaff;
     private int idEvent;
 
+    private int idAssignedBy;
+    private StaffRole staffRole;
+
     public EventAssignment() {
     }
 
@@ -20,6 +25,14 @@ public class EventAssignment {
         this.idAssignment = idAssignment;
         this.idStaff = idStaff;
         this.idEvent = idEvent;
+    }
+
+    public EventAssignment(int idAssignment, int idStaff, int idEvent, int idAssignedBy, StaffRole staffRole) {
+        this.idAssignment = idAssignment;
+        this.idStaff = idStaff;
+        this.idEvent = idEvent;
+        this.idAssignedBy = idAssignedBy;
+        this.staffRole = staffRole;
     }
 
     public int getIdAssignment() {
@@ -45,5 +58,23 @@ public class EventAssignment {
     public void setIdEvent(int idEvent) {
         this.idEvent = idEvent;
     }
+
+    public int getIdAssignedBy() {
+        return idAssignedBy;
+    }
+
+    public void setIdAssignedBy(int idAssignedBy) {
+        this.idAssignedBy = idAssignedBy;
+    }
+
+    public StaffRole getStaffRole() {
+        return staffRole;
+    }
+
+    public void setStaffRole(StaffRole staffRole) {
+        this.staffRole = staffRole;
+    }
+
+    
 
 }
