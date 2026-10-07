@@ -25,17 +25,14 @@ public class LoginFrame extends javax.swing.JFrame {
     private final IEventService eventService;
     private final IEventAssignmentService assignmentService;
     private final ICoordinatorService coordinatorService;
-    private final IStaffSalary salaryService;
 
     public LoginFrame(IStaffService staffService, ILogisticService logisticService, IEventService eventService,
-            IEventAssignmentService assignmentService, ICoordinatorService coordinatorService,
-            IStaffSalary salaryService) {
+            IEventAssignmentService assignmentService, ICoordinatorService coordinatorService) {
         this.staffService = staffService;
         this.logisticService = logisticService;
         this.eventService = eventService;
         this.assignmentService = assignmentService;
         this.coordinatorService = coordinatorService;
-        this.salaryService = salaryService;
 
         initComponents();
         setLocationRelativeTo(null);
@@ -161,7 +158,7 @@ public class LoginFrame extends javax.swing.JFrame {
         if (isSuccess != null) {
             MainFrame mainFrame = new MainFrame(staffService, logisticService, eventService,
                     assignmentService,
-                    coordinatorService, salaryService, isSuccess);
+                    coordinatorService, isSuccess);
             mainFrame.setVisible(true);
             dispose();
         } else {

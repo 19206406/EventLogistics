@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.desgroup.interfaces.repositoriesInterfaces.ICoordinatorRepository;
 import com.desgroup.models.Coordinator;
+import com.desgroup.utils.StaffIdGenerator;
 
 public class CoordinatorRepository implements ICoordinatorRepository {
 
@@ -19,34 +20,34 @@ public class CoordinatorRepository implements ICoordinatorRepository {
 
     private void initializeLogistics() {
 
-        coordinators.add(new Coordinator(nextId++, "Robert", "robert@gmail.com", "3025896", "Coordinadora",
+        coordinators.add(new Coordinator(StaffIdGenerator.next(), "Robert", "robert@gmail.com", "3025896", "Coordinadora",
                 "robert123", "EventLogistic"));
 
-        coordinators.add(new Coordinator(nextId++, "Carolina", "carolina@gmail.com", "3014732", "Coordinadora",
+        coordinators.add(new Coordinator(StaffIdGenerator.next(), "Carolina", "carolina@gmail.com", "3014732", "Coordinadora",
                 "Carolina123", "EventLogistic"));
 
-        coordinators.add(new Coordinator(nextId++, "Valentina", "valentina@gmail.com", "3008254", "Coordinadora",
+        coordinators.add(new Coordinator(StaffIdGenerator.next(), "Valentina", "valentina@gmail.com", "3008254", "Coordinadora",
                 "Valentina123", "EventLogistic"));
 
-        coordinators.add(new Coordinator(nextId++, "Daniela", "daniela@gmail.com", "3046918", "Coordinadora",
+        coordinators.add(new Coordinator(StaffIdGenerator.next(), "Daniela", "daniela@gmail.com", "3046918", "Coordinadora",
                 "Daniela123", "EventLogistic"));
 
-        coordinators.add(new Coordinator(nextId++, "Maria", "maria@gmail.com", "3052376", "Coordinadora",
+        coordinators.add(new Coordinator(StaffIdGenerator.next(), "Maria", "maria@gmail.com", "3052376", "Coordinadora",
                 "Maria123", "EventLogistic"));
 
-        coordinators.add(new Coordinator(nextId++, "Gabriela", "gabriela@gmail.com", "3065149", "Coordinadora",
+        coordinators.add(new Coordinator(StaffIdGenerator.next(), "Gabriela", "gabriela@gmail.com", "3065149", "Coordinadora",
                 "Gabriela123", "EventLogistic"));
 
-        coordinators.add(new Coordinator(nextId++, "Natalia", "natalia@gmail.com", "3078263", "Coordinadora",
+        coordinators.add(new Coordinator(StaffIdGenerator.next(), "Natalia", "natalia@gmail.com", "3078263", "Coordinadora",
                 "Natalia123", "EventLogistic"));
 
-        coordinators.add(new Coordinator(nextId++, "Paula", "paula@gmail.com", "3083497", "Coordinadora",
+        coordinators.add(new Coordinator(StaffIdGenerator.next(), "Paula", "paula@gmail.com", "3083497", "Coordinadora",
                 "Paula123", "EventLogistic"));
 
-        coordinators.add(new Coordinator(nextId++, "Laura", "laura@gmail.com", "3096721", "Coordinadora",
+        coordinators.add(new Coordinator(StaffIdGenerator.next(), "Laura", "laura@gmail.com", "3096721", "Coordinadora",
                 "Laura123", "EventLogistic"));
 
-        coordinators.add(new Coordinator(nextId++, "Alejandra", "alejandra@gmail.com", "3104586", "Coordinadora",
+        coordinators.add(new Coordinator(StaffIdGenerator.next(), "Alejandra", "alejandra@gmail.com", "3104586", "Coordinadora",
                 "Alejandra123", "EventLogistic"));
 
     }

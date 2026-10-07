@@ -13,7 +13,7 @@ public class CoordinatorService implements IStaffSalary, ICoordinatorService {
 
     private final ICoordinatorRepository coordinatorRepository;
     private final IEventAssignmentRepository assignmentRepository;
-    private double priceAssignment;
+    private final double priceAssignment;
 
     public CoordinatorService(ICoordinatorRepository coordinatorRepository,
             IEventAssignmentRepository assignmentRepository) {
@@ -36,21 +36,25 @@ public class CoordinatorService implements IStaffSalary, ICoordinatorService {
         coordinatorRepository.create(coordinator);
     }
 
-    public void updatedCoordinator(String name, String email, String phone, String position, String password,
-            String company) {
-        Coordinator coordinator = new Coordinator(0, name, email, phone, position, password, company);
-        coordinatorRepository.updated(coordinator);
+    public void updatedCoordinator(int id, String name, String email, String phone,
+                                   String position, String password, String company) {
+        coordinatorRepository.updated(new Coordinator(id, name, email, phone, position, password, company));
     }
 
     public void deleteCoordinator(int id) {
+        assignmentRepository.deleteByAssigner(id);
+        assignmentRepository.deleteByStaff(id);
         coordinatorRepository.delete(id);
     }
 
     @Override
     public double calculateSalary(int id) {
         List<EventAssignment> assignments = assignmentRepository.getAllByStaff(id);
-
-        return priceAssignment * assignments.size();
+        Coordinator coordinator = coordinatorRepository.getById(id);
+        double salary = priceAssignment * assignments.size();
+        coordinator.setSalary(salary);
+        coordinatorRepository.updated(coordinator);
+        return salary;
     }
 
 }

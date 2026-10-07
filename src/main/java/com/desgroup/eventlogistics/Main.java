@@ -4,23 +4,7 @@
  */
 package com.desgroup.eventlogistics;
 
-import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
-import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
-import com.desgroup.interfaces.logicInterfaces.IEventService;
-import com.desgroup.interfaces.logicInterfaces.ILogisticService;
-import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
-import com.desgroup.interfaces.logicInterfaces.IStaffService;
-import com.desgroup.logic.CoordinatorService;
-import com.desgroup.logic.EventAssignmentService;
-import com.desgroup.logic.EventService;
-import com.desgroup.logic.LogisticService;
-import com.desgroup.logic.StaffService;
-import com.desgroup.repositories.CoordinatorRepository;
-import com.desgroup.repositories.EventAssignmentRepository;
-import com.desgroup.repositories.EventRepository;
-import com.desgroup.repositories.LogisticRepository;
-import com.desgroup.repositories.ManagerRepository;
-import com.desgroup.repositories.StaffRepository;
+import com.desgroup.repositories.AppContext;
 import com.desgroup.ui.LoginFrame;
 import java.awt.EventQueue;
 import javax.swing.UIManager;
@@ -63,32 +47,6 @@ public class Main extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) throws Exception {
-        /* Set the Nimbus look and feel */
-        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
-        // (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
-         * look and feel.
-         * For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        // </editor-fold>
 
         for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
             if ("Nimbus".equals(info.getName())) {
@@ -97,41 +55,16 @@ public class Main extends javax.swing.JFrame {
             }
         }
 
-        LogisticRepository logisticRepository = new LogisticRepository();
-        CoordinatorRepository coordinatorRepository = new CoordinatorRepository();
-        ManagerRepository managerRepository = new ManagerRepository();
-        EventRepository eventRepository = new EventRepository();
-        EventAssignmentRepository eventAssignmentRepository = new EventAssignmentRepository();
-        StaffRepository staffRepository = new StaffRepository(
-                logisticRepository, coordinatorRepository, managerRepository);
+        AppContext ctx = AppContext.get();
 
-        LogisticService logisticServiceImpl = new LogisticService(logisticRepository);
-        CoordinatorService coordinatorServiceImpl = new CoordinatorService(coordinatorRepository,
-                eventAssignmentRepository);
-
-        IStaffService staffService = new StaffService(staffRepository);
-        ILogisticService logisticService = logisticServiceImpl;
-        IEventService eventService = new EventService(eventRepository);
-        IEventAssignmentService assignmentService = new EventAssignmentService(eventAssignmentRepository);
-        ICoordinatorService coordinatorService = coordinatorServiceImpl;
-
-        // OJO: decide aquí cuál IStaffSalary usas por defecto (logístico o
-        // coordinador),
-        // según lo que hayas resuelto en la conversación anterior sobre las 2
-        // interfaces
-        IStaffSalary salaryService = logisticServiceImpl; // o el que corresponda
-
-        EventQueue.invokeLater(() -> new LoginFrame(staffService,
-                logisticService,
-                eventService,
-                assignmentService,
-                coordinatorService,
-                salaryService).setVisible(true));
+        EventQueue.invokeLater(() -> new LoginFrame(
+                ctx.staffService,
+                ctx.logisticService,
+                ctx.eventService,
+                ctx.assignmentService,
+                ctx.coordinatorService).setVisible(true));
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenuBar menuEventLogistic;
-    // End of variables declaration//GEN-END:variables
-
 }

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
+import com.desgroup.models.Event;
 import com.desgroup.models.EventAssignment;
+import com.desgroup.utils.StaffRole;
 
 public class EventAssignmentRepository implements IEventAssignmentRepository {
     private List<EventAssignment> assignments;
@@ -29,7 +31,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     public EventAssignment getById(int id) {
         for (EventAssignment assignment : assignments) {
-            if (assignment.getIdEvent() == id) {
+            if (assignment.getIdAssignment() == id) {
                 return assignment;
             }
         }
@@ -56,7 +58,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     public void updated(EventAssignment assignment) {
         for (int i = 0; i < assignments.size(); i++) {
-            if (assignments.get(i).getIdEvent() == assignment.getIdEvent()) {
+            if (assignments.get(i).getIdAssignment() == assignment.getIdAssignment()) {
                 assignments.set(i, assignment);
                 return;
             }
@@ -75,5 +77,77 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     public void delete(int id) {
         assignments.removeIf(l -> l.getIdAssignment() == id);
+    }
+
+    @Override
+    public List<EventAssignment> getAllByEvent(int eventId) {
+
+        List<EventAssignment> searchAssignments = new ArrayList<>();
+
+        for (EventAssignment assignment : assignments) {
+            if (assignment.getIdEvent() == eventId) {
+                searchAssignments.add(assignment);
+            }
+        }
+
+        return searchAssignments;
+
+        // return assignments.stream()
+        //        .filter(assignment -> assignment.getIdEvent() == eventId)
+        //        .toList();
+    }
+
+    @Override
+    public int countByEventAndRole(int eventId, StaffRole role) {
+
+        int count = 0;
+
+        for(EventAssignment assignment : assignments) {
+            if (assignment.getIdEvent() == eventId && assignment.getStaffRole() == role)
+                count++;
+        }
+
+//        return (int) assignments.stream()
+//                .filter(assignment -> assignment.getIdEvent() == eventId && assignment.getStaffRole() == role)
+//                .count();
+
+        return count;
+    }
+
+    @Override
+    public int countByEventAndAssigner(int eventId, int assignerId) {
+
+        int count = 0;
+
+        for (EventAssignment assignment : assignments) {
+            if (assignment.getIdEvent() == eventId && assignment.getIdAssignedBy() == assignerId)
+                count++;
+        }
+
+        return count;
+
+//        return (int) assignments.stream()
+//                .filter(assignment -> assignment.getIdEvent() == eventId && assignment.getIdAssignedBy() == assignerId)
+//                .count();
+    }
+
+    @Override
+    public void deleteByEvent(int eventId) {
+        assignments.removeIf(a -> a.getIdEvent() == eventId);
+    }
+
+    @Override
+    public void deleteByStaff(int staffId) {
+        assignments.removeIf(a -> a.getIdStaff() == staffId);
+    }
+
+    @Override
+    public void deleteByAssigner(int assignerId) {
+        assignments.removeIf(a -> a.getIdAssignedBy() == assignerId);
+    }
+
+    @Override
+    public void deleteByEventAndAssigner(int eventId, int assignerId) {
+        assignments.removeIf(a -> a.getIdEvent() == eventId && a.getIdAssignedBy() == assignerId);
     }
 }

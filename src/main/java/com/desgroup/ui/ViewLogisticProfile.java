@@ -4,6 +4,7 @@
  */
 package com.desgroup.ui;
 
+import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
 import com.desgroup.models.Logistic;
 import java.awt.GridLayout;
@@ -18,12 +19,12 @@ import javax.swing.JPanel;
 public class ViewLogisticProfile extends javax.swing.JInternalFrame {
 
     private final Logistic logistic;
-    private final IStaffSalary salaryService;
+    private final ILogisticService logisticService;
 
-    public ViewLogisticProfile(Logistic logistic, IStaffSalary salaryService) {
+    public ViewLogisticProfile(Logistic logistic, ILogisticService logisticService) {
         super("Datos del Logístico", true, true, true, true);
         this.logistic = logistic;
-        this.salaryService = salaryService;
+        this.logisticService = logisticService;
         initializeComponents();
     }
 
@@ -34,16 +35,16 @@ public class ViewLogisticProfile extends javax.swing.JInternalFrame {
         JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5));
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        double salary = salaryService.calculateSalary(logistic.getIdStaff());
+        double salary = logisticService.calculateSalary(logistic.getIdStaff());
 
-        JLabel lblName = new JLabel("Nombre: " + this.logistic.getName());
-        JLabel lblEmail = new JLabel("Email: " + this.logistic.getEmail());
-        JLabel lblPhone = new JLabel("Teléfono: " + this.logistic.getPhone());
-        JLabel lblPosition = new JLabel("Posición: " + this.logistic.getPosition());
-        JLabel lblZone = new JLabel("Zona: " + this.logistic.getZone());
-        JLabel lblRole = new JLabel("Rol: " + this.logistic.getRole());
+        JLabel lblName = new JLabel("Nombre: " + logistic.getName());
+        JLabel lblEmail = new JLabel("Email: " + logistic.getEmail());
+        JLabel lblPhone = new JLabel("Teléfono: " + logistic.getPhone());
+        JLabel lblPosition = new JLabel("Posición: " + logistic.getPosition());
+        JLabel lblZone = new JLabel("Zona: " + logistic.getZone());
+        JLabel lblRole = new JLabel("Rol: " + logistic.getRole());
         JLabel lblSalary = new JLabel("Salario: " + salary);
-        JLabel lblScore = new JLabel("Puntaje: " + this.logistic.getScore());
+        JLabel lblScore = new JLabel("Puntaje: " + logistic.getScore());
 
         panel.add(lblName);
         panel.add(lblEmail);
