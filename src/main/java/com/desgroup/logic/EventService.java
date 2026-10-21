@@ -22,42 +22,29 @@ public class EventService implements IEventService {
         this.assignmentRepository = assignmentRepository;
     }
 
+    @Override
     public List<Event> getAllEvents() {
         return eventRepository.getAll();
     }
 
+    @Override
     public Event getEventById(int id) {
         return eventRepository.getById(id);
     }
 
+    @Override
     public void createEvent(String name, String state, LocalDate date, int startTime, String country,
-            String city, String placeName, String address, int capacity) {
+                            String city, String placeName, String address, int capacity, int endTime, int maxCoordinators, int maxLogistics, int maxLogisticsPerCoordinator) {
+        validateLimits(startTime, endTime, maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
+
         Place place = new Place(country, city, placeName, address, capacity);
-        Event newEvent = new Event(capacity, name, place, state, date, startTime);
+        Event newEvent = new Event(maxLogistics, maxLogisticsPerCoordinator, maxCoordinators, endTime, startTime,
+                date, state, place, name, 0);
         eventRepository.create(newEvent);
     }
 
     @Override
-    public void updatedEventOnly(int idEvent, String name, String state, LocalDate date, int startTime, String country, String city, String placeName, String address, int capacity) {
-        Event event = eventRepository.getById(idEvent);
-        if (event == null)
-            throw new BusinessException("El evento no existe.");
-
-        Place place = event.getPlace();
-        place.setCountry(country);
-        place.setCity(city);
-        place.setPlaceName(placeName);
-        place.setAddress(address);
-        place.setCapacity(capacity);
-        event.setName(name);
-        event.setState(state);
-        event.setDate(date);
-        event.setStartTime(startTime);
-        eventRepository.updated(event);
-    }
-
-    @Override
-    public void updatedEventComplete(int idEvent, String name, String state, LocalDate date, int startTime, String country, String city, String placeName, String address, int capacity, int endTime, int maxCoordinators, int maxLogistics, int maxLogisticsPerCoordinator) {
+    public void updateEvent(int idEvent, String name, String state, LocalDate date, int startTime, String country, String city, String placeName, String address, int capacity, int endTime, int maxCoordinators, int maxLogistics, int maxLogisticsPerCoordinator) {
         Event event = eventRepository.getById(idEvent);
         if (event == null)
             throw new BusinessException("El evento no existe.");
@@ -86,8 +73,7 @@ public class EventService implements IEventService {
         eventRepository.updated(event);
     }
 
-
-
+    @Override
     public List<Event> getEventsByArrayIds(List<Integer> ids) {
         List<Event> events = new ArrayList<>();
         for (int id : ids) {
@@ -96,6 +82,7 @@ public class EventService implements IEventService {
         return events;
     }
 
+    @Override
     public void deleteEventById(int id) {
         assignmentRepository.deleteByEvent(id);
         eventRepository.delete(id);

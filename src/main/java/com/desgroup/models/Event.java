@@ -35,6 +35,19 @@ public class Event {
         this.startTime = startTime;
     }
 
+    public Event(int maxLogistics, int maxLogisticsPerCoordinator, int maxCoordinators, int endTime, int startTime, LocalDate date, String state, Place place, String name, int idEvent) {
+        this.maxLogistics = maxLogistics;
+        this.maxLogisticsPerCoordinator = maxLogisticsPerCoordinator;
+        this.maxCoordinators = maxCoordinators;
+        this.endTime = endTime;
+        this.startTime = startTime;
+        this.date = date;
+        this.state = state;
+        this.place = place;
+        this.name = name;
+        this.idEvent = idEvent;
+    }
+
     public int getEndTime() {
         return endTime;
     }

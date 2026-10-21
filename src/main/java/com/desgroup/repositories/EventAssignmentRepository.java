@@ -14,7 +14,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     public EventAssignmentRepository() {
         assignments = new ArrayList<>();
-        nextId = 0;
+        nextId = 1;
     }
 
     public List<EventAssignment> getAll() {

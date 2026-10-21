@@ -187,7 +187,7 @@ public class MainFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Esta opción es solo para Gerentes");
             return;
         }
-        ManagerEvent frame = new ManagerEvent(eventService);
+        ManageEventFrame frame = new ManageEventFrame(eventService, desktopPane);
         desktopPane.add(frame);
         frame.setVisible(true);
     }
