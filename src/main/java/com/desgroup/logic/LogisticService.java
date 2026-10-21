@@ -14,7 +14,8 @@ public class LogisticService implements IStaffSalary, ILogisticService {
     private final IEventAssignmentRepository assignmentRepository;
     private final double hourlyRate;
 
-    public LogisticService(ILogisticRepository repository, IEventAssignmentRepository assignmentRepository) {
+    public LogisticService(
+            ILogisticRepository repository, IEventAssignmentRepository assignmentRepository) {
         this.repository = repository;
         this.assignmentRepository = assignmentRepository;
         hourlyRate = 10000.00;

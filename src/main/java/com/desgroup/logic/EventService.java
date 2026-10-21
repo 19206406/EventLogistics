@@ -37,29 +37,56 @@ public class EventService implements IEventService {
         eventRepository.create(newEvent);
     }
 
-    public void updatedEvent(int idEvent, String name, String state, LocalDate date, int startTime, String country,
-            String city, String placeName, String address, int capacity, int endTime, int maxCoordinators, int maxLogistics, int maxLogisticsPerCoordinator) {
+    @Override
+    public void updatedEventOnly(int idEvent, String name, String state, LocalDate date, int startTime, String country, String city, String placeName, String address, int capacity) {
         Event event = eventRepository.getById(idEvent);
-        if (event == null) throw new BusinessException("El evento no existe.");
+        if (event == null)
+            throw new BusinessException("El evento no existe.");
+
+        Place place = event.getPlace();
+        place.setCountry(country);
+        place.setCity(city);
+        place.setPlaceName(placeName);
+        place.setAddress(address);
+        place.setCapacity(capacity);
+        event.setName(name);
+        event.setState(state);
+        event.setDate(date);
+        event.setStartTime(startTime);
+        eventRepository.updated(event);
+    }
+
+    @Override
+    public void updatedEventComplete(int idEvent, String name, String state, LocalDate date, int startTime, String country, String city, String placeName, String address, int capacity, int endTime, int maxCoordinators, int maxLogistics, int maxLogisticsPerCoordinator) {
+        Event event = eventRepository.getById(idEvent);
+        if (event == null)
+            throw new BusinessException("El evento no existe.");
 
         validateLimits(startTime, endTime, maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
 
-        // no bajar los cupos por debajo de lo ya asignado
         if (maxCoordinators < assignmentRepository.countByEventAndRole(idEvent, StaffRole.COORDINATOR))
             throw new BusinessException("Hay más coordinadores asignados que el nuevo máximo.");
         if (maxLogistics < assignmentRepository.countByEventAndRole(idEvent, StaffRole.LOGISTIC))
             throw new BusinessException("Hay más logísticos asignados que el nuevo máximo.");
 
-        // modificar el existente conserva idPlace y las asignaciones
         Place place = event.getPlace();
-        place.setCountry(country); place.setCity(city); place.setPlaceName(placeName);
-        place.setAddress(address);  place.setCapacity(capacity);
-        event.setName(name); event.setState(state); event.setDate(date);
-        event.setStartTime(startTime); event.setEndTime(endTime);
-        event.setMaxCoordinators(maxCoordinators); event.setMaxLogistics(maxLogistics);
+        place.setCountry(country);
+        place.setCity(city);
+        place.setPlaceName(placeName);
+        place.setAddress(address);
+        place.setCapacity(capacity);
+        event.setName(name);
+        event.setState(state);
+        event.setDate(date);
+        event.setStartTime(startTime);
+        event.setEndTime(endTime);
+        event.setMaxCoordinators(maxCoordinators);
+        event.setMaxLogistics(maxLogistics);
         event.setMaxLogisticsPerCoordinator(maxLogisticsPerCoordinator);
         eventRepository.updated(event);
     }
+
+
 
     public List<Event> getEventsByArrayIds(List<Integer> ids) {
         List<Event> events = new ArrayList<>();
@@ -73,7 +100,6 @@ public class EventService implements IEventService {
         assignmentRepository.deleteByEvent(id);
         eventRepository.delete(id);
     }
-
 
     private void validateLimits(int start, int end, int maxCoord, int maxLog, int maxPerCoord) {
         if (start < 0 || end > 24 || end <= start)

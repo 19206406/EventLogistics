@@ -110,7 +110,7 @@ public class ManagerEvent extends javax.swing.JInternalFrame {
 
     private void btnCreateEventActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnCreateEventActionPerformed
         openForm(null);
-    }// GEN-LAST:event_btnCreateEventActionPerformed
+    }
 
     private void btnEditEventActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnEditEventActionPerformed
         Event selected = getSelectedEvent("editar");

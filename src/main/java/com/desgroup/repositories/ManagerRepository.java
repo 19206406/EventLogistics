@@ -10,12 +10,10 @@ import com.desgroup.utils.StaffIdGenerator;
 public class ManagerRepository implements IManagerRepository {
 
     private List<Manager> managers;
-    private int nextId;
     private static ManagerRepository instance;
 
     public ManagerRepository() {
         managers = new ArrayList<>();
-        nextId = 0;
         createManagerAdministrator();
     }
 
@@ -55,7 +53,7 @@ public class ManagerRepository implements IManagerRepository {
     }
 
     public void create(Manager manager) {
-        manager.setIdStaff(nextId++);
+        manager.setIdStaff(StaffIdGenerator.next());
         managers.add(manager);
     }
 
