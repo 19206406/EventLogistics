@@ -15,14 +15,6 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
     public EventAssignmentRepository() {
         assignments = new ArrayList<>();
         nextId = 0;
-        initializeEventAssignment();
-    }
-
-    private void initializeEventAssignment() {
-        assignments.add(new EventAssignment(nextId++, 0, 1));
-        assignments.add(new EventAssignment(nextId++, 0, 2));
-        assignments.add(new EventAssignment(nextId++, 0, 3));
-        assignments.add(new EventAssignment(nextId++, 0, 4));
     }
 
     public List<EventAssignment> getAll() {
@@ -91,10 +83,6 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
         }
 
         return searchAssignments;
-
-        // return assignments.stream()
-        //        .filter(assignment -> assignment.getIdEvent() == eventId)
-        //        .toList();
     }
 
     @Override
@@ -106,10 +94,6 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
             if (assignment.getIdEvent() == eventId && assignment.getStaffRole() == role)
                 count++;
         }
-
-//        return (int) assignments.stream()
-//                .filter(assignment -> assignment.getIdEvent() == eventId && assignment.getStaffRole() == role)
-//                .count();
 
         return count;
     }
@@ -125,10 +109,6 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
         }
 
         return count;
-
-//        return (int) assignments.stream()
-//                .filter(assignment -> assignment.getIdEvent() == eventId && assignment.getIdAssignedBy() == assignerId)
-//                .count();
     }
 
     @Override

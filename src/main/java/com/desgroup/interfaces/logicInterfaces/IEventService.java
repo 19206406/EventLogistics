@@ -14,7 +14,10 @@ public interface IEventService {
         void createEvent(String name, String state, LocalDate date, int startTime, String country,
                         String city, String placeName, String address, int capacity);
 
-        void updatedEvent(int idEvent, String name, String state, LocalDate date, int startTime, String country,
+        void updatedEventOnly(int idEvent, String name, String state, LocalDate date, int startTime, String country,
+                              String city, String placeName, String address, int capacity);
+
+        void updatedEventComplete(int idEvent, String name, String state, LocalDate date, int startTime, String country,
                           String city, String placeName, String address, int capacity, int endTime, int maxCoordinators, int maxLogistics, int maxLogisticsPerCoordinator);
 
         List<Event> getEventsByArrayIds(List<Integer> ids);

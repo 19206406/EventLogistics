@@ -184,8 +184,7 @@ public class EventFormInternalFrame extends JInternalFrame {
         if (event == null) {
             service.createEvent(name, state, date, startTime, country, city, placeName, address, capacity);
         } else {
-            // service.updatedEvent(event.getIdEvent(), name, state, date, startTime, country, city, placeName, address,
-            //        capacity);
+
         }
 
         managerEvent.loadEvents();
