@@ -6,7 +6,10 @@ import com.desgroup.logic.*;
 
 public final class AppContext {
     private static final AppContext INSTANCE = new AppContext();
-    public static AppContext get() { return INSTANCE; }
+
+    public static AppContext get() {
+        return INSTANCE;
+    }
 
     public final IStaffService staffService;
     public final ILogisticService logisticService;

@@ -37,7 +37,7 @@ public class CoordinatorService implements IStaffSalary, ICoordinatorService {
     }
 
     public void updatedCoordinator(int id, String name, String email, String phone,
-                                   String position, String password, String company) {
+            String position, String password, String company) {
         coordinatorRepository.updated(new Coordinator(id, name, email, phone, position, password, company));
     }
 

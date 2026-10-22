@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
-import com.desgroup.models.Event;
 import com.desgroup.models.EventAssignment;
 import com.desgroup.utils.StaffRole;
 
@@ -20,6 +19,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     private void createAssignment() {
         EventAssignment assignment = new EventAssignment(1, 2, 1, 1, StaffRole.COORDINATOR);
+        assignments.add(assignment);
     }
 
     public List<EventAssignment> getAll() {
@@ -95,7 +95,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
         int count = 0;
 
-        for(EventAssignment assignment : assignments) {
+        for (EventAssignment assignment : assignments) {
             if (assignment.getIdEvent() == eventId && assignment.getStaffRole() == role)
                 count++;
         }

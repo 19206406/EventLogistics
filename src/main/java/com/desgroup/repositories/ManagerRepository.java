@@ -10,7 +10,6 @@ import com.desgroup.utils.StaffIdGenerator;
 public class ManagerRepository implements IManagerRepository {
 
     private List<Manager> managers;
-    private static ManagerRepository instance;
 
     public ManagerRepository() {
         managers = new ArrayList<>();
@@ -18,7 +17,8 @@ public class ManagerRepository implements IManagerRepository {
     }
 
     private void createManagerAdministrator() {
-        Manager admin = new Manager(StaffIdGenerator.next(), "Abelardo", "admin", "1234232342", "Gerente", "admin123", "EventLogistic");
+        Manager admin = new Manager(StaffIdGenerator.next(), "Abelardo", "admin", "1234232342", "Gerente", "admin123",
+                "EventLogistic");
         managers.add(admin);
     }
 
