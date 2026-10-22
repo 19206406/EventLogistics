@@ -7,7 +7,6 @@ package com.desgroup.ui;
 import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
-import com.desgroup.models.Coordinator;
 import com.desgroup.models.Logistic;
 import com.desgroup.models.Staff;
 
@@ -36,8 +35,9 @@ public class ManageLogisticFrame extends JInternalFrame {
     private final Staff currentUser;
     private final JDesktopPane desktopPane;
 
-    public ManageLogisticFrame(ILogisticService logisticService, JDesktopPane desktopPane, IEventService eventService, IEventAssignmentService assignmentService,
-                               Staff currentUser) {
+    public ManageLogisticFrame(ILogisticService logisticService, JDesktopPane desktopPane, IEventService eventService,
+            IEventAssignmentService assignmentService,
+            Staff currentUser) {
         super("Administrar logisticos", true, true, true, true);
         this.logisticService = logisticService;
         this.eventService = eventService;
@@ -149,7 +149,8 @@ public class ManageLogisticFrame extends JInternalFrame {
             selectedLogistic = logisticService.getLogisticById(id);
         }
 
-        AssignLogisticToEvent form = new AssignLogisticToEvent(eventService, assignmentService, logisticService, currentUser, selectedLogistic);
+        AssignLogisticToEvent form = new AssignLogisticToEvent(eventService, assignmentService, logisticService,
+                currentUser, selectedLogistic);
         desktopPane.add(form);
         form.setVisible(true);
     }

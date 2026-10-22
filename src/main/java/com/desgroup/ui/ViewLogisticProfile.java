@@ -5,7 +5,6 @@
 package com.desgroup.ui;
 
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
-import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
 import com.desgroup.models.Logistic;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;

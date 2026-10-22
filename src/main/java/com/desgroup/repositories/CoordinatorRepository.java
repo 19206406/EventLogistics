@@ -13,6 +13,12 @@ public class CoordinatorRepository implements ICoordinatorRepository {
 
     public CoordinatorRepository() {
         coordinators = new ArrayList<>();
+        createCoordinadorAdministrator();
+    }
+
+    private void createCoordinadorAdministrator() {
+        Coordinator coordinator = new Coordinator(StaffIdGenerator.next(), "Sebastian", "sebastian@gmail.com", "3005389944", "Coordinador", "sebastian123", "Event S.A.S");
+        coordinators.add(coordinator);
     }
 
     public List<Coordinator> getAll() {

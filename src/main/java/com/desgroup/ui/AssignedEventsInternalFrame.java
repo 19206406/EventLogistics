@@ -287,7 +287,7 @@ public class AssignedEventsInternalFrame extends JInternalFrame {
                 case COLUMN_DATE -> event.getDate();
                 case COLUMN_START_TIME -> formatHour(event.getStartTime());
                 case COLUMN_END_TIME -> event.getEndTime() > 0 ? formatHour(event.getEndTime()) : "Sin definir";
-                default -> throw new IllegalArgumentException("Unknown column: " + column);
+                default -> throw new IllegalArgumentException("Columna desconocida: " + column);
             };
         }
     }

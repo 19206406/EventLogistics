@@ -17,13 +17,6 @@ public class ManagerRepository implements IManagerRepository {
         createManagerAdministrator();
     }
 
-    public static ManagerRepository getInstance() {
-        if (instance == null) {
-            instance = new ManagerRepository();
-        }
-        return instance;
-    }
-
     private void createManagerAdministrator() {
         Manager admin = new Manager(StaffIdGenerator.next(), "Abelardo", "admin", "1234232342", "Gerente", "admin123", "EventLogistic");
         managers.add(admin);

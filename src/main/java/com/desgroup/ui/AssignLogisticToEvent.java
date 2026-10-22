@@ -1,10 +1,8 @@
 package com.desgroup.ui;
 
-import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
 import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
-import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.models.*;
 import com.desgroup.models.Event;
 import com.desgroup.utils.BusinessException;
@@ -17,15 +15,14 @@ import java.util.List;
 
 public class AssignLogisticToEvent extends JInternalFrame {
 
-    private static final String[] AVAILABLE_COLUMNS = {"Id", "Nombre", "Correo", "Telefono", "Compañia"};
-    private static final String[] ASSIGNED_COLUMNS = { "Id Asignación", "Id Logistico", "Nombre", "Correo"};
+    private static final String[] AVAILABLE_COLUMNS = { "Id", "Nombre", "Correo", "Telefono", "Compañia" };
+    private static final String[] ASSIGNED_COLUMNS = { "Id Asignación", "Id Logistico", "Nombre", "Correo" };
 
     private final IEventService eventService;
     private final IEventAssignmentService assignmentService;
     private final ILogisticService logisticService;
     private final Staff currentUser;
     private final Logistic preselectedLogistic;
-
 
     public AssignLogisticToEvent(IEventService eventService, IEventAssignmentService assignmentService,
             ILogisticService logisticService, Staff currentUser, Logistic preselectedLogistic) {
@@ -42,11 +39,9 @@ public class AssignLogisticToEvent extends JInternalFrame {
         setLocation(60, 50);
     }
 
-
     private void initComponents() {
         mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
 
         eventPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         eventLabel = new JLabel("Evento");
@@ -54,7 +49,7 @@ public class AssignLogisticToEvent extends JInternalFrame {
         eventComboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
-                                                          boolean isSelected, boolean cellHasFocus) {
+                    boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof Event event)
                     setText(event.getName() + " - " + event.getDate() + " (" + event.getState() + ")");
@@ -104,7 +99,9 @@ public class AssignLogisticToEvent extends JInternalFrame {
     private DefaultTableModel createReadOnlyTableModel(String[] columns) {
         return new DefaultTableModel(columns, 0) {
             @Override
-            public boolean isCellEditable(int row, int column) { return false; }
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
     }
 
@@ -202,16 +199,16 @@ public class AssignLogisticToEvent extends JInternalFrame {
     private void unassignSelectedLogistic() {
         int row = assignedLogisticsTable.getSelectedRow();
         if (row == -1) {
-            showWarning("Select an assigned logistic to unassign.");
+            showWarning("Selecciona una logística asignada para desasignarla.");
             return;
         }
 
         int assignmentId = (int) assignedTableModel.getValueAt(row, 0);
         String logisticName = (String) assignedTableModel.getValueAt(row, 2);
         int confirmation = JOptionPane.showConfirmDialog(this,
-                "Do you want to unassign \"" + logisticName + "\"?\n"
-                        + "The logistics assigned by this coordinator to the event will also be removed.",
-                "Confirm unassignment",
+                "¿Quieres desasignar \"" + logisticName + "\"?\n"
+                        + "También se eliminarán las tareas logísticas asignadas por este coordinador al evento.",
+                "Confirmar la anulación de la asignación",
                 JOptionPane.YES_NO_OPTION);
         if (confirmation != JOptionPane.YES_OPTION)
             return;

@@ -148,12 +148,12 @@ public class AssignCoordinatorToEvent extends JInternalFrame {
             Coordinator coordinator = coordinatorService.getCoordinatorById(assignment.getIdStaff());
             assignedTableModel.addRow(new Object[] {
                     assignment.getIdAssignment(), assignment.getIdStaff(),
-                    coordinator != null ? coordinator.getName() : "Unknown",
+                    coordinator != null ? coordinator.getName() : "Desconocido",
                     coordinator != null ? coordinator.getEmail() : ""
             });
         }
 
-        coordinatorSlotsLabel.setText("Coordinators: " + coordinatorAssignments.size()
+        coordinatorSlotsLabel.setText("Coordinadores: " + coordinatorAssignments.size()
                 + " / " + selectedEvent.getMaxCoordinators());
         selectPreselectedCoordinator();
     }
@@ -174,21 +174,21 @@ public class AssignCoordinatorToEvent extends JInternalFrame {
         Event selectedEvent = getSelectedEvent();
         int row = availableCoordinatorsTable.getSelectedRow();
         if (selectedEvent == null || row == -1) {
-            showWarning("Select an available coordinator to assign.");
+            showWarning("Selecciona un coordinador disponible para asignarlo.");
             return;
         }
 
         int coordinatorId = (int) availableTableModel.getValueAt(row, 0);
         Coordinator coordinator = coordinatorService.getCoordinatorById(coordinatorId);
         if (coordinator == null) {
-            showWarning("The selected coordinator no longer exists.");
+            showWarning("El coordinador seleccionado ya no existe.");
             loadCoordinators();
             return;
         }
 
         try {
             assignmentService.assign(currentUser, coordinator, selectedEvent.getIdEvent());
-            JOptionPane.showMessageDialog(this, "Coordinator assigned successfully.", "Success",
+            JOptionPane.showMessageDialog(this, "Se ha asignado correctamente el coordinador.", "Success",
                     JOptionPane.INFORMATION_MESSAGE);
         } catch (BusinessException ex) {
             showError(ex.getMessage());
@@ -199,16 +199,16 @@ public class AssignCoordinatorToEvent extends JInternalFrame {
     private void unassignSelectedCoordinator() {
         int row = assignedCoordinatorsTable.getSelectedRow();
         if (row == -1) {
-            showWarning("Select an assigned coordinator to unassign.");
+            showWarning("Selecciona un coordinador asignado para anular su asignación.");
             return;
         }
 
         int assignmentId = (int) assignedTableModel.getValueAt(row, 0);
         String coordinatorName = (String) assignedTableModel.getValueAt(row, 2);
         int confirmation = JOptionPane.showConfirmDialog(this,
-                "Do you want to unassign \"" + coordinatorName + "\"?\n"
-                        + "The logistics assigned by this coordinator to the event will also be removed.",
-                "Confirm unassignment",
+                "¿Quieres desasignar \"" + coordinatorName + "\"?\n"
+                        + "También se eliminarán las tareas logísticas asignadas por este coordinador al evento.",
+                "Confirmar la anulación de la asignación",
                 JOptionPane.YES_NO_OPTION);
         if (confirmation != JOptionPane.YES_OPTION)
             return;

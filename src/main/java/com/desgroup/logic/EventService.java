@@ -34,7 +34,8 @@ public class EventService implements IEventService {
 
     @Override
     public void createEvent(String name, String state, LocalDate date, int startTime, String country,
-                            String city, String placeName, String address, int capacity, int endTime, int maxCoordinators, int maxLogistics, int maxLogisticsPerCoordinator) {
+            String city, String placeName, String address, int capacity, int endTime, int maxCoordinators,
+            int maxLogistics, int maxLogisticsPerCoordinator) {
         validateLimits(startTime, endTime, maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
 
         Place place = new Place(country, city, placeName, address, capacity);
@@ -44,7 +45,9 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public void updateEvent(int idEvent, String name, String state, LocalDate date, int startTime, String country, String city, String placeName, String address, int capacity, int endTime, int maxCoordinators, int maxLogistics, int maxLogisticsPerCoordinator) {
+    public void updateEvent(int idEvent, String name, String state, LocalDate date, int startTime, String country,
+            String city, String placeName, String address, int capacity, int endTime, int maxCoordinators,
+            int maxLogistics, int maxLogisticsPerCoordinator) {
         Event event = eventRepository.getById(idEvent);
         if (event == null)
             throw new BusinessException("El evento no existe.");

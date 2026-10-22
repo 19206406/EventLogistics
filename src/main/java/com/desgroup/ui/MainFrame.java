@@ -8,12 +8,7 @@ import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
 import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
-import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
 import com.desgroup.interfaces.logicInterfaces.IStaffService;
-import com.desgroup.logic.CoordinatorService;
-import com.desgroup.logic.EventAssignmentService;
-import com.desgroup.logic.EventService;
-import com.desgroup.logic.LogisticService;
 import com.desgroup.models.Logistic;
 import com.desgroup.models.Staff;
 import java.beans.PropertyVetoException;
@@ -151,7 +146,8 @@ public class MainFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Esta opción es solo para Coordinadores");
             return;
         }
-        ManageLogisticFrame frame = new ManageLogisticFrame(logisticService, desktopPane, eventService, assignmentService, currentUser);
+        ManageLogisticFrame frame = new ManageLogisticFrame(logisticService, desktopPane, eventService,
+                assignmentService, currentUser);
         desktopPane.add(frame);
         frame.setVisible(true);
     }

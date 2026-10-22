@@ -12,6 +12,48 @@ public class LogisticRepository implements ILogisticRepository {
 
     public LogisticRepository() {
         logistics = new ArrayList<>();
+        logisticsCreate();
+    }
+
+    private void logisticsCreate() {
+        logistics.add(new Logistic(
+                1,
+                "Andrés Felipe Restrepo",
+                "andres.restrepo@example.com",
+                "3004567891",
+                "Personal logístico",
+                "Logistic2026!",
+                "Zona norte",
+                "Montaje",
+                85,
+                6
+        ));
+
+        logistics.add(new Logistic(
+                2,
+                "Laura Camila Gómez",
+                "laura.gomez@example.com",
+                "3105678923",
+                "Personal logístico",
+                "Logistic2026!",
+                "Zona central",
+                "Registro de asistentes",
+                92,
+                8
+        ));
+
+        logistics.add(new Logistic(
+                3,
+                "Juan David Martínez",
+                "juan.martinez@example.com",
+                "3206789134",
+                "Personal logístico",
+                "Logistic2026!",
+                "Zona sur",
+                "Control de acceso",
+                78,
+                4
+        ));
     }
 
     public List<Logistic> getAll() {
