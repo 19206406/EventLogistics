@@ -3,7 +3,13 @@ package com.desgroup.utils;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import com.desgroup.models.Logistic;
+import com.desgroup.models.db.Coordinator;
+import com.desgroup.models.db.Event;
+import com.desgroup.models.db.EventAssignment;
+import com.desgroup.models.db.Logistic;
+import com.desgroup.models.db.Manager;
+import com.desgroup.models.db.Place;
+import com.desgroup.models.db.Staff;
 
 public class HibernateUtil {
     private static final String CONNECTION_STRING = "jdbc:postgresql://localhost:5432/event-logistic-db?user=postgres&password=admin123";
@@ -14,12 +20,19 @@ public class HibernateUtil {
         Configuration config = new Configuration();
 
         config.setProperty("hibernate.connection.url", CONNECTION_STRING);
+        config.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
         config.setProperty("hibernate.hbm2ddl.auto", "create-drop");
         config.setProperty("hibernate.show_sql", "true");
         config.setProperty("hibernate.format_sql", "true");
 
         // aquí se establecen los modelos para la base de datos
+        config.addAnnotatedClass(Staff.class);
+        config.addAnnotatedClass(Coordinator.class);
+        config.addAnnotatedClass(Manager.class);
         config.addAnnotatedClass(Logistic.class);
+        config.addAnnotatedClass(Place.class);
+        config.addAnnotatedClass(Event.class);
+        config.addAnnotatedClass(EventAssignment.class);
 
         return config.buildSessionFactory();
     }
