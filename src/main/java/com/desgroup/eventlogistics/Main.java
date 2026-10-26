@@ -6,6 +6,8 @@ package com.desgroup.eventlogistics;
 
 import com.desgroup.repositories.AppContext;
 import com.desgroup.ui.LoginFrame;
+import com.desgroup.utils.DatabaseInitializer;
+import com.desgroup.utils.HibernateUtil;
 import java.awt.EventQueue;
 import javax.swing.UIManager;
 
@@ -54,6 +56,13 @@ public class Main extends javax.swing.JFrame {
                 break;
             }
         }
+
+        // 1. Crea la base de datos si no existe y aplica las migraciones de Flyway.
+        DatabaseInitializer.initialize();
+
+        // 2. Fuerza la validación de las entidades contra el esquema ya creado.
+        HibernateUtil.getSessionFactory();
+        Runtime.getRuntime().addShutdownHook(new Thread(HibernateUtil::shutdown, "hibernate-shutdown"));
 
         AppContext ctx = AppContext.get();
 

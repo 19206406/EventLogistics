@@ -1,5 +1,7 @@
 package com.desgroup.utils;
 
+import java.util.Properties;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -11,33 +13,59 @@ import com.desgroup.models.db.Manager;
 import com.desgroup.models.db.Place;
 import com.desgroup.models.db.Staff;
 
-public class HibernateUtil {
-    private static final String CONNECTION_STRING = "jdbc:postgresql://localhost:5432/event-logistic-db?user=postgres&password=admin123";
+/**
+ * Punto único de acceso a Hibernate.
+ *
+ * La conexión y las opciones ya no están escritas aquí: se leen de
+ * {@code database.properties} a través de {@link DatabaseConfig}.
+ *
+ * Con {@code hibernate.hbm2ddl.auto=validate}, Hibernate solo comprueba que las
+ * entidades coincidan con las tablas creadas por Flyway; no crea ni borra nada.
+ */
+public final class HibernateUtil {
 
-    private static final SessionFactory sessionFactory = buildSessionFactory();
+    private static final SessionFactory SESSION_FACTORY = buildSessionFactory();
+
+    private HibernateUtil() {
+        // Clase de utilidades: no se instancia.
+    }
 
     private static SessionFactory buildSessionFactory() {
-        Configuration config = new Configuration();
+        try {
+            Configuration configuration = new Configuration();
 
-        config.setProperty("hibernate.connection.url", CONNECTION_STRING);
-        config.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
-        config.setProperty("hibernate.hbm2ddl.auto", "create-drop");
-        config.setProperty("hibernate.show_sql", "true");
-        config.setProperty("hibernate.format_sql", "true");
+            Properties properties = DatabaseConfig.getHibernateProperties();
+            for (String name : properties.stringPropertyNames()) {
+                configuration.setProperty(name, properties.getProperty(name));
+            }
 
-        // aquí se establecen los modelos para la base de datos
-        config.addAnnotatedClass(Staff.class);
-        config.addAnnotatedClass(Coordinator.class);
-        config.addAnnotatedClass(Manager.class);
-        config.addAnnotatedClass(Logistic.class);
-        config.addAnnotatedClass(Place.class);
-        config.addAnnotatedClass(Event.class);
-        config.addAnnotatedClass(EventAssignment.class);
+            // Aquí se registran las entidades que Hibernate debe conocer.
+            configuration.addAnnotatedClass(Staff.class);
+            configuration.addAnnotatedClass(Coordinator.class);
+            configuration.addAnnotatedClass(Manager.class);
+            configuration.addAnnotatedClass(Logistic.class);
+            configuration.addAnnotatedClass(Place.class);
+            configuration.addAnnotatedClass(Event.class);
+            configuration.addAnnotatedClass(EventAssignment.class);
 
-        return config.buildSessionFactory();
+            return configuration.buildSessionFactory();
+        } catch (Throwable ex) {
+            System.err.println("Error al inicializar Hibernate: " + ex);
+            throw new ExceptionInInitializerError(ex);
+        }
     }
 
     public static SessionFactory getSessionFactory() {
-        return sessionFactory;
+        return SESSION_FACTORY;
+    }
+
+    /**
+     * Cierra la SessionFactory y libera las conexiones.
+     * Se llama desde un shutdown hook al terminar la aplicación.
+     */
+    public static void shutdown() {
+        if (SESSION_FACTORY != null && !SESSION_FACTORY.isClosed()) {
+            SESSION_FACTORY.close();
+        }
     }
 }

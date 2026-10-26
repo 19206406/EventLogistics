@@ -26,11 +26,24 @@
             <version>1.18.36</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- Flyway: control de versiones del esquema de la base de datos -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>10.20.1</version>
+        </dependency>
+        <!-- Desde Flyway 10, el soporte de PostgreSQL vive en un módulo aparte -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <version>10.20.1</version>
+        </dependency>
     </dependencies>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
-        <exec.mainClass>com.desgroup.eventlogistics.EventLogistics</exec.mainClass>
+        <exec.mainClass>com.desgroup.eventlogistics.Main</exec.mainClass>
     </properties>
 </project>
