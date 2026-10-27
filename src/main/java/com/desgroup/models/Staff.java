@@ -61,8 +61,7 @@ public abstract class Staff {
     @EqualsAndHashCode.Exclude
     private List<EventAssignment> assignmentsMade = new ArrayList<>();
 
-    public Staff(int idStaff, String name, String email, String phone, String position, String password) {
-        this.id = idStaff;
+    public Staff(String name, String email, String phone, String position, String password) {
         this.name = name;
         this.email = email;
         this.phone = phone;

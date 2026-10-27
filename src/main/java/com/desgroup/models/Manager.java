@@ -24,7 +24,7 @@ public class Manager extends Staff {
 
     public Manager(int idStaff, String name, String email, String phone, String position, String password,
             String company) {
-        super(idStaff, name, email, phone, position, password);
+        super(name, email, phone, position, password);
         this.company = company;
     }
 

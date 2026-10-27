@@ -14,7 +14,7 @@ public class LogisticRepository implements ILogisticRepository {
     @Override
     public List<Logistic> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM logistic", Logistic.class).list();
+            return session.createQuery("FROM Logistic", Logistic.class).list();
         }
     }
 
@@ -28,7 +28,10 @@ public class LogisticRepository implements ILogisticRepository {
     @Override
     public Logistic getByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Logistic.class, email);
+            return session.createQuery(
+                            "FROM Logistic s WHERE s.email = :email", Logistic.class)
+                    .setParameter("email", email)
+                    .uniqueResult();
         }
     }
 

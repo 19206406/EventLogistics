@@ -40,7 +40,7 @@ public class EventService implements IEventService {
 
         Place place = new Place(country, city, placeName, address, capacity);
         Event newEvent = new Event(maxLogistics, maxLogisticsPerCoordinator, maxCoordinators, endTime, startTime,
-                date, state, place, name, 0);
+                date, state, place, name);
         eventRepository.create(newEvent);
     }
 

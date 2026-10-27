@@ -14,7 +14,7 @@ public class CoordinatorRepository implements ICoordinatorRepository {
     @Override
     public List<Coordinator> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM coordinator", Coordinator.class).list();
+            return session.createQuery("FROM Coordinator", Coordinator.class).list();
         }
     }
 
@@ -28,7 +28,10 @@ public class CoordinatorRepository implements ICoordinatorRepository {
     @Override
     public Coordinator getByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Coordinator.class, email);
+            return session.createQuery(
+                            "FROM Coordinator s WHERE s.email = :email", Coordinator.class)
+                    .setParameter("email", email)
+                    .uniqueResult();
         }
     }
 

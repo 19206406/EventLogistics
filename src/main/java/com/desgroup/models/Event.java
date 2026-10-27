@@ -34,7 +34,7 @@ public class Event {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "place_id", nullable = false)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -67,7 +67,6 @@ public class Event {
     private List<EventAssignment> assignments = new ArrayList<>();
 
     public Event(Integer id, String name, Place place, String state, LocalDate date, Integer startTime) {
-        this.id = id;
         this.name = name;
         this.place = place;
         this.state = state;
@@ -76,8 +75,7 @@ public class Event {
     }
 
     public Event(Integer maxLogistics, Integer maxLogisticsPerCoordinator, Integer maxCoordinators, Integer endTime,
-            Integer startTime,
-            LocalDate date, String state, Place place, String name, Integer id) {
+            Integer startTime, LocalDate date, String state, Place place, String name) {
         this.maxLogistics = maxLogistics;
         this.maxLogisticsPerCoordinator = maxLogisticsPerCoordinator;
         this.maxCoordinators = maxCoordinators;
@@ -87,7 +85,6 @@ public class Event {
         this.state = state;
         this.place = place;
         this.name = name;
-        this.id = id;
     }
 
     public void addAssignment(EventAssignment assignment) {

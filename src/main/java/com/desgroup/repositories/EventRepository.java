@@ -14,14 +14,19 @@ public class EventRepository implements IEventRepository {
     @Override
     public List<Event> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM event", Event.class).list();
+            return session.createQuery(
+                            "SELECT e FROM Event e JOIN FETCH e.place", Event.class)
+                    .list();
         }
     }
 
     @Override
     public Event getById(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Event.class, id);
+            return session.createQuery(
+                            "SELECT e FROM Event e JOIN FETCH e.place WHERE e.id = :id", Event.class)
+                    .setParameter("id", id)
+                    .uniqueResult();
         }
     }
 

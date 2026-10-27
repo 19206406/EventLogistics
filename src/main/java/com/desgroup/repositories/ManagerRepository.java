@@ -14,7 +14,7 @@ public class ManagerRepository implements IManagerRepository {
     @Override
     public List<Manager> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM manager", Manager.class).list();
+            return session.createQuery("FROM Manager", Manager.class).list();
         }
     }
 
@@ -28,7 +28,10 @@ public class ManagerRepository implements IManagerRepository {
     @Override
     public Manager getByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Manager.class, email);
+            return session.createQuery(
+                            "FROM Manager s WHERE s.email = :email", Manager.class)
+                    .setParameter("email", email)
+                    .uniqueResult();
         }
     }
 

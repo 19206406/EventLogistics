@@ -13,7 +13,7 @@ public class StaffRepository implements IStaffRepository {
     @Override
     public List<Staff> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM staff", Staff.class).list();
+            return session.createQuery("FROM Staff", Staff.class).list();
         }
     }
 
@@ -27,7 +27,10 @@ public class StaffRepository implements IStaffRepository {
     @Override
     public Staff getByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Staff.class, email);
+            return session.createQuery(
+                            "FROM Staff s WHERE s.email = :email", Staff.class)
+                    .setParameter("email", email)
+                    .uniqueResult();
         }
     }
 }

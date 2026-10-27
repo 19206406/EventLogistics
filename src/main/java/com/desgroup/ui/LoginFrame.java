@@ -150,7 +150,7 @@ public class LoginFrame extends javax.swing.JFrame {
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSubmitActionPerformed
 
         String email = txtEmail.getText();
-        String password = new String(pwdPassword.getPassword());
+        String password = pwdPassword.getText();
 
         Staff isSuccess = staffService.login(email, password);
 

@@ -22,9 +22,9 @@ public class Coordinator extends Staff {
     @Column(nullable = false)
     private String company;
 
-    public Coordinator(int idStaff, String name, String email, String phone, String position, String password,
+    public Coordinator(String name, String email, String phone, String position, String password,
             String company) {
-        super(idStaff, name, email, phone, position, password);
+        super(name, email, phone, position, password);
         this.company = company;
     }
 
