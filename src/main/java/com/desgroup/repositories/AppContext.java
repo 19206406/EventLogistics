@@ -20,8 +20,7 @@ public final class AppContext {
     private AppContext() {
         ILogisticRepository logisticRepo = new LogisticRepository();
         ICoordinatorRepository coordinatorRepo = new CoordinatorRepository();
-        IManagerRepository managerRepo = new ManagerRepository();
-        IStaffRepository staffRepo = new StaffRepository(logisticRepo, coordinatorRepo, managerRepo);
+        IStaffRepository staffRepo = new StaffRepository();
         IEventRepository eventRepo = new EventRepository();
         IEventAssignmentRepository assignmentRepo = new EventAssignmentRepository();
 

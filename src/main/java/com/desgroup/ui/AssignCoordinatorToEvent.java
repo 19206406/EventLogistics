@@ -133,10 +133,10 @@ public class AssignCoordinatorToEvent extends JInternalFrame {
             return;
         }
 
-        int eventId = selectedEvent.getIdEvent();
+        int eventId = selectedEvent.getId();
         for (Coordinator coordinator : assignmentService.getAvailableCoordinators(eventId)) {
             availableTableModel.addRow(new Object[] {
-                    coordinator.getIdStaff(), coordinator.getName(), coordinator.getEmail(),
+                    coordinator.getId(), coordinator.getName(), coordinator.getEmail(),
                     coordinator.getPhone(), coordinator.getCompany()
             });
         }
@@ -145,9 +145,9 @@ public class AssignCoordinatorToEvent extends JInternalFrame {
                 .filter(assignment -> assignment.getStaffRole() == StaffRole.COORDINATOR)
                 .toList();
         for (EventAssignment assignment : coordinatorAssignments) {
-            Coordinator coordinator = coordinatorService.getCoordinatorById(assignment.getIdStaff());
+            Coordinator coordinator = coordinatorService.getCoordinatorById(assignment.getId());
             assignedTableModel.addRow(new Object[] {
-                    assignment.getIdAssignment(), assignment.getIdStaff(),
+                    assignment.getId(), assignment.getId(),
                     coordinator != null ? coordinator.getName() : "Desconocido",
                     coordinator != null ? coordinator.getEmail() : ""
             });
@@ -163,7 +163,7 @@ public class AssignCoordinatorToEvent extends JInternalFrame {
             return;
 
         for (int row = 0; row < availableTableModel.getRowCount(); row++) {
-            if ((int) availableTableModel.getValueAt(row, 0) == preselectedCoordinator.getIdStaff()) {
+            if ((int) availableTableModel.getValueAt(row, 0) == preselectedCoordinator.getId()) {
                 availableCoordinatorsTable.setRowSelectionInterval(row, row);
                 return;
             }
@@ -187,7 +187,7 @@ public class AssignCoordinatorToEvent extends JInternalFrame {
         }
 
         try {
-            assignmentService.assign(currentUser, coordinator, selectedEvent.getIdEvent());
+            assignmentService.assign(currentUser, coordinator, selectedEvent.getId());
             JOptionPane.showMessageDialog(this, "Se ha asignado correctamente el coordinador.", "Success",
                     JOptionPane.INFORMATION_MESSAGE);
         } catch (BusinessException ex) {

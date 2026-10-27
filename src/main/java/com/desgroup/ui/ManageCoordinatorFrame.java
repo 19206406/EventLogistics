@@ -78,7 +78,7 @@ public class ManageCoordinatorFrame extends JInternalFrame {
         List<Coordinator> coordinators = coordinatorService.getAllCoordinators();
         for (Coordinator c : coordinators) {
             tableModel.addRow(new Object[] {
-                    c.getIdStaff(), c.getName(), c.getEmail(), c.getPhone(),
+                    c.getId(), c.getName(), c.getEmail(), c.getPhone(),
                     c.getPosition(), c.getCompany()
             });
         }

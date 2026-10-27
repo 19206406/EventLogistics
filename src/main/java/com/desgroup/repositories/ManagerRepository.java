@@ -1,65 +1,79 @@
 package com.desgroup.repositories;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.desgroup.interfaces.repositoriesInterfaces.IManagerRepository;
 import com.desgroup.models.Manager;
-import com.desgroup.utils.StaffIdGenerator;
+import com.desgroup.utils.HibernateUtil;
 
 public class ManagerRepository implements IManagerRepository {
 
-    private List<Manager> managers;
-
-    public ManagerRepository() {
-        managers = new ArrayList<>();
-        createManagerAdministrator();
-    }
-
-    private void createManagerAdministrator() {
-        Manager admin = new Manager(StaffIdGenerator.next(), "Abelardo", "admin", "1234232342", "Gerente", "admin123",
-                "EventLogistic");
-        managers.add(admin);
-    }
-
+    @Override
     public List<Manager> getAll() {
-        return new ArrayList<>(managers);
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM manager", Manager.class).list();
+        }
     }
 
+    @Override
     public Manager getById(int id) {
-        for (Manager manager : managers) {
-            if (manager.getIdStaff() == id) {
-                return manager;
-            }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.get(Manager.class, id);
         }
-
-        return null;
     }
 
+    @Override
     public Manager getByEmail(String email) {
-        for (Manager manager : managers) {
-            if (manager.getEmail().equals(email)) {
-                return manager;
-            }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.get(Manager.class, email);
         }
-        return null;
     }
 
+    @Override
     public void create(Manager manager) {
-        manager.setIdStaff(StaffIdGenerator.next());
-        managers.add(manager);
-    }
-
-    public void updated(Manager manager) {
-        for (int i = 0; i < managers.size(); i++) {
-            if (managers.get(i).getIdStaff() == manager.getIdStaff()) {
-                managers.set(i, manager);
-                return;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            try {
+                session.persist(manager);
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+                throw e;
             }
         }
     }
 
-    public void delete(int id) {
-        managers.removeIf(l -> l.getIdStaff() == id);
+    @Override
+    public void updated(Manager manager) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            try {
+                session.merge(manager);
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+                throw e;
+            }
+        }
     }
+
+    @Override
+    public void delete(int id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            try {
+                Manager course = session.get(Manager.class, id);
+                if (course != null)
+                    session.remove(course);
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+                throw e;
+            }
+        }
+    }
+
 }

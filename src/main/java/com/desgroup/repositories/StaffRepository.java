@@ -1,65 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.desgroup.repositories;
 
-import com.desgroup.interfaces.repositoriesInterfaces.ICoordinatorRepository;
-import com.desgroup.interfaces.repositoriesInterfaces.ILogisticRepository;
-import com.desgroup.interfaces.repositoriesInterfaces.IManagerRepository;
-import com.desgroup.interfaces.repositoriesInterfaces.IStaffRepository;
-import com.desgroup.models.Staff;
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author urreg
- */
+import org.hibernate.Session;
+
+import com.desgroup.interfaces.repositoriesInterfaces.IStaffRepository;
+import com.desgroup.models.Staff;
+import com.desgroup.utils.HibernateUtil;
+
 public class StaffRepository implements IStaffRepository {
-    private List<Staff> staffs;
-    private final ILogisticRepository logisticRepository;
-    private final ICoordinatorRepository coordinatorRepository;
-    private final IManagerRepository managerRepository;
 
-    public StaffRepository(ILogisticRepository logisticRepository,
-            ICoordinatorRepository coordinatorRepository,
-            IManagerRepository managerRepository) {
-        this.logisticRepository = logisticRepository;
-        this.coordinatorRepository = coordinatorRepository;
-        this.managerRepository = managerRepository;
-    }
-
+    @Override
     public List<Staff> getAll() {
-        List<Staff> staffs = new ArrayList<>();
-        staffs.addAll(logisticRepository.getAll());
-        staffs.addAll(coordinatorRepository.getAll());
-        staffs.addAll(managerRepository.getAll());
-        return staffs;
-    }
-
-    public Staff getById(int id) {
-        for (Staff staff : staffs) {
-            if (staff.getIdStaff() == id) {
-                return staff;
-            }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM staff", Staff.class).list();
         }
-
-        return null;
     }
 
-    public Staff getStaffByEmail(String email) {
-        Staff found = logisticRepository.getByEmail(email);
+    @Override
+    public Staff getById(int id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.get(Staff.class, id);
+        }
+    }
 
-        if (found != null)
-            return found;
-
-        found = coordinatorRepository.getByEmail(email);
-
-        if (found != null)
-            return found;
-
-        return managerRepository.getByEmail(email);
-
+    @Override
+    public Staff getByEmail(String email) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.get(Staff.class, email);
+        }
     }
 }

@@ -1,61 +1,43 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.desgroup.models;
 
-/**
- *
- * @author urreg
- */
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Data
+@Entity
+@Table(name = "logistic")
+@DiscriminatorValue("LOGISTIC")
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Logistic extends Staff {
+    @Column(nullable = false)
     private String zone;
-    private int workingHours;
+
+    @Column(name = "working_hours", nullable = false)
+    private Integer workingHours = 0;
+
+    @Column(nullable = false)
     private String role;
-    private int score;
 
-    public Logistic() {
-    }
+    @Column(nullable = true)
+    private Integer score = 0;
 
-    public Logistic(int idStaff, String name, String email, String phone, String position, String password, String zone,
-            String role, int score, int workingHours) {
+    public Logistic(int idStaff, String name, String email, String phone, String position, String password,
+            String zone, String role, int score, int workingHours) {
         super(idStaff, name, email, phone, position, password);
         this.zone = zone;
         this.role = role;
         this.score = score;
         this.workingHours = workingHours;
-    }
-
-    public String getZone() {
-        return zone;
-    }
-
-    public void setZone(String zone) {
-        this.zone = zone;
-    }
-
-    public int getWorkingHours() {
-        return workingHours;
-    }
-
-    public void setWorkingHours(int workingHours) {
-        this.workingHours = workingHours;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 
     @Override

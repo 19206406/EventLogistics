@@ -11,7 +11,8 @@ public class CoordinatorFormFrame extends JInternalFrame {
     private final Coordinator coordinatorToEdit;
     private final ManageCoordinatorFrame parentFrame;
 
-    public CoordinatorFormFrame(ICoordinatorService coordinatorService, Coordinator coordinatorToEdit, ManageCoordinatorFrame parentFrame) {
+    public CoordinatorFormFrame(ICoordinatorService coordinatorService, Coordinator coordinatorToEdit,
+            ManageCoordinatorFrame parentFrame) {
         super(getTitle(coordinatorToEdit), true, true, true, true);
         this.coordinatorService = coordinatorService;
         this.coordinatorToEdit = coordinatorToEdit;
@@ -114,7 +115,8 @@ public class CoordinatorFormFrame extends JInternalFrame {
         if (coordinatorToEdit == null) {
             coordinatorService.createCoordinator(name, email, phone, position, password, company);
         } else {
-            coordinatorService.updatedCoordinator(coordinatorToEdit.getIdStaff(), name, email, phone, position, password, company);
+            coordinatorService.updatedCoordinator(coordinatorToEdit.getId(), name, email, phone, position, password,
+                    company);
         }
 
         parentFrame.loadCoordinator();

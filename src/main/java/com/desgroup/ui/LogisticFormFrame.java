@@ -146,7 +146,7 @@ public class LogisticFormFrame extends JInternalFrame {
         if (logisticToEdit == null) {
             logisticService.createLogistic(name, email, phone, position, zone, role, password, score, workingHours);
         } else {
-            logisticService.updatedLogistic(logisticToEdit.getIdStaff(), name, email, phone, position, zone, role,
+            logisticService.updatedLogistic(logisticToEdit.getId(), name, email, phone, position, zone, role,
                     password, score,
                     workingHours);
         }

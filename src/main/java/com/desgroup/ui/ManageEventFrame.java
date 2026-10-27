@@ -93,7 +93,7 @@ public class ManageEventFrame extends JInternalFrame {
         for (Event event : events) {
             Place place = event.getPlace();
             tableModel.addRow(new Object[] {
-                    event.getIdEvent(),
+                    event.getId(),
                     event.getName(),
                     event.getState(),
                     event.getDate(),
@@ -134,7 +134,7 @@ public class ManageEventFrame extends JInternalFrame {
                 "Confirmar eliminación",
                 JOptionPane.YES_NO_OPTION);
         if (confirmation == JOptionPane.YES_OPTION) {
-            eventService.deleteEventById(event.getIdEvent());
+            eventService.deleteEventById(event.getId());
             loadEvents();
         }
     }

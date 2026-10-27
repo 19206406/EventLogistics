@@ -96,7 +96,7 @@ public class ManageLogisticFrame extends JInternalFrame {
         List<Logistic> logistics = logisticService.getAllLogistics();
         for (Logistic l : logistics) {
             tableModel.addRow(new Object[] {
-                    l.getIdStaff(), l.getName(), l.getEmail(), l.getPhone(),
+                    l.getId(), l.getName(), l.getEmail(), l.getPhone(),
                     l.getPosition(), l.getZone(), l.getRole(), l.getScore(), l.getWorkingHours()
             });
         }

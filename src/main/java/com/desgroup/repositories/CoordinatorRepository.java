@@ -1,66 +1,78 @@
 package com.desgroup.repositories;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.desgroup.interfaces.repositoriesInterfaces.ICoordinatorRepository;
 import com.desgroup.models.Coordinator;
-import com.desgroup.utils.StaffIdGenerator;
+import com.desgroup.utils.HibernateUtil;
 
 public class CoordinatorRepository implements ICoordinatorRepository {
 
-    private List<Coordinator> coordinators;
-
-    public CoordinatorRepository() {
-        coordinators = new ArrayList<>();
-        createCoordinadorAdministrator();
-    }
-
-    private void createCoordinadorAdministrator() {
-        Coordinator coordinator = new Coordinator(StaffIdGenerator.next(), "Sebastian", "sebastian@gmail.com",
-                "3005389944", "Coordinador", "sebastian123", "Event S.A.S");
-        coordinators.add(coordinator);
-    }
-
+    @Override
     public List<Coordinator> getAll() {
-        return new ArrayList<>(coordinators);
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM coordinator", Coordinator.class).list();
+        }
     }
 
+    @Override
     public Coordinator getById(int id) {
-        for (Coordinator coordinator : coordinators) {
-            if (coordinator.getIdStaff() == id) {
-                return coordinator;
-            }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.get(Coordinator.class, id);
         }
-
-        return null;
     }
 
+    @Override
     public Coordinator getByEmail(String email) {
-        for (Coordinator coordinator : coordinators) {
-            if (coordinator.getEmail().equals(email)) {
-                return coordinator;
-            }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.get(Coordinator.class, email);
         }
-        return null;
     }
 
+    @Override
     public void create(Coordinator coordinator) {
-        coordinator.setIdStaff(StaffIdGenerator.next());
-        coordinators.add(coordinator);
-    }
-
-    public void updated(Coordinator coordinator) {
-        for (int i = 0; i < coordinators.size(); i++) {
-            if (coordinators.get(i).getIdStaff() == coordinator.getIdStaff()) {
-                coordinators.set(i, coordinator);
-                return;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            try {
+                session.persist(coordinator);
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+                throw e;
             }
         }
     }
 
-    public void delete(int id) {
-        coordinators.removeIf(l -> l.getIdStaff() == id);
+    @Override
+    public void updated(Coordinator coordinator) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            try {
+                session.merge(coordinator);
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+                throw e;
+            }
+        }
     }
 
+    @Override
+    public void delete(int id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            try {
+                Coordinator course = session.get(Coordinator.class, id);
+                if (course != null)
+                    session.remove(course);
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+                throw e;
+            }
+        }
+    }
 }

@@ -53,7 +53,7 @@ public class EventFormInternalFrame extends JInternalFrame {
         if (event == null) {
             return "Crear evento";
         } else {
-            return "Editar evento — ID: " + event.getIdEvent();
+            return "Editar evento — ID: " + event.getId();
         }
     }
 
@@ -224,7 +224,7 @@ public class EventFormInternalFrame extends JInternalFrame {
                 service.createEvent(name, state, date, startTime, country, city, placeName, address, capacity,
                         endTime, maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
             } else {
-                service.updateEvent(event.getIdEvent(), name, state, date, startTime, country, city, placeName,
+                service.updateEvent(event.getId(), name, state, date, startTime, country, city, placeName,
                         address, capacity, endTime, maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
             }
         } catch (BusinessException ex) {

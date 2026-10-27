@@ -1,12 +1,50 @@
 package com.desgroup.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Data
+@Entity
+@Table(name = "place")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Place {
-    private int idPlace;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false)
     private String country;
+
+    @Column(nullable = false)
     private String city;
+
+    @Column(name = "place_name", nullable = false)
     private String placeName;
+
+    @Column(nullable = false)
     private String address;
-    private int capacity;
+
+    @Column(nullable = false)
+    private Integer capacity;
+
+    @OneToMany(mappedBy = "place")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Event> events = new ArrayList<>();
 
     public Place(String country, String city, String placeName, String address, int capacity) {
         this.country = country;
@@ -16,52 +54,8 @@ public class Place {
         this.capacity = capacity;
     }
 
-    public int getIdPlace() {
-        return idPlace;
+    public void addEvent(Event event) {
+        events.add(event);
+        event.setPlace(this);
     }
-
-    public void setIdPlace(int idPlace) {
-        this.idPlace = idPlace;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getPlaceName() {
-        return placeName;
-    }
-
-    public void setPlaceName(String placeName) {
-        this.placeName = placeName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
 }

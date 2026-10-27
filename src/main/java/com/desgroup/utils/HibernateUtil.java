@@ -5,13 +5,13 @@ import java.util.Properties;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import com.desgroup.models.db.Coordinator;
-import com.desgroup.models.db.Event;
-import com.desgroup.models.db.EventAssignment;
-import com.desgroup.models.db.Logistic;
-import com.desgroup.models.db.Manager;
-import com.desgroup.models.db.Place;
-import com.desgroup.models.db.Staff;
+import com.desgroup.models.Coordinator;
+import com.desgroup.models.Event;
+import com.desgroup.models.EventAssignment;
+import com.desgroup.models.Logistic;
+import com.desgroup.models.Manager;
+import com.desgroup.models.Place;
+import com.desgroup.models.Staff;
 
 /**
  * Punto único de acceso a Hibernate.

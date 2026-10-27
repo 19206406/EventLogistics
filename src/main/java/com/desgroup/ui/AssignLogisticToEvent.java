@@ -133,10 +133,10 @@ public class AssignLogisticToEvent extends JInternalFrame {
             return;
         }
 
-        int eventId = selectedEvent.getIdEvent();
+        int eventId = selectedEvent.getId();
         for (Logistic logistic : assignmentService.getAvailableLogistics(eventId)) {
             availableTableModel.addRow(new Object[] {
-                    logistic.getIdStaff(), logistic.getName(), logistic.getEmail(),
+                    logistic.getId(), logistic.getName(), logistic.getEmail(),
                     logistic.getPhone()
             });
         }
@@ -145,9 +145,9 @@ public class AssignLogisticToEvent extends JInternalFrame {
                 .filter(assignment -> assignment.getStaffRole() == StaffRole.LOGISTIC)
                 .toList();
         for (EventAssignment assignment : logisticsAssignments) {
-            Logistic logistic = logisticService.getLogisticById(assignment.getIdStaff());
+            Logistic logistic = logisticService.getLogisticById(assignment.getId());
             assignedTableModel.addRow(new Object[] {
-                    assignment.getIdAssignment(), assignment.getIdStaff(),
+                    assignment.getId(), assignment.getId(),
                     logistic != null ? logistic.getName() : "Desconocido",
                     logistic != null ? logistic.getEmail() : ""
             });
@@ -163,7 +163,7 @@ public class AssignLogisticToEvent extends JInternalFrame {
             return;
 
         for (int row = 0; row < availableTableModel.getRowCount(); row++) {
-            if ((int) availableTableModel.getValueAt(row, 0) == preselectedLogistic.getIdStaff()) {
+            if ((int) availableTableModel.getValueAt(row, 0) == preselectedLogistic.getId()) {
                 availableLogisticsTable.setRowSelectionInterval(row, row);
                 return;
             }
@@ -187,7 +187,7 @@ public class AssignLogisticToEvent extends JInternalFrame {
         }
 
         try {
-            assignmentService.assign(currentUser, logistic, selectedEvent.getIdEvent());
+            assignmentService.assign(currentUser, logistic, selectedEvent.getId());
             JOptionPane.showMessageDialog(this, "Logistico asignado correctamente", "Success",
                     JOptionPane.INFORMATION_MESSAGE);
         } catch (BusinessException ex) {

@@ -9,5 +9,5 @@ public interface IStaffRepository {
 
     Staff getById(int id);
 
-    Staff getStaffByEmail(String email);
+    Staff getByEmail(String email);
 }

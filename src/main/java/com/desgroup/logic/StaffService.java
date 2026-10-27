@@ -23,7 +23,7 @@ public class StaffService implements IStaffService {
     }
 
     public boolean staffLogin(String email, String password) {
-        Staff staff = repository.getStaffByEmail(email);
+        Staff staff = repository.getByEmail(email);
 
         if (staff == null)
             return false;
@@ -41,7 +41,7 @@ public class StaffService implements IStaffService {
     }
 
     public Staff login(String email, String password) {
-        Staff staff = repository.getStaffByEmail(email);
+        Staff staff = repository.getByEmail(email);
 
         if (staff != null && staff.getPassword().equals(password)) {
             return staff;
