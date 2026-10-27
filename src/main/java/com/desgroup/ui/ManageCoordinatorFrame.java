@@ -131,7 +131,7 @@ public class ManageCoordinatorFrame extends JInternalFrame {
             selectedCoordinator = coordinatorService.getCoordinatorById(id);
         }
 
-        AssignCoordinatorToEvent form = new AssignCoordinatorToEvent(eventService, assignmentService,
+        AssignCoordinatorToEventFrame form = new AssignCoordinatorToEventFrame(eventService, assignmentService,
                 coordinatorService, currentUser, selectedCoordinator);
         desktopPane.add(form);
         form.setVisible(true);

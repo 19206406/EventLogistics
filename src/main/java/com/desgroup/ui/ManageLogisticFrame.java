@@ -149,7 +149,7 @@ public class ManageLogisticFrame extends JInternalFrame {
             selectedLogistic = logisticService.getLogisticById(id);
         }
 
-        AssignLogisticToEvent form = new AssignLogisticToEvent(eventService, assignmentService, logisticService,
+        AssignLogisticToEventFrame form = new AssignLogisticToEventFrame(eventService, assignmentService, logisticService,
                 currentUser, selectedLogistic);
         desktopPane.add(form);
         form.setVisible(true);
