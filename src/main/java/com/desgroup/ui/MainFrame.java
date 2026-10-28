@@ -107,6 +107,10 @@ public class MainFrame extends JFrame {
         itemManageCoordinators.addActionListener(e -> openManageCoordinators());
         menuManager.add(itemManageCoordinators);
 
+        JMenuItem itemViewManagerProfile = new JMenuItem("Ver perfil");
+        itemViewManagerProfile.addActionListener(e -> openManagerProfile());
+        menuManager.add(itemViewManagerProfile);
+
         menuBar.add(menuManager);
 
         // Menú Opciones
@@ -196,6 +200,17 @@ public class MainFrame extends JFrame {
 
         ManageCoordinatorFrame frame = new ManageCoordinatorFrame(coordinatorService, eventService,
                 assignmentService, currentUser, desktopPane);
+        desktopPane.add(frame);
+        frame.setVisible(true);
+    }
+
+    private void openManagerProfile() {
+        if (!(currentUser instanceof Manager)) {
+            JOptionPane.showMessageDialog(this, "Esta opción es solo para Gerentes");
+            return;
+        }
+
+        ViewManagerProfileFrame frame = new ViewManagerProfileFrame((Manager) currentUser);
         desktopPane.add(frame);
         frame.setVisible(true);
     }
