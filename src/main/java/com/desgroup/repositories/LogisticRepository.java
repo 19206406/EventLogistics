@@ -1,57 +1,82 @@
 package com.desgroup.repositories;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.desgroup.interfaces.repositoriesInterfaces.ILogisticRepository;
 import com.desgroup.models.Logistic;
-import com.desgroup.utils.StaffIdGenerator;
+import com.desgroup.utils.HibernateUtil;
 
 public class LogisticRepository implements ILogisticRepository {
-    private List<Logistic> logistics;
 
-    public LogisticRepository() {
-        logistics = new ArrayList<>();
-    }
-
+    @Override
     public List<Logistic> getAll() {
-        return new ArrayList<>(logistics);
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM Logistic", Logistic.class).list();
+        }
     }
 
+    @Override
     public Logistic getById(int id) {
-        for (Logistic logistic : logistics) {
-            if (logistic.getIdStaff() == id) {
-                return logistic;
-            }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.get(Logistic.class, id);
         }
-
-        return null;
     }
 
+    @Override
     public Logistic getByEmail(String email) {
-        for (Logistic logistic : logistics) {
-            if (logistic.getEmail().equals(email)) {
-                return logistic;
-            }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                            "FROM Logistic s WHERE s.email = :email", Logistic.class)
+                    .setParameter("email", email)
+                    .uniqueResult();
         }
-        return null;
     }
 
+    @Override
     public void create(Logistic logistic) {
-        logistic.setIdStaff(StaffIdGenerator.next());
-        logistics.add(logistic);
-    }
-
-    public void updated(Logistic logistic) {
-        for (int i = 0; i < logistics.size(); i++) {
-            if (logistics.get(i).getIdStaff() == logistic.getIdStaff()) {
-                logistics.set(i, logistic);
-                return;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            try {
+                session.persist(logistic);
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+                throw e;
             }
         }
     }
 
-    public void delete(int id) {
-        logistics.removeIf(l -> l.getIdStaff() == id);
+    @Override
+    public void updated(Logistic logistic) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            try {
+                session.merge(logistic);
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+                throw e;
+            }
+        }
     }
+
+    @Override
+    public void delete(int id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            try {
+                Logistic course = session.get(Logistic.class, id);
+                if (course != null)
+                    session.remove(course);
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+                throw e;
+            }
+        }
+    }
+
 }

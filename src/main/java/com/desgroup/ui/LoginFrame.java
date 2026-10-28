@@ -10,7 +10,6 @@ import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
 import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
-import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
 import com.desgroup.interfaces.logicInterfaces.IStaffService;
 import com.desgroup.models.Staff;
 
@@ -151,7 +150,7 @@ public class LoginFrame extends javax.swing.JFrame {
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSubmitActionPerformed
 
         String email = txtEmail.getText();
-        String password = new String(pwdPassword.getPassword());
+        String password = pwdPassword.getText();
 
         Staff isSuccess = staffService.login(email, password);
 

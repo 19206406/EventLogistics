@@ -1,12 +1,10 @@
 package com.desgroup.ui;
 
-import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
 import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
-import com.desgroup.models.Coordinator;
+import com.desgroup.interfaces.logicInterfaces.ILogisticService;
+import com.desgroup.models.*;
 import com.desgroup.models.Event;
-import com.desgroup.models.EventAssignment;
-import com.desgroup.models.Staff;
 import com.desgroup.utils.BusinessException;
 import com.desgroup.utils.StaffRole;
 
@@ -15,24 +13,25 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-public class AssignCoordinatorToEvent extends JInternalFrame {
-    private static final String[] AVAILABLE_COLUMNS = { "Id", "Name", "Email", "Phone", "Company" };
-    private static final String[] ASSIGNED_COLUMNS = { "Assignment Id", "Coordinator Id", "Name", "Email" };
+public class AssignLogisticToEventFrame extends JInternalFrame {
+
+    private static final String[] AVAILABLE_COLUMNS = { "Id", "Nombre", "Correo", "Telefono", "Compañia" };
+    private static final String[] ASSIGNED_COLUMNS = { "Id Asignación", "Id Logistico", "Nombre", "Correo" };
 
     private final IEventService eventService;
     private final IEventAssignmentService assignmentService;
-    private final ICoordinatorService coordinatorService;
+    private final ILogisticService logisticService;
     private final Staff currentUser;
-    private final Coordinator preselectedCoordinator;
+    private final Logistic preselectedLogistic;
 
-    public AssignCoordinatorToEvent(IEventService eventService, IEventAssignmentService assignmentService,
-            ICoordinatorService coordinatorService, Staff currentUser, Coordinator preselectedCoordinator) {
-        super("Asignar coordinador a evento", true, true, true, true);
+    public AssignLogisticToEventFrame(IEventService eventService, IEventAssignmentService assignmentService,
+                                      ILogisticService logisticService, Staff currentUser, Logistic preselectedLogistic) {
+        super("Asignar logistico a evento", true, true, true, true);
         this.eventService = eventService;
         this.assignmentService = assignmentService;
-        this.coordinatorService = coordinatorService;
+        this.logisticService = logisticService;
         this.currentUser = currentUser;
-        this.preselectedCoordinator = preselectedCoordinator;
+        this.preselectedLogistic = preselectedLogistic;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponents();
         loadEvents();
@@ -45,7 +44,7 @@ public class AssignCoordinatorToEvent extends JInternalFrame {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         eventPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        eventLabel = new JLabel("Evento:");
+        eventLabel = new JLabel("Evento");
         eventComboBox = new JComboBox<>();
         eventComboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
@@ -57,23 +56,24 @@ public class AssignCoordinatorToEvent extends JInternalFrame {
                 return this;
             }
         });
-        eventComboBox.addActionListener(e -> loadCoordinators());
-        coordinatorSlotsLabel = new JLabel();
+
+        eventComboBox.addActionListener(e -> loadLogistics());
+        logisticSlotsLabel = new JLabel();
 
         eventPanel.add(eventLabel);
         eventPanel.add(eventComboBox);
-        eventPanel.add(coordinatorSlotsLabel);
+        eventPanel.add(logisticSlotsLabel);
         mainPanel.add(eventPanel, BorderLayout.NORTH);
 
         availableTableModel = createReadOnlyTableModel(AVAILABLE_COLUMNS);
-        availableCoordinatorsTable = createTable(availableTableModel);
-        availableScrollPane = new JScrollPane(availableCoordinatorsTable);
-        availableScrollPane.setBorder(BorderFactory.createTitledBorder("Coordinadores disponibles"));
+        availableLogisticsTable = createTable(availableTableModel);
+        availableScrollPane = new JScrollPane(availableLogisticsTable);
+        availableScrollPane.setBorder(BorderFactory.createTitledBorder("Logisticos disponibles"));
 
         assignedTableModel = createReadOnlyTableModel(ASSIGNED_COLUMNS);
-        assignedCoordinatorsTable = createTable(assignedTableModel);
-        assignedScrollPane = new JScrollPane(assignedCoordinatorsTable);
-        assignedScrollPane.setBorder(BorderFactory.createTitledBorder("Coordinadores asignados"));
+        assignedLogisticsTable = createTable(assignedTableModel);
+        assignedScrollPane = new JScrollPane(assignedLogisticsTable);
+        assignedScrollPane.setBorder(BorderFactory.createTitledBorder("Logisticos asignados"));
 
         tablesPanel = new JPanel(new GridLayout(1, 2, 10, 0));
         tablesPanel.add(availableScrollPane);
@@ -84,8 +84,8 @@ public class AssignCoordinatorToEvent extends JInternalFrame {
         assignButton = new JButton("Asignar");
         unassignButton = new JButton("Desasignar");
         closeButton = new JButton("Cerrar");
-        assignButton.addActionListener(e -> assignSelectedCoordinator());
-        unassignButton.addActionListener(e -> unassignSelectedCoordinator());
+        assignButton.addActionListener(e -> assignSelectedLogistic());
+        unassignButton.addActionListener(e -> unassignSelectedLogistic());
         closeButton.addActionListener(e -> dispose());
 
         buttonPanel.add(assignButton);
@@ -117,10 +117,10 @@ public class AssignCoordinatorToEvent extends JInternalFrame {
         for (Event event : eventService.getAllEvents()) {
             eventComboBox.addItem(event);
         }
-        loadCoordinators();
+        loadLogistics();
     }
 
-    private void loadCoordinators() {
+    private void loadLogistics() {
         availableTableModel.setRowCount(0);
         assignedTableModel.setRowCount(0);
 
@@ -129,86 +129,86 @@ public class AssignCoordinatorToEvent extends JInternalFrame {
         assignButton.setEnabled(hasEvent);
         unassignButton.setEnabled(hasEvent);
         if (!hasEvent) {
-            coordinatorSlotsLabel.setText("No events available");
+            logisticSlotsLabel.setText("Eventos no disponibles");
             return;
         }
 
-        int eventId = selectedEvent.getIdEvent();
-        for (Coordinator coordinator : assignmentService.getAvailableCoordinators(eventId)) {
+        int eventId = selectedEvent.getId();
+        for (Logistic logistic : assignmentService.getAvailableLogistics(eventId)) {
             availableTableModel.addRow(new Object[] {
-                    coordinator.getIdStaff(), coordinator.getName(), coordinator.getEmail(),
-                    coordinator.getPhone(), coordinator.getCompany()
+                    logistic.getId(), logistic.getName(), logistic.getEmail(),
+                    logistic.getPhone()
             });
         }
 
-        List<EventAssignment> coordinatorAssignments = assignmentService.getAssignmentsByEvent(eventId).stream()
-                .filter(assignment -> assignment.getStaffRole() == StaffRole.COORDINATOR)
+        List<EventAssignment> logisticsAssignments = assignmentService.getAssignmentsByEvent(eventId).stream()
+                .filter(assignment -> assignment.getStaffRole() == StaffRole.LOGISTIC)
                 .toList();
-        for (EventAssignment assignment : coordinatorAssignments) {
-            Coordinator coordinator = coordinatorService.getCoordinatorById(assignment.getIdStaff());
+        for (EventAssignment assignment : logisticsAssignments) {
+            Logistic logistic = logisticService.getLogisticById(assignment.getStaff().getId());
             assignedTableModel.addRow(new Object[] {
-                    assignment.getIdAssignment(), assignment.getIdStaff(),
-                    coordinator != null ? coordinator.getName() : "Unknown",
-                    coordinator != null ? coordinator.getEmail() : ""
+                    assignment.getId(), logistic.getId(),
+                    logistic != null ? logistic.getName() : "Desconocido",
+                    logistic != null ? logistic.getEmail() : ""
             });
         }
 
-        coordinatorSlotsLabel.setText("Coordinators: " + coordinatorAssignments.size()
-                + " / " + selectedEvent.getMaxCoordinators());
-        selectPreselectedCoordinator();
+        logisticSlotsLabel.setText("Logisticos: " + logisticsAssignments.size()
+                + " / " + selectedEvent.getMaxLogistics());
+        selectPreselectedLogistic();
     }
 
-    private void selectPreselectedCoordinator() {
-        if (preselectedCoordinator == null)
+    private void selectPreselectedLogistic() {
+        if (preselectedLogistic == null)
             return;
 
         for (int row = 0; row < availableTableModel.getRowCount(); row++) {
-            if ((int) availableTableModel.getValueAt(row, 0) == preselectedCoordinator.getIdStaff()) {
-                availableCoordinatorsTable.setRowSelectionInterval(row, row);
+            if ((int) availableTableModel.getValueAt(row, 0) == preselectedLogistic.getId()) {
+                availableLogisticsTable.setRowSelectionInterval(row, row);
                 return;
             }
         }
     }
 
-    private void assignSelectedCoordinator() {
+    private void assignSelectedLogistic() {
         Event selectedEvent = getSelectedEvent();
-        int row = availableCoordinatorsTable.getSelectedRow();
+        int row = availableLogisticsTable.getSelectedRow();
         if (selectedEvent == null || row == -1) {
-            showWarning("Select an available coordinator to assign.");
+            showWarning("Selecciona un logistico disponible para asignar");
             return;
         }
 
-        int coordinatorId = (int) availableTableModel.getValueAt(row, 0);
-        Coordinator coordinator = coordinatorService.getCoordinatorById(coordinatorId);
-        if (coordinator == null) {
-            showWarning("The selected coordinator no longer exists.");
-            loadCoordinators();
+        int logisticId = (int) availableTableModel.getValueAt(row, 0);
+        Logistic logistic = logisticService.getLogisticById(logisticId);
+        if (logistic == null) {
+            showWarning("El logistico seleccionado no existe");
+            loadLogistics();
             return;
         }
 
         try {
-            assignmentService.assign(currentUser, coordinator, selectedEvent.getIdEvent());
-            JOptionPane.showMessageDialog(this, "Coordinator assigned successfully.", "Success",
+            assignmentService.assign(currentUser, logistic, selectedEvent.getId());
+            JOptionPane.showMessageDialog(this, "Logistico asignado correctamente", "Success",
                     JOptionPane.INFORMATION_MESSAGE);
         } catch (BusinessException ex) {
             showError(ex.getMessage());
         }
-        loadCoordinators();
+        loadLogistics();
     }
 
-    private void unassignSelectedCoordinator() {
-        int row = assignedCoordinatorsTable.getSelectedRow();
+    private void unassignSelectedLogistic() {
+        int row = assignedLogisticsTable.getSelectedRow();
         if (row == -1) {
-            showWarning("Select an assigned coordinator to unassign.");
+            showWarning("Selecciona una logística asignada para desasignarla.");
             return;
         }
 
         int assignmentId = (int) assignedTableModel.getValueAt(row, 0);
-        String coordinatorName = (String) assignedTableModel.getValueAt(row, 2);
+        String logisticName = (String) assignedTableModel.getValueAt(row, 2);
         int confirmation = JOptionPane.showConfirmDialog(this,
-                "Do you want to unassign \"" + coordinatorName + "\"?\n"
-                        + "The logistics assigned by this coordinator to the event will also be removed.",
-                "Confirm unassignment",
+                "¿Quieres desasignar \"" + logisticName + "\"?\n"
+                        + "También se eliminarán las tareas logísticas asignadas por este coordinador al evento.",
+                "Confirmar la anulación de la asignación",
                 JOptionPane.YES_NO_OPTION);
         if (confirmation != JOptionPane.YES_OPTION)
             return;
@@ -218,7 +218,7 @@ public class AssignCoordinatorToEvent extends JInternalFrame {
         } catch (BusinessException ex) {
             showError(ex.getMessage());
         }
-        loadCoordinators();
+        loadLogistics();
     }
 
     private Event getSelectedEvent() {
@@ -237,12 +237,12 @@ public class AssignCoordinatorToEvent extends JInternalFrame {
     private JPanel eventPanel;
     private JLabel eventLabel;
     private JComboBox<Event> eventComboBox;
-    private JLabel coordinatorSlotsLabel;
+    private JLabel logisticSlotsLabel;
     private JPanel tablesPanel;
-    private JTable availableCoordinatorsTable;
+    private JTable availableLogisticsTable;
     private DefaultTableModel availableTableModel;
     private JScrollPane availableScrollPane;
-    private JTable assignedCoordinatorsTable;
+    private JTable assignedLogisticsTable;
     private DefaultTableModel assignedTableModel;
     private JScrollPane assignedScrollPane;
     private JPanel buttonPanel;

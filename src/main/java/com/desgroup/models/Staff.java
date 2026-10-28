@@ -1,24 +1,67 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.desgroup.models;
 
-/**
- *
- * @author urreg
- */
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Data
+@Entity
+@Table(name = "staff")
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "staff_type", discriminatorType = DiscriminatorType.STRING)
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class Staff {
-    private int idStaff;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = true)
     private String phone;
+
+    @Column(name = "staff_position", nullable = false)
     private String position;
+
+    @Column(nullable = false)
     private String password;
-    private double salary;
 
-    public Staff(int idStaff, String name, String email, String phone, String position, String password) {
-        this.idStaff = idStaff;
+    @Transient
+    private Double salary;
+
+    @OneToMany(mappedBy = "staff")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<EventAssignment> assignments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "assignedBy")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<EventAssignment> assignmentsMade = new ArrayList<>();
+
+    public Staff(String name, String email, String phone, String position, String password) {
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -26,64 +69,16 @@ public abstract class Staff {
         this.password = password;
     }
 
-    public Staff() {
+    public void addAssignment(EventAssignment assignment) {
+        assignments.add(assignment);
+        assignment.setStaff(this);
     }
 
-    public int getIdStaff() {
-        return idStaff;
+    /**
+     * Indica si este miembro del personal puede asignar a otro a un evento.
+     * Por defecto nadie puede asignar; cada subclase habilita los casos permitidos.
+     */
+    public boolean canAssign(Staff target) {
+        return false;
     }
-
-    public void setIdStaff(int idStaff) {
-        this.idStaff = idStaff;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public double getSalary() {
-        return salary;
-    }
-
-    public void setSalary(double salary) {
-        this.salary = salary;
-    }
-
-    public abstract boolean canAssign(Staff target);
 }

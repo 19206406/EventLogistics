@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.models.Event;
 import com.desgroup.models.Place;
+import com.desgroup.utils.BusinessException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
@@ -32,13 +33,13 @@ import java.util.Arrays;
 public class EventFormInternalFrame extends JInternalFrame {
     public static final String[] STATES = { "Programado", "En curso", "Finalizado", "Cancelado" };
     private final IEventService service;
-    private final ManagerEvent managerEvent;
+    private final ManageEventFrame manageEventFrame;
     private final Event event;
 
-    public EventFormInternalFrame(IEventService service, ManagerEvent managerEvent, Event event) {
+    public EventFormInternalFrame(IEventService service, ManageEventFrame manageEventFrame, Event event) {
         super(getTitle(event), false, true, false, false);
         this.service = service;
-        this.managerEvent = managerEvent;
+        this.manageEventFrame = manageEventFrame;
         this.event = event;
         initComponents();
         if (event != null) {
@@ -52,7 +53,7 @@ public class EventFormInternalFrame extends JInternalFrame {
         if (event == null) {
             return "Crear evento";
         } else {
-            return "Editar evento — ID: " + event.getIdEvent();
+            return "Editar evento — ID: " + event.getId();
         }
     }
 
@@ -67,6 +68,10 @@ public class EventFormInternalFrame extends JInternalFrame {
         cmbState = new JComboBox<>(STATES);
         txtDate = new JTextField(22);
         txtHour = new JTextField(22);
+        txtEndHour = new JTextField(22);
+        txtMaxCoordinators = new JTextField(22);
+        txtMaxLogistics = new JTextField(22);
+        txtMaxLogisticsPerCoordinator = new JTextField(22);
         txtCountry = new JTextField(22);
         txtCity = new JTextField(22);
         txtPlaceName = new JTextField(22);
@@ -78,6 +83,10 @@ public class EventFormInternalFrame extends JInternalFrame {
         addRow(panel, gbc, row++, "Estado:", cmbState);
         addRow(panel, gbc, row++, "Fecha (AAAA-MM-DD):", txtDate);
         addRow(panel, gbc, row++, "Hora de inicio (0-23):", txtHour);
+        addRow(panel, gbc, row++, "Hora de fin (1-24):", txtEndHour);
+        addRow(panel, gbc, row++, "Máx. coordinadores:", txtMaxCoordinators);
+        addRow(panel, gbc, row++, "Máx. logísticos:", txtMaxLogistics);
+        addRow(panel, gbc, row++, "Máx. logísticos por coordinador:", txtMaxLogisticsPerCoordinator);
         addRow(panel, gbc, row++, "País:", txtCountry);
         addRow(panel, gbc, row++, "Ciudad:", txtCity);
         addRow(panel, gbc, row++, "Nombre del lugar:", txtPlaceName);
@@ -125,6 +134,10 @@ public class EventFormInternalFrame extends JInternalFrame {
 
         txtDate.setText(event.getDate() == null ? "" : event.getDate().toString());
         txtHour.setText(String.valueOf(event.getStartTime()));
+        txtEndHour.setText(String.valueOf(event.getEndTime()));
+        txtMaxCoordinators.setText(String.valueOf(event.getMaxCoordinators()));
+        txtMaxLogistics.setText(String.valueOf(event.getMaxLogistics()));
+        txtMaxLogisticsPerCoordinator.setText(String.valueOf(event.getMaxLogisticsPerCoordinator()));
 
         Place place = event.getPlace();
         if (place != null) {
@@ -146,9 +159,15 @@ public class EventFormInternalFrame extends JInternalFrame {
         String placeName = txtPlaceName.getText().trim();
         String address = txtAddress.getText().trim();
         String capacityText = txtCapacity.getText().trim();
+        String endHourText = txtEndHour.getText().trim();
+        String maxCoordinatorsText = txtMaxCoordinators.getText().trim();
+        String maxLogisticsText = txtMaxLogistics.getText().trim();
+        String maxLogisticsPerCoordinatorText = txtMaxLogisticsPerCoordinator.getText().trim();
 
         if (name.isEmpty() || dateText.isEmpty() || hourText.isEmpty() || country.isEmpty() || city.isEmpty()
-                || placeName.isEmpty() || address.isEmpty() || capacityText.isEmpty()) {
+                || placeName.isEmpty() || address.isEmpty() || capacityText.isEmpty() || endHourText.isEmpty()
+                || maxCoordinatorsText.isEmpty() || maxLogisticsText.isEmpty()
+                || maxLogisticsPerCoordinatorText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.",
                     "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
@@ -178,16 +197,42 @@ public class EventFormInternalFrame extends JInternalFrame {
             return;
         }
 
-        int startTime = Integer.parseInt(hourText);
-        int capacity = Integer.parseInt(capacityText);
-
-        if (event == null) {
-            service.createEvent(name, state, date, startTime, country, city, placeName, address, capacity);
-        } else {
-
+        if (!endHourText.matches("\\d{1,2}") || Integer.parseInt(endHourText) > 24) {
+            JOptionPane.showMessageDialog(this,
+                    "La hora de fin debe ser un número entero entre 1 y 24.",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
         }
 
-        managerEvent.loadEvents();
+        if (!maxCoordinatorsText.matches("\\d{1,9}") || !maxLogisticsText.matches("\\d{1,9}")
+                || !maxLogisticsPerCoordinatorText.matches("\\d{1,9}")) {
+            JOptionPane.showMessageDialog(this,
+                    "Los máximos de coordinadores y logísticos deben ser números enteros.",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int startTime = Integer.parseInt(hourText);
+        int capacity = Integer.parseInt(capacityText);
+        int endTime = Integer.parseInt(endHourText);
+        int maxCoordinators = Integer.parseInt(maxCoordinatorsText);
+        int maxLogistics = Integer.parseInt(maxLogisticsText);
+        int maxLogisticsPerCoordinator = Integer.parseInt(maxLogisticsPerCoordinatorText);
+
+        try {
+            if (event == null) {
+                service.createEvent(name, state, date, startTime, country, city, placeName, address, capacity,
+                        endTime, maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
+            } else {
+                service.updateEvent(event.getId(), name, state, date, startTime, country, city, placeName,
+                        address, capacity, endTime, maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
+            }
+        } catch (BusinessException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        manageEventFrame.loadEvents();
         dispose();
     }
 
@@ -195,6 +240,10 @@ public class EventFormInternalFrame extends JInternalFrame {
     private JComboBox<String> cmbState;
     private JTextField txtDate;
     private JTextField txtHour;
+    private JTextField txtEndHour;
+    private JTextField txtMaxCoordinators;
+    private JTextField txtMaxLogistics;
+    private JTextField txtMaxLogisticsPerCoordinator;
     private JTextField txtCountry;
     private JTextField txtCity;
     private JTextField txtPlaceName;

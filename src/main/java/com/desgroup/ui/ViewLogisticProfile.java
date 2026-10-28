@@ -5,7 +5,6 @@
 package com.desgroup.ui;
 
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
-import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
 import com.desgroup.models.Logistic;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
@@ -35,7 +34,7 @@ public class ViewLogisticProfile extends javax.swing.JInternalFrame {
         JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5));
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        double salary = logisticService.calculateSalary(logistic.getIdStaff());
+        double salary = logisticService.calculateSalary(logistic.getId());
 
         JLabel lblName = new JLabel("Nombre: " + logistic.getName());
         JLabel lblEmail = new JLabel("Email: " + logistic.getEmail());

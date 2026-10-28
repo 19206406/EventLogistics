@@ -5,8 +5,6 @@
 package com.desgroup.ui;
 
 import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
-import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
-import com.desgroup.logic.CoordinatorService;
 import com.desgroup.models.Coordinator;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
@@ -56,7 +54,7 @@ public class ViewCoordinatorProfile extends javax.swing.JInternalFrame {
         JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5));
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        double salary = coordinatorService.calculateSalary(coordinator.getIdStaff());
+        double salary = coordinatorService.calculateSalary(coordinator.getId());
 
         JLabel lblName = new JLabel("Nombre: " + coordinator.getName());
         JLabel lblEmail = new JLabel("Email: " + coordinator.getEmail());

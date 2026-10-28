@@ -12,12 +12,9 @@ public interface IEventService {
         Event getEventById(int id);
 
         void createEvent(String name, String state, LocalDate date, int startTime, String country,
-                        String city, String placeName, String address, int capacity);
+                         String city, String placeName, String address, int capacity, int endTime, int maxCoordinators, int maxLogistics, int maxLogisticsPerCoordinator);
 
-        void updatedEventOnly(int idEvent, String name, String state, LocalDate date, int startTime, String country,
-                              String city, String placeName, String address, int capacity);
-
-        void updatedEventComplete(int idEvent, String name, String state, LocalDate date, int startTime, String country,
+        void updateEvent(int idEvent, String name, String state, LocalDate date, int startTime, String country,
                           String city, String placeName, String address, int capacity, int endTime, int maxCoordinators, int maxLogistics, int maxLogisticsPerCoordinator);
 
         List<Event> getEventsByArrayIds(List<Integer> ids);

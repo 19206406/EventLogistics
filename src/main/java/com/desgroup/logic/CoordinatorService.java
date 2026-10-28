@@ -8,6 +8,7 @@ import com.desgroup.interfaces.repositoriesInterfaces.ICoordinatorRepository;
 import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.models.Coordinator;
 import com.desgroup.models.EventAssignment;
+import com.desgroup.utils.BusinessException;
 
 public class CoordinatorService implements IStaffSalary, ICoordinatorService {
 
@@ -32,13 +33,26 @@ public class CoordinatorService implements IStaffSalary, ICoordinatorService {
 
     public void createCoordinator(String name, String email, String phone, String position, String password,
             String company) {
-        Coordinator coordinator = new Coordinator(0, name, email, phone, position, password, company);
+        Coordinator coordinator = new Coordinator(name, email, phone, position, password, company);
         coordinatorRepository.create(coordinator);
     }
 
     public void updatedCoordinator(int id, String name, String email, String phone,
-                                   String position, String password, String company) {
-        coordinatorRepository.updated(new Coordinator(id, name, email, phone, position, password, company));
+            String position, String password, String company) {
+
+        Coordinator coordinator = coordinatorRepository.getById(id);
+
+        if (coordinator == null)
+            throw new BusinessException("El coordinador no existe.");
+
+        coordinator.setName(name);
+        coordinator.setEmail(email);
+        coordinator.setPhone(phone);
+        coordinator.setPosition(position);
+        coordinator.setPassword(password);
+        coordinator.setCompany(company);
+
+        coordinatorRepository.updated(coordinator);
     }
 
     public void deleteCoordinator(int id) {

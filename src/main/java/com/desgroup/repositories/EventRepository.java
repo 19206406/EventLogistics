@@ -1,54 +1,77 @@
 package com.desgroup.repositories;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.desgroup.interfaces.repositoriesInterfaces.IEventRepository;
 import com.desgroup.models.Event;
-import com.desgroup.models.Place;
+import com.desgroup.utils.HibernateUtil;
 
 public class EventRepository implements IEventRepository {
 
-    private List<Event> events;
-    private int nextId;
-    private int placeId;
-
-    public EventRepository() {
-        events = new ArrayList<>();
-        nextId = 1;
-        placeId = 1;
-    }
-
+    @Override
     public List<Event> getAll() {
-        return new ArrayList<>(events);
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                            "SELECT e FROM Event e JOIN FETCH e.place", Event.class)
+                    .list();
+        }
     }
 
+    @Override
     public Event getById(int id) {
-        for (Event event : events) {
-            if (event.getIdEvent() == id) {
-                return event;
-            }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                            "SELECT e FROM Event e JOIN FETCH e.place WHERE e.id = :id", Event.class)
+                    .setParameter("id", id)
+                    .uniqueResult();
         }
-
-        return null;
     }
 
+    @Override
     public void create(Event event) {
-        event.setIdEvent(nextId++);
-        event.getPlace().setIdPlace(placeId++);
-        events.add(event);
-    }
-
-    public void updated(Event event) {
-        for (int i = 0; i < events.size(); i++) {
-            if (events.get(i).getIdEvent() == event.getIdEvent()) {
-                events.set(i, event);
-                return;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            try {
+                session.persist(event);
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+                throw e;
             }
         }
     }
 
-    public void delete(int id) {
-        events.removeIf(l -> l.getIdEvent() == id);
+    @Override
+    public void updated(Event event) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            try {
+                session.merge(event);
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+                throw e;
+            }
+        }
     }
+
+    @Override
+    public void delete(int id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            try {
+                Event course = session.get(Event.class, id);
+                if (course != null)
+                    session.remove(course);
+                tx.commit();
+            } catch (Exception e) {
+                tx.rollback();
+                throw e;
+            }
+        }
+    }
+
 }

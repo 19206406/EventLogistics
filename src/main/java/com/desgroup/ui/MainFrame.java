@@ -8,12 +8,7 @@ import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
 import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
-import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
 import com.desgroup.interfaces.logicInterfaces.IStaffService;
-import com.desgroup.logic.CoordinatorService;
-import com.desgroup.logic.EventAssignmentService;
-import com.desgroup.logic.EventService;
-import com.desgroup.logic.LogisticService;
 import com.desgroup.models.Logistic;
 import com.desgroup.models.Staff;
 import java.beans.PropertyVetoException;
@@ -112,6 +107,10 @@ public class MainFrame extends JFrame {
         itemManageCoordinators.addActionListener(e -> openManageCoordinators());
         menuManager.add(itemManageCoordinators);
 
+        JMenuItem itemViewManagerProfile = new JMenuItem("Ver perfil");
+        itemViewManagerProfile.addActionListener(e -> openManagerProfile());
+        menuManager.add(itemViewManagerProfile);
+
         menuBar.add(menuManager);
 
         // Menú Opciones
@@ -151,7 +150,8 @@ public class MainFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Esta opción es solo para Coordinadores");
             return;
         }
-        ManageLogisticFrame frame = new ManageLogisticFrame(logisticService, desktopPane, eventService, assignmentService, currentUser);
+        ManageLogisticFrame frame = new ManageLogisticFrame(logisticService, desktopPane, eventService,
+                assignmentService, currentUser);
         desktopPane.add(frame);
         frame.setVisible(true);
     }
@@ -187,7 +187,7 @@ public class MainFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Esta opción es solo para Gerentes");
             return;
         }
-        ManagerEvent frame = new ManagerEvent(eventService);
+        ManageEventFrame frame = new ManageEventFrame(eventService, desktopPane);
         desktopPane.add(frame);
         frame.setVisible(true);
     }
@@ -200,6 +200,17 @@ public class MainFrame extends JFrame {
 
         ManageCoordinatorFrame frame = new ManageCoordinatorFrame(coordinatorService, eventService,
                 assignmentService, currentUser, desktopPane);
+        desktopPane.add(frame);
+        frame.setVisible(true);
+    }
+
+    private void openManagerProfile() {
+        if (!(currentUser instanceof Manager)) {
+            JOptionPane.showMessageDialog(this, "Esta opción es solo para Gerentes");
+            return;
+        }
+
+        ViewManagerProfileFrame frame = new ViewManagerProfileFrame((Manager) currentUser);
         desktopPane.add(frame);
         frame.setVisible(true);
     }

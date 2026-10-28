@@ -167,8 +167,8 @@ public class AssignedEventsInternalFrame extends JInternalFrame {
 
     private void loadAssignedEvents() {
         List<Event> events = new ArrayList<>();
-        for (EventAssignment assignment : assignmentService.getAssignmentsByStaffId(currentUser.getIdStaff())) {
-            Event event = eventService.getEventById(assignment.getIdEvent());
+        for (EventAssignment assignment : assignmentService.getAssignmentsByStaffId(currentUser.getId())) {
+            Event event = eventService.getEventById(assignment.getEvent().getId());
             if (event != null) {
                 events.add(event);
             }
@@ -281,13 +281,13 @@ public class AssignedEventsInternalFrame extends JInternalFrame {
         public Object getValueAt(int row, int column) {
             Event event = events.get(row);
             return switch (column) {
-                case COLUMN_ID -> event.getIdEvent();
+                case COLUMN_ID -> event.getId();
                 case COLUMN_NAME -> event.getName();
                 case COLUMN_STATE -> event.getState();
                 case COLUMN_DATE -> event.getDate();
                 case COLUMN_START_TIME -> formatHour(event.getStartTime());
                 case COLUMN_END_TIME -> event.getEndTime() > 0 ? formatHour(event.getEndTime()) : "Sin definir";
-                default -> throw new IllegalArgumentException("Unknown column: " + column);
+                default -> throw new IllegalArgumentException("Columna desconocida: " + column);
             };
         }
     }

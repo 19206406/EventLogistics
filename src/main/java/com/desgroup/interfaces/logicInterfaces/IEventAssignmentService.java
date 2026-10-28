@@ -24,6 +24,8 @@ public interface IEventAssignmentService {
 
     int getRemainingLogisticSlots(int eventId, int coordinatorId);
 
+    boolean canAssign(Staff actor, Staff target, int eventId);
+
     void assign(Staff actor, Staff target, int eventId);
     
     void unassign(Staff actor, int idAssignment);

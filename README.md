@@ -47,6 +47,70 @@ El proyecto está aplicando los cuatro pilares de la programación orientada a o
 
 **Polimorfismo:** El polimorfismo lo estamos aplicando en una sola funcionalidad, que es la que se encarga de calcular el salario de cada tipo de usuario, ya sea Logístico, Coordinador o Manager, ya que cada uno tiene una forma diferente de calcular su salario. Sin embargo, debemos buscar nuevas formas de aplicar más polimorfismo dentro de la aplicación.
 
+## Base de datos (PostgreSQL + Flyway)
+
+La aplicación usa PostgreSQL y **Flyway** para versionar el esquema. Hibernate
+solo valida que las entidades coincidan con las tablas; no las crea ni las borra.
+
+> **Importante:** las tablas ya están creadas, pero los repositorios actuales
+> (`StaffRepository`, `EventRepository`, etc.) todavía trabajan en memoria. La
+> conexión real de la interfaz con PostgreSQL es el siguiente paso.
+
+### Requisitos
+
+- PostgreSQL instalado y corriendo en `localhost:5432`.
+- Un usuario con permiso `CREATEDB` (el usuario `postgres` lo tiene por defecto).
+
+### Configuración
+
+Edita `src/main/resources/database.properties` con tus datos:
+
+```properties
+db.host=localhost
+db.port=5432
+db.name=event-logistic-db
+db.user=postgres
+db.password=admin123
+```
+
+### Primera ejecución
+
+Al ejecutar la aplicación:
+
+1. `DatabaseInitializer` se conecta a la base de mantenimiento `postgres` y crea
+   `event-logistic-db` si todavía no existe.
+2. Flyway ejecuta `src/main/resources/db/migration/V1__initial_schema.sql` y crea
+   las tablas `place`, `staff`, `coordinator`, `manager`, `logistic`, `event` y
+   `event_assignment`.
+3. Flyway registra la migración en la tabla `flyway_schema_history`.
+4. Hibernate valida que las entidades coincidan con el esquema creado.
+
+### Ejecuciones siguientes
+
+La base de datos ya existe y la migración ya está registrada, así que no se
+vuelve a crear ni se vuelve a ejecutar. La aplicación arranca normalmente y
+conserva los datos.
+
+### Ejecutar solo la preparación de la base de datos
+
+No es obligatorio abrir la interfaz. Desde el IDE puedes ejecutar
+`com.desgroup.utils.DatabaseInitializer` (clic derecho &gt; Run), o desde Maven:
+
+```bash
+mvn exec:java -Dexec.mainClass=com.desgroup.utils.DatabaseInitializer
+```
+
+Ese comando crea la base si falta, aplica las migraciones y valida las entidades.
+
+### Cambios futuros en el modelo
+
+No modifiques `V1__initial_schema.sql`. Crea un archivo nuevo, por ejemplo
+`V2__add_event_description.sql`, con el `ALTER TABLE` correspondiente. Flyway lo
+aplicará la próxima vez que arranques la aplicación.
+
+Si en desarrollo necesitas empezar de cero, elimina la base de datos
+`event-logistic-db` desde pgAdmin o psql y vuelve a ejecutar la aplicación.
+
 ## Ejecución del proyecto
 
 Para ejecutar el proyecto, se debe clonar el repositorio del proyecto específicamente en la rama `master` y no en las demás ramas, ya que estas son para el desarrollo independiente de cada uno de los integrantes. Además, `master` corresponde a la rama principal del proyecto.
