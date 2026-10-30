@@ -34,6 +34,9 @@ public class Logistic extends Staff {
     public Logistic(int idStaff, String name, String email, String phone, String position, String password,
             String zone, String role, int score, int workingHours) {
         super(name, email, phone, position, password);
+        if (idStaff > 0) {
+            setId(idStaff);
+        }
         this.zone = zone;
         this.role = role;
         this.score = score;

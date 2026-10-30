@@ -6,18 +6,24 @@ import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
 import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.interfaces.repositoriesInterfaces.ILogisticRepository;
+import com.desgroup.interfaces.repositoriesInterfaces.IStaffRepository;
 import com.desgroup.models.Logistic;
+import com.desgroup.models.Staff;
+import com.desgroup.utils.BusinessException;
 
 public class LogisticService implements IStaffSalary, ILogisticService {
 
     private final ILogisticRepository repository;
     private final IEventAssignmentRepository assignmentRepository;
+    private final IStaffRepository staffRepository;
     private final double hourlyRate;
 
     public LogisticService(
-            ILogisticRepository repository, IEventAssignmentRepository assignmentRepository) {
+            ILogisticRepository repository, IEventAssignmentRepository assignmentRepository,
+            IStaffRepository staffRepository) {
         this.repository = repository;
         this.assignmentRepository = assignmentRepository;
+        this.staffRepository = staffRepository;
         hourlyRate = 10000.00;
     }
 
@@ -31,13 +37,34 @@ public class LogisticService implements IStaffSalary, ILogisticService {
 
     public void createLogistic(String name, String email, String phone, String position, String zone,
             String role, String password, int score, int workingHours) {
+        if (staffRepository.getByEmail(email) != null)
+            throw new BusinessException("Ya existe un miembro del personal con el correo " + email + ".");
+
         Logistic logistic = new Logistic(0, name, email, phone, position, password, zone, role, score, workingHours);
         repository.create(logistic);
     }
 
     public void updatedLogistic(int id, String name, String email, String phone, String position, String zone,
             String role, String password, int score, int workingHours) {
-        Logistic logistic = new Logistic(id, name, email, phone, position, password, zone, role, score, workingHours);
+        Logistic logistic = repository.getById(id);
+
+        if (logistic == null)
+            throw new BusinessException("El logistico no existe.");
+
+        Staff existingEmail = staffRepository.getByEmail(email);
+        if (existingEmail != null && !existingEmail.getId().equals(id))
+            throw new BusinessException("Ya existe un miembro del personal con el correo " + email + ".");
+
+        logistic.setName(name);
+        logistic.setEmail(email);
+        logistic.setPhone(phone);
+        logistic.setPosition(position);
+        logistic.setZone(zone);
+        logistic.setRole(role);
+        logistic.setPassword(password);
+        logistic.setScore(score);
+        logistic.setWorkingHours(workingHours);
+
         repository.updated(logistic);
     }
 

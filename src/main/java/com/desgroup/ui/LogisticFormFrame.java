@@ -6,6 +6,7 @@ package com.desgroup.ui;
 
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.models.Logistic;
+import com.desgroup.utils.BusinessException;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -143,12 +144,17 @@ public class LogisticFormFrame extends JInternalFrame {
             return;
         }
 
-        if (logisticToEdit == null) {
-            logisticService.createLogistic(name, email, phone, position, zone, role, password, score, workingHours);
-        } else {
-            logisticService.updatedLogistic(logisticToEdit.getId(), name, email, phone, position, zone, role,
-                    password, score,
-                    workingHours);
+        try {
+            if (logisticToEdit == null) {
+                logisticService.createLogistic(name, email, phone, position, zone, role, password, score, workingHours);
+            } else {
+                logisticService.updatedLogistic(logisticToEdit.getId(), name, email, phone, position, zone, role,
+                        password, score,
+                        workingHours);
+            }
+        } catch (BusinessException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
         }
 
         parentFrame.loadLogistics();

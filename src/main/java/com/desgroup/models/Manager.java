@@ -25,6 +25,9 @@ public class Manager extends Staff {
     public Manager(int idStaff, String name, String email, String phone, String position, String password,
             String company) {
         super(name, email, phone, position, password);
+        if (idStaff > 0) {
+            setId(idStaff);
+        }
         this.company = company;
     }
 

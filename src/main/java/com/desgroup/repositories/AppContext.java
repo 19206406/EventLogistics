@@ -24,7 +24,7 @@ public final class AppContext {
         IEventRepository eventRepo = new EventRepository();
         IEventAssignmentRepository assignmentRepo = new EventAssignmentRepository();
 
-        LogisticService logisticServiceImpl = new LogisticService(logisticRepo, assignmentRepo);
+        LogisticService logisticServiceImpl = new LogisticService(logisticRepo, assignmentRepo, staffRepo);
 
         staffService = new StaffService(staffRepo);
         logisticService = logisticServiceImpl;
