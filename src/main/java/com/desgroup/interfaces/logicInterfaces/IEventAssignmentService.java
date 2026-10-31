@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.desgroup.models.EventAssignment;
 import com.desgroup.models.Staff;
+import com.desgroup.utils.StaffRole;
 import com.desgroup.models.Logistic;
 import com.desgroup.models.Coordinator;
 
@@ -17,7 +18,9 @@ public interface IEventAssignmentService {
     List<EventAssignment> getAssignmentsByEvent(int eventId);
 
     List<EventAssignment> getLogisticsAssignedBy(int eventId, int coordinatorId);
-    
+
+    List<EventAssignment> getAssignmentsByEventAndRole(int eventId, StaffRole role);
+
     List<Logistic> getAvailableLogistics(int eventId);
 
     List<Coordinator> getAvailableCoordinators(int eventId);
@@ -27,6 +30,6 @@ public interface IEventAssignmentService {
     boolean canAssign(Staff actor, Staff target, int eventId);
 
     void assign(Staff actor, Staff target, int eventId);
-    
+
     void unassign(Staff actor, int idAssignment);
 }

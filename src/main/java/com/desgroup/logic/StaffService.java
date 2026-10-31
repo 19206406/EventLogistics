@@ -12,16 +12,13 @@ public class StaffService implements IStaffService {
         this.repository = repository;
     }
 
+    @Override
     public String showStaffPosition(int id) {
         Staff staff = repository.getById(id);
         return staff.getPosition();
     }
 
-    public double showStaffSalary(int id) {
-        Staff staff = repository.getById(id);
-        return staff.getSalary();
-    }
-
+    @Override
     public boolean staffLogin(String email, String password) {
         Staff staff = repository.getByEmail(email);
 
@@ -34,12 +31,14 @@ public class StaffService implements IStaffService {
         return staff.getEmail().equals(email) && staff.getPassword().equals(password);
     }
 
+    @Override
     public void changeStaffPassword(int id, String password) {
         Staff staff = repository.getById(id);
         staff.setPassword(password);
 
     }
 
+    @Override
     public Staff login(String email, String password) {
         Staff staff = repository.getByEmail(email);
 

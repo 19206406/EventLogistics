@@ -96,4 +96,8 @@ public class Event {
         assignments.remove(assignment);
         assignment.setEvent(null);
     }
+
+    public boolean isClosed() {
+        return "Finalizado".equals(state) || "Cancelado".equals(state);
+    }
 }

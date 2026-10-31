@@ -15,35 +15,7 @@ import javax.swing.UIManager;
  *
  * @author urreg
  */
-public class Main extends javax.swing.JFrame {
-
-    public Main() {
-        initComponents();
-    }
-
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        desktopPane = new javax.swing.JDesktopPane();
-        menuEventLogistic = new javax.swing.JMenuBar();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setJMenuBar(menuEventLogistic);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 982, Short.MAX_VALUE));
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(desktopPane, javax.swing.GroupLayout.Alignment.TRAILING,
-                                javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE));
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+public class Main {
 
     /**
      * @param args the command line arguments
@@ -73,7 +45,4 @@ public class Main extends javax.swing.JFrame {
                 ctx.assignmentService,
                 ctx.coordinatorService).setVisible(true));
     }
-
-    private javax.swing.JDesktopPane desktopPane;
-    private javax.swing.JMenuBar menuEventLogistic;
 }

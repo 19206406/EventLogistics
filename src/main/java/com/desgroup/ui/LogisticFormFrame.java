@@ -117,46 +117,27 @@ public class LogisticFormFrame extends JInternalFrame {
     }
 
     private void save() {
-        String name = nameField.getText().trim();
-        String email = emailField.getText().trim();
-        String phone = phoneField.getText().trim();
-        String password = new String(passwordField.getPassword());
-        String position = "Logistico";
-        String zone = zoneField.getText().trim();
-
-        String role = roleField.getText().trim();
-        int score = Integer.parseInt(scoreField.getText().trim());
-        int workingHours = Integer.parseInt(workingHoursField.getText().trim());
-
-        if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty()
-                || position.isEmpty() || zone.isEmpty() || role.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (!email.contains("@")) {
-            JOptionPane.showMessageDialog(this, "El correo no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (!phone.matches("\\d+")) {
-            JOptionPane.showMessageDialog(this, "El telefono debe contener solo números.", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
         try {
+            String name = FormInput.text(nameField);
+            String email = FormInput.text(emailField);
+            String phone = FormInput.text(phoneField);
+            String password = new String(passwordField.getPassword());
+            String position = "Logistico";
+            String zone = FormInput.text(zoneField);
+            String role = FormInput.text(roleField);
+            int score = FormInput.parseInt(scoreField, "puntaje");
+            int workingHours = FormInput.parseInt(workingHoursField, "horas trabajadas");
+
             if (logisticToEdit == null) {
                 logisticService.createLogistic(name, email, phone, position, zone, role, password, score, workingHours);
             } else {
                 logisticService.updatedLogistic(logisticToEdit.getId(), name, email, phone, position, zone, role,
-                        password, score,
-                        workingHours);
+                        password, score, workingHours);
             }
         } catch (BusinessException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
         parentFrame.loadLogistics();
         dispose();
     }

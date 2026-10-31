@@ -25,7 +25,7 @@ public class AssignLogisticToEventFrame extends JInternalFrame {
     private final Logistic preselectedLogistic;
 
     public AssignLogisticToEventFrame(IEventService eventService, IEventAssignmentService assignmentService,
-                                      ILogisticService logisticService, Staff currentUser, Logistic preselectedLogistic) {
+            ILogisticService logisticService, Staff currentUser, Logistic preselectedLogistic) {
         super("Asignar logistico a evento", true, true, true, true);
         this.eventService = eventService;
         this.assignmentService = assignmentService;
@@ -141,9 +141,9 @@ public class AssignLogisticToEventFrame extends JInternalFrame {
             });
         }
 
-        List<EventAssignment> logisticsAssignments = assignmentService.getAssignmentsByEvent(eventId).stream()
-                .filter(assignment -> assignment.getStaffRole() == StaffRole.LOGISTIC)
-                .toList();
+        List<EventAssignment> logisticsAssignments = assignmentService.getAssignmentsByEventAndRole(eventId,
+                StaffRole.LOGISTIC);
+
         for (EventAssignment assignment : logisticsAssignments) {
             Logistic logistic = logisticService.getLogisticById(assignment.getStaff().getId());
             assignedTableModel.addRow(new Object[] {

@@ -26,7 +26,7 @@ public class AssignCoordinatorToEventFrame extends JInternalFrame {
     private final Coordinator preselectedCoordinator;
 
     public AssignCoordinatorToEventFrame(IEventService eventService, IEventAssignmentService assignmentService,
-                                         ICoordinatorService coordinatorService, Staff currentUser, Coordinator preselectedCoordinator) {
+            ICoordinatorService coordinatorService, Staff currentUser, Coordinator preselectedCoordinator) {
         super("Asignar coordinador a evento", true, true, true, true);
         this.eventService = eventService;
         this.assignmentService = assignmentService;
@@ -141,9 +141,9 @@ public class AssignCoordinatorToEventFrame extends JInternalFrame {
             });
         }
 
-        List<EventAssignment> coordinatorAssignments = assignmentService.getAssignmentsByEvent(eventId).stream()
-                .filter(assignment -> assignment.getStaffRole() == StaffRole.COORDINATOR)
-                .toList();
+        List<EventAssignment> coordinatorAssignments = assignmentService.getAssignmentsByEventAndRole(eventId,
+                StaffRole.COORDINATOR);
+
         for (EventAssignment assignment : coordinatorAssignments) {
             Coordinator coordinator = coordinatorService.getCoordinatorById(assignment.getStaff().getId());
             assignedTableModel.addRow(new Object[] {

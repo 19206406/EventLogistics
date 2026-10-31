@@ -7,6 +7,7 @@ import com.desgroup.interfaces.repositoriesInterfaces.ICoordinatorRepository;
 import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.interfaces.repositoriesInterfaces.IEventRepository;
 import com.desgroup.interfaces.repositoriesInterfaces.ILogisticRepository;
+import com.desgroup.interfaces.rulesInterfaces.AssignmentRule;
 import com.desgroup.models.Coordinator;
 import com.desgroup.models.Event;
 import com.desgroup.models.EventAssignment;
@@ -22,37 +23,31 @@ public class EventAssignmentService implements IEventAssignmentService {
     private final IEventRepository eventRepository;
     private final ILogisticRepository logisticRepository;
     private final ICoordinatorRepository coordinatorRepository;
+    private final ScheduleConflictChecker conflictChecker;
+    private final List<AssignmentRule> rules;
 
     public EventAssignmentService(IEventAssignmentRepository assignmentRepository, IEventRepository eventRepository,
-            ILogisticRepository logisticRepository, ICoordinatorRepository coordinatorRepository) {
+            ILogisticRepository logisticRepository, ICoordinatorRepository coordinatorRepository,
+            ScheduleConflictChecker conflictChecker, List<AssignmentRule> rules) {
         this.assignmentRepository = assignmentRepository;
         this.eventRepository = eventRepository;
         this.logisticRepository = logisticRepository;
         this.coordinatorRepository = coordinatorRepository;
+        this.conflictChecker = conflictChecker;
+        this.rules = rules;
     }
 
+    @Override
     public List<EventAssignment> getAllAssignment() {
         return assignmentRepository.getAll();
     }
 
+    @Override
     public EventAssignment getAssignmentById(int id) {
         return assignmentRepository.getById(id);
     }
 
-    public void createAssignment(Staff staff, Event event, Staff assignedBy, StaffRole staffRole) {
-        if (staff == null || event == null || assignedBy == null || staffRole == null)
-            throw new BusinessException("Los datos de la asignación están incompletos.");
-
-        if (assignmentRepository.exists(staff.getId(), event.getId()))
-            throw new BusinessException("La persona ya está asignada al evento");
-
-        assignmentRepository.create(new EventAssignment(staff, event, assignedBy, staffRole));
-    }
-
-    public void deleteAssignment(int id) {
-        assignmentRepository.delete(id);
-    }
-
+    @Override
     public List<EventAssignment> getAssignmentsByStaffId(int staffId) {
         return assignmentRepository.getAllByStaff(staffId);
     }
@@ -71,11 +66,18 @@ public class EventAssignmentService implements IEventAssignmentService {
     }
 
     @Override
+    public List<EventAssignment> getAssignmentsByEventAndRole(int eventId, StaffRole role) {
+        return assignmentRepository.getAllByEvent(eventId).stream()
+                .filter(a -> a.getStaffRole() == role)
+                .toList();
+    }
+
+    @Override
     public List<Logistic> getAvailableLogistics(int eventId) {
         Event event = requireEvent(eventId);
         return logisticRepository.getAll().stream()
                 .filter(l -> !assignmentRepository.exists(l.getId(), eventId))
-                .filter(l -> !hasScheduleConflict(l.getId(), event))
+                .filter(l -> !conflictChecker.hasConflict(l.getId(), event))
                 .toList();
     }
 
@@ -84,7 +86,7 @@ public class EventAssignmentService implements IEventAssignmentService {
         Event event = requireEvent(eventId);
         return coordinatorRepository.getAll().stream()
                 .filter(c -> !assignmentRepository.exists(c.getId(), eventId))
-                .filter(c -> !hasScheduleConflict(c.getId(), event))
+                .filter(c -> !conflictChecker.hasConflict(c.getId(), event))
                 .toList();
     }
 
@@ -110,54 +112,8 @@ public class EventAssignmentService implements IEventAssignmentService {
     @Override
     public void assign(Staff actor, Staff target, int eventId) {
         Event event = validateAssignment(actor, target, eventId);
-
-        StaffRole role;
-        if (target instanceof Coordinator)
-            role = StaffRole.COORDINATOR;
-        else if (target instanceof Logistic)
-            role = StaffRole.LOGISTIC;
-        else
-            throw new BusinessException("El tipo de personal no puede asignarse a un evento.");
-
+        StaffRole role = resolveRole(target);
         assignmentRepository.create(new EventAssignment(target, event, actor, role));
-    }
-
-    /**
-     * Comprueba todas las reglas de negocio para una asignación.
-     * Si alguna falla lanza {@link BusinessException}; si todo está correcto
-     * devuelve el evento para no volver a consultarlo.
-     */
-    private Event validateAssignment(Staff actor, Staff target, int eventId) {
-        if (actor == null || target == null)
-            throw new BusinessException("El personal que asigna y el asignado son obligatorios.");
-
-        Event event = requireEvent(eventId);
-
-        if (isClosed(event))
-            throw new BusinessException("El evento está finalizado o cancelado");
-        if (!actor.canAssign(target))
-            throw new BusinessException("Usted no tiene permiso para asignar a esta persona");
-        if (assignmentRepository.exists(target.getId(), eventId))
-            throw new BusinessException("Esta persona ya está asignada al evento.");
-        if (hasScheduleConflict(target.getId(), event))
-            throw new BusinessException("Esta persona tiene otro evento que se cruza");
-
-        if (target instanceof Coordinator) {
-            if (assignmentRepository.countByEventAndRole(eventId, StaffRole.COORDINATOR) >= event.getMaxCoordinators())
-                throw new BusinessException("El evento alcanzó el máximo de coordinadores");
-        } else if (target instanceof Logistic) {
-            if (!assignmentRepository.exists(actor.getId(), eventId))
-                throw new BusinessException("Usted no está asignado a este evento");
-            if (assignmentRepository.countByEventAndRole(eventId, StaffRole.LOGISTIC) >= event.getMaxLogistics())
-                throw new BusinessException("El evento alcanzó el máximo de logísticos");
-            if (assignmentRepository.countByEventAndAssigner(eventId, actor.getId()) >= event
-                    .getMaxLogisticsPerCoordinator())
-                throw new BusinessException("Alcanzó su máximo de logísticos para este evento.");
-        } else {
-            throw new BusinessException("El tipo de personal no puede asignarse a un evento.");
-        }
-
-        return event;
     }
 
     @Override
@@ -171,36 +127,39 @@ public class EventAssignmentService implements IEventAssignmentService {
             throw new BusinessException("Solo puede quitar a quienes usted asignó");
 
         if (assignment.getStaffRole() == StaffRole.COORDINATOR)
-            assignmentRepository.deleteByEventAndAssigner(assignment.getEvent().getId(), assignment.getStaff().getId());
+            assignmentRepository.deleteByEventAndAssigner(assignment.getEvent().getId(),
+                    assignment.getStaff().getId());
 
         assignmentRepository.delete(idAssignment);
+    }
+
+    private Event validateAssignment(Staff actor, Staff target, int eventId) {
+        if (actor == null || target == null)
+            throw new BusinessException("El personal que asigna y el asignado son obligatorios.");
+
+        resolveRole(target);
+        Event event = requireEvent(eventId);
+
+        for (AssignmentRule rule : rules)
+            rule.check(actor, target, event);
+
+        return event;
     }
 
     private Event requireEvent(int eventId) {
         Event event = eventRepository.getById(eventId);
         if (event == null)
-            throw new BusinessException("The event does not exist.");
+            throw new BusinessException("El evento no existe");
 
         return event;
     }
 
-    private boolean isClosed(Event e) {
-        return "Finalizado".equals(e.getState()) || "Cancelado".equals(e.getState());
-    }
-
-    private boolean hasScheduleConflict(int staffId, Event newEvent) {
-        for (EventAssignment a : assignmentRepository.getAllByStaff(staffId)) {
-            Event other = eventRepository.getById(a.getEvent().getId());
-            if (other != null && !isClosed(other) && overlaps(other, newEvent))
-                return true;
-        }
-        return false;
-    }
-
-    private boolean overlaps(Event a, Event b) {
-        return a.getDate().equals(b.getDate())
-                && a.getStartTime() < b.getEndTime()
-                && b.getStartTime() < a.getEndTime();
+    private StaffRole resolveRole(Staff target) {
+        if (target instanceof Coordinator)
+            return StaffRole.COORDINATOR;
+        if (target instanceof Logistic)
+            return StaffRole.LOGISTIC;
+        throw new BusinessException("El tipo de personal no puede asignarse a un evento");
     }
 
 }

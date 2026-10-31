@@ -16,10 +16,13 @@ public class EventService implements IEventService {
 
     private final IEventRepository eventRepository;
     private final IEventAssignmentRepository assignmentRepository;
+    private final EventValidator eventValidator;
 
-    public EventService(IEventRepository eventRepository, IEventAssignmentRepository assignmentRepository) {
+    public EventService(IEventRepository eventRepository, IEventAssignmentRepository assignmentRepository,
+            EventValidator eventValidator) {
         this.eventRepository = eventRepository;
         this.assignmentRepository = assignmentRepository;
+        this.eventValidator = eventValidator;
     }
 
     @Override
@@ -36,7 +39,9 @@ public class EventService implements IEventService {
     public void createEvent(String name, String state, LocalDate date, int startTime, String country,
             String city, String placeName, String address, int capacity, int endTime, int maxCoordinators,
             int maxLogistics, int maxLogisticsPerCoordinator) {
-        validateLimits(startTime, endTime, maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
+
+        eventValidator.validate(name, date, startTime, endTime, country, city, placeName, address, capacity,
+                maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
 
         Place place = new Place(country, city, placeName, address, capacity);
         Event newEvent = new Event(maxLogistics, maxLogisticsPerCoordinator, maxCoordinators, endTime, startTime,
@@ -52,7 +57,8 @@ public class EventService implements IEventService {
         if (event == null)
             throw new BusinessException("El evento no existe.");
 
-        validateLimits(startTime, endTime, maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
+        eventValidator.validate(name, date, startTime, endTime, country, city, placeName, address, capacity,
+                maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
 
         if (maxCoordinators < assignmentRepository.countByEventAndRole(idEvent, StaffRole.COORDINATOR))
             throw new BusinessException("Hay más coordinadores asignados que el nuevo máximo.");
@@ -91,12 +97,4 @@ public class EventService implements IEventService {
         eventRepository.delete(id);
     }
 
-    private void validateLimits(int start, int end, int maxCoord, int maxLog, int maxPerCoord) {
-        if (start < 0 || end > 24 || end <= start)
-            throw new BusinessException("La hora de fin debe ser mayor que la de inicio.");
-        if (maxCoord < 1 || maxLog < 1 || maxPerCoord < 1)
-            throw new BusinessException("Los límites deben ser al menos 1.");
-        if (maxPerCoord > maxLog)
-            throw new BusinessException("El máximo por coordinador no puede superar el máximo de logísticos.");
-    }
 }

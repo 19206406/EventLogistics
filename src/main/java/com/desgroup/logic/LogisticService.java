@@ -3,47 +3,48 @@ package com.desgroup.logic;
 import java.util.List;
 
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
-import com.desgroup.interfaces.logicInterfaces.IStaffSalary;
 import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.interfaces.repositoriesInterfaces.ILogisticRepository;
-import com.desgroup.interfaces.repositoriesInterfaces.IStaffRepository;
+import com.desgroup.interfaces.rulesInterfaces.ISalaryPolicy;
 import com.desgroup.models.Logistic;
-import com.desgroup.models.Staff;
 import com.desgroup.utils.BusinessException;
 
-public class LogisticService implements IStaffSalary, ILogisticService {
+public class LogisticService implements ILogisticService {
 
     private final ILogisticRepository repository;
+    private final StaffValidator staffValidator;
     private final IEventAssignmentRepository assignmentRepository;
-    private final IStaffRepository staffRepository;
-    private final double hourlyRate;
+    private final ISalaryPolicy<Logistic> salaryPolicy;
 
-    public LogisticService(
-            ILogisticRepository repository, IEventAssignmentRepository assignmentRepository,
-            IStaffRepository staffRepository) {
+    public LogisticService(ILogisticRepository repository, StaffValidator staffValidator,
+            IEventAssignmentRepository assignmentRepository, ISalaryPolicy<Logistic> salaryPolicy) {
         this.repository = repository;
+        this.staffValidator = staffValidator;
         this.assignmentRepository = assignmentRepository;
-        this.staffRepository = staffRepository;
-        hourlyRate = 10000.00;
+        this.salaryPolicy = salaryPolicy;
     }
 
+    @Override
     public List<Logistic> getAllLogistics() {
         return repository.getAll();
     }
 
+    @Override
     public Logistic getLogisticById(int id) {
         return repository.getById(id);
     }
 
+    @Override
     public void createLogistic(String name, String email, String phone, String position, String zone,
             String role, String password, int score, int workingHours) {
-        if (staffRepository.getByEmail(email) != null)
-            throw new BusinessException("Ya existe un miembro del personal con el correo " + email + ".");
+
+        validate(name, email, phone, password, zone, role, score, workingHours, null);
 
         Logistic logistic = new Logistic(0, name, email, phone, position, password, zone, role, score, workingHours);
         repository.create(logistic);
     }
 
+    @Override
     public void updatedLogistic(int id, String name, String email, String phone, String position, String zone,
             String role, String password, int score, int workingHours) {
         Logistic logistic = repository.getById(id);
@@ -51,9 +52,7 @@ public class LogisticService implements IStaffSalary, ILogisticService {
         if (logistic == null)
             throw new BusinessException("El logistico no existe.");
 
-        Staff existingEmail = staffRepository.getByEmail(email);
-        if (existingEmail != null && !existingEmail.getId().equals(id))
-            throw new BusinessException("Ya existe un miembro del personal con el correo " + email + ".");
+        validate(name, email, phone, password, zone, role, score, workingHours, id);
 
         logistic.setName(name);
         logistic.setEmail(email);
@@ -68,11 +67,13 @@ public class LogisticService implements IStaffSalary, ILogisticService {
         repository.updated(logistic);
     }
 
+    @Override
     public void deleteLogistic(int id) {
         assignmentRepository.deleteByStaff(id);
         repository.delete(id);
     }
 
+    @Override
     public void recordHoursWorked(int id, int hours) {
         Logistic searchLogistic = repository.getById(id);
         searchLogistic.setWorkingHours(hours);
@@ -82,10 +83,20 @@ public class LogisticService implements IStaffSalary, ILogisticService {
     @Override
     public double calculateSalary(int id) {
         Logistic logistic = repository.getById(id);
-        int hoursWorked = logistic.getWorkingHours();
-        double salary = hoursWorked * hourlyRate;
-        logistic.setSalary(salary);
-        repository.updated(logistic);
-        return salary;
+        if (logistic == null)
+            throw new BusinessException("El logistico no existe");
+
+        return salaryPolicy.calculate(logistic);
+    }
+
+    private void validate(String name, String email, String phone, String password, String zone, String role,
+            int score, int workingHours, Integer currentId) {
+        staffValidator.validate(name, email, phone, password, currentId);
+        staffValidator.requireNotBlank(zone, "zona");
+        staffValidator.requireNotBlank(role, "rol");
+        if (score < 0)
+            throw new BusinessException("El puntaje no puede ser negativo.");
+        if (workingHours < 0)
+            throw new BusinessException("Las horas trabajadas no pueden ser negativas.");
     }
 }

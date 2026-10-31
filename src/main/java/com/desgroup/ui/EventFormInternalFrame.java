@@ -23,7 +23,6 @@ import com.desgroup.models.Event;
 import com.desgroup.models.Place;
 import com.desgroup.utils.BusinessException;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 
 /**
@@ -150,76 +149,22 @@ public class EventFormInternalFrame extends JInternalFrame {
     }
 
     private void save() {
-        String name = txtName.getText().trim();
-        String state = (String) cmbState.getSelectedItem();
-        String dateText = txtDate.getText().trim();
-        String hourText = txtHour.getText().trim();
-        String country = txtCountry.getText().trim();
-        String city = txtCity.getText().trim();
-        String placeName = txtPlaceName.getText().trim();
-        String address = txtAddress.getText().trim();
-        String capacityText = txtCapacity.getText().trim();
-        String endHourText = txtEndHour.getText().trim();
-        String maxCoordinatorsText = txtMaxCoordinators.getText().trim();
-        String maxLogisticsText = txtMaxLogistics.getText().trim();
-        String maxLogisticsPerCoordinatorText = txtMaxLogisticsPerCoordinator.getText().trim();
-
-        if (name.isEmpty() || dateText.isEmpty() || hourText.isEmpty() || country.isEmpty() || city.isEmpty()
-                || placeName.isEmpty() || address.isEmpty() || capacityText.isEmpty() || endHourText.isEmpty()
-                || maxCoordinatorsText.isEmpty() || maxLogisticsText.isEmpty()
-                || maxLogisticsPerCoordinatorText.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.",
-                    "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        LocalDate date;
         try {
-            date = LocalDate.parse(dateText);
-        } catch (DateTimeParseException ex) {
-            JOptionPane.showMessageDialog(this,
-                    "La fecha no es válida. Use el formato AAAA-MM-DD (por ejemplo 2026-10-25).",
-                    "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+            String name = FormInput.text(txtName);
+            String state = (String) cmbState.getSelectedItem();
+            LocalDate date = FormInput.parseDate(txtDate, "fecha");
+            int startTime = FormInput.parseInt(txtHour, "hora de inicio");
+            int endTime = FormInput.parseInt(txtEndHour, "hora de fin");
+            String country = FormInput.text(txtCountry);
+            String city = FormInput.text(txtCity);
+            String placeName = FormInput.text(txtPlaceName);
+            String address = FormInput.text(txtAddress);
+            int capacity = FormInput.parseInt(txtCapacity, "capacidad");
+            int maxCoordinators = FormInput.parseInt(txtMaxCoordinators, "máximo de coordinadores");
+            int maxLogistics = FormInput.parseInt(txtMaxLogistics, "máximo de logísticos");
+            int maxLogisticsPerCoordinator = FormInput.parseInt(txtMaxLogisticsPerCoordinator,
+                    "máximo de logísticos por coordinador");
 
-        if (!hourText.matches("\\d{1,2}") || Integer.parseInt(hourText) > 23) {
-            JOptionPane.showMessageDialog(this,
-                    "La hora debe ser un número entero entre 0 y 23.",
-                    "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (!capacityText.matches("\\d{1,9}") || Integer.parseInt(capacityText) == 0) {
-            JOptionPane.showMessageDialog(this,
-                    "La capacidad debe ser un número entero mayor que 0.",
-                    "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (!endHourText.matches("\\d{1,2}") || Integer.parseInt(endHourText) > 24) {
-            JOptionPane.showMessageDialog(this,
-                    "La hora de fin debe ser un número entero entre 1 y 24.",
-                    "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (!maxCoordinatorsText.matches("\\d{1,9}") || !maxLogisticsText.matches("\\d{1,9}")
-                || !maxLogisticsPerCoordinatorText.matches("\\d{1,9}")) {
-            JOptionPane.showMessageDialog(this,
-                    "Los máximos de coordinadores y logísticos deben ser números enteros.",
-                    "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        int startTime = Integer.parseInt(hourText);
-        int capacity = Integer.parseInt(capacityText);
-        int endTime = Integer.parseInt(endHourText);
-        int maxCoordinators = Integer.parseInt(maxCoordinatorsText);
-        int maxLogistics = Integer.parseInt(maxLogisticsText);
-        int maxLogisticsPerCoordinator = Integer.parseInt(maxLogisticsPerCoordinatorText);
-
-        try {
             if (event == null) {
                 service.createEvent(name, state, date, startTime, country, city, placeName, address, capacity,
                         endTime, maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);

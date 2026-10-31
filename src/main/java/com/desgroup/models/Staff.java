@@ -14,7 +14,6 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -48,9 +47,6 @@ public abstract class Staff {
     @Column(nullable = false)
     private String password;
 
-    @Transient
-    private Double salary;
-
     @OneToMany(mappedBy = "staff")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -74,10 +70,6 @@ public abstract class Staff {
         assignment.setStaff(this);
     }
 
-    /**
-     * Indica si este miembro del personal puede asignar a otro a un evento.
-     * Por defecto nadie puede asignar; cada subclase habilita los casos permitidos.
-     */
     public boolean canAssign(Staff target) {
         return false;
     }
