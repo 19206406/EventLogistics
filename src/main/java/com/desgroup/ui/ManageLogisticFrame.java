@@ -48,17 +48,17 @@ public class ManageLogisticFrame extends JInternalFrame {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton createLoggisticButton = new JButton("Crear logistico");
+        JButton createLogisticButton = new JButton("Crear logistico");
         JButton updateLogisticButton = new JButton("Actualizar logistico");
         JButton deleteLogisticButton = new JButton("Eliminar logistico");
         JButton assignLogisticButton = new JButton("Asignar logisticos");
 
-        createLoggisticButton.addActionListener(e -> openCreateForm());
+        createLogisticButton.addActionListener(e -> openCreateForm());
         updateLogisticButton.addActionListener(e -> openUpdateForm());
         deleteLogisticButton.addActionListener(e -> deleteSelectedLogistic());
         assignLogisticButton.addActionListener(e -> openAssignForm());
 
-        buttonPanel.add(createLoggisticButton);
+        buttonPanel.add(createLogisticButton);
         buttonPanel.add(updateLogisticButton);
         buttonPanel.add(deleteLogisticButton);
         buttonPanel.add(assignLogisticButton);
@@ -72,8 +72,7 @@ public class ManageLogisticFrame extends JInternalFrame {
             }
         };
 
-        JTable tableManageLogistic = new JTable(tableModel);
-        logisticTable = tableManageLogistic;
+        logisticTable = new JTable(tableModel);
         logisticTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         logisticTable.setRowHeight(24);
         logisticTable.getColumnModel().getColumn(0).setPreferredWidth(40);

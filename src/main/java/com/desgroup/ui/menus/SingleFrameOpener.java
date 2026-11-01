@@ -19,7 +19,6 @@ final class SingleFrameOpener {
             try {
                 frame.setSelected(true);
             } catch (PropertyVetoException ignored) {
-                // The frame stays open in front even if selection is vetoed
             }
             return;
         }

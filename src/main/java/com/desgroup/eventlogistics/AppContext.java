@@ -33,10 +33,6 @@ import com.desgroup.repositories.ManagerRepository;
 import com.desgroup.repositories.StaffRepository;
 import com.desgroup.utils.StaffRole;
 
-/**
- * Raíz de composición: el único lugar donde se crean las clases concretas y se
- * conectan entre sí. El resto de la aplicación solo conoce interfaces.
- */
 public final class AppContext {
     private static final double COORDINATOR_PRICE_PER_ASSIGNMENT = 400000.00;
     private static final double LOGISTIC_HOURLY_RATE = 20000.00;

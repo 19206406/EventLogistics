@@ -31,8 +31,8 @@ public class ViewManagerProfileFrame extends javax.swing.JInternalFrame {
         setSize(300, 240);
         setLocation(130, 90);
 
-        JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5));
-        panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        JPanel profilePanel = new JPanel(new GridLayout(0, 1, 5, 5));
+        profilePanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
         JLabel lblName = new JLabel("Nombre: " + manager.getName());
         JLabel lblEmail = new JLabel("Email: " + manager.getEmail());
@@ -40,13 +40,13 @@ public class ViewManagerProfileFrame extends javax.swing.JInternalFrame {
         JLabel lblPosition = new JLabel("Posición: " + manager.getPosition());
         JLabel lblCompany = new JLabel("Empresa: " + manager.getCompany());
 
-        panel.add(lblName);
-        panel.add(lblEmail);
-        panel.add(lblPhone);
-        panel.add(lblPosition);
-        panel.add(lblCompany);
+        profilePanel.add(lblName);
+        profilePanel.add(lblEmail);
+        profilePanel.add(lblPhone);
+        profilePanel.add(lblPosition);
+        profilePanel.add(lblCompany);
 
-        getContentPane().add(panel);
+        getContentPane().add(profilePanel);
     }
 
     @SuppressWarnings("unchecked")

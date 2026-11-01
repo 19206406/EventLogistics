@@ -51,8 +51,8 @@ public class ViewCoordinatorProfile extends javax.swing.JInternalFrame {
         setSize(300, 260);
         setLocation(130, 90);
 
-        JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5));
-        panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        JPanel profilePanel = new JPanel(new GridLayout(0, 1, 5, 5));
+        profilePanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
         double salary = coordinatorService.calculateSalary(coordinator.getId());
 
@@ -63,13 +63,13 @@ public class ViewCoordinatorProfile extends javax.swing.JInternalFrame {
         JLabel lblCompany = new JLabel("Empresa: " + coordinator.getCompany());
         JLabel lblSalary = new JLabel("Salario: " + salary);
 
-        panel.add(lblName);
-        panel.add(lblEmail);
-        panel.add(lblPhone);
-        panel.add(lblPosition);
-        panel.add(lblCompany);
-        panel.add(lblSalary);
-        add(panel);
+        profilePanel.add(lblName);
+        profilePanel.add(lblEmail);
+        profilePanel.add(lblPhone);
+        profilePanel.add(lblPosition);
+        profilePanel.add(lblCompany);
+        profilePanel.add(lblSalary);
+        add(profilePanel);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

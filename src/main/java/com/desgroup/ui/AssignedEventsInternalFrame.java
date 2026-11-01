@@ -122,7 +122,8 @@ public class AssignedEventsInternalFrame extends JInternalFrame {
             }
         });
 
-        return new JScrollPane(eventsTable);
+        JScrollPane eventsScrollPane = new JScrollPane(eventsTable);
+        return eventsScrollPane;
     }
 
     private JPanel buildPlaceDetailPanel() {
@@ -151,10 +152,10 @@ public class AssignedEventsInternalFrame extends JInternalFrame {
         constraints.insets = new Insets(2, 6, 2, 6);
         constraints.anchor = GridBagConstraints.LINE_START;
 
-        JLabel label = new JLabel(labelText);
-        label.setFont(label.getFont().deriveFont(Font.BOLD));
+        JLabel fieldLabel = new JLabel(labelText);
+        fieldLabel.setFont(fieldLabel.getFont().deriveFont(Font.BOLD));
         constraints.gridx = column;
-        panel.add(label, constraints);
+        panel.add(fieldLabel, constraints);
 
         constraints.gridx = column + 1;
         constraints.weightx = 1.0;

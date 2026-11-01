@@ -22,7 +22,7 @@ import javax.swing.JMenuItem;
 public class MainFrame extends JFrame {
     private JDesktopPane desktopPane;
 
-    private final IStaffService staffService; // solo para volver al login
+    private final IStaffService staffService;
     private final Map<StaffRole, RoleMenu> roleMenus;
 
     private final Staff currentUser;
@@ -48,13 +48,11 @@ public class MainFrame extends JFrame {
     private JMenuBar buildMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
-        // Menú del rol del usuario actual
         RoleMenu roleMenu = roleMenus.get(currentUser.getStaffRole());
         if (roleMenu != null) {
             menuBar.add(roleMenu.build(desktopPane, currentUser));
         }
 
-        // Menú Opciones
         JMenu menuOptions = new JMenu("Opciones");
         JMenuItem itemExit = new JMenuItem("Salir");
         itemExit.addActionListener(e -> returnBack());

@@ -34,17 +34,17 @@ public class ManageCoordinatorFrame extends JInternalFrame {
         JButton createCoordinatorButton = new JButton("Crear coordinador");
         JButton updateCoordinatorButton = new JButton("Actualizar coordinador");
         JButton deleteCoordinatorButton = new JButton("Eliminar coordinador");
-        JButton assignCooridnatorButton = new JButton("Asignar coordinador");
+        JButton assignCoordinatorButton = new JButton("Asignar coordinador");
 
         createCoordinatorButton.addActionListener(e -> openCreateForm());
         updateCoordinatorButton.addActionListener(e -> openUpdateForm());
         deleteCoordinatorButton.addActionListener(e -> deleteSelectedCoordinator());
-        assignCooridnatorButton.addActionListener(e -> openAssignForm());
+        assignCoordinatorButton.addActionListener(e -> openAssignForm());
 
         buttonPanel.add(createCoordinatorButton);
         buttonPanel.add(updateCoordinatorButton);
         buttonPanel.add(deleteCoordinatorButton);
-        buttonPanel.add(assignCooridnatorButton);
+        buttonPanel.add(assignCoordinatorButton);
         mainPanel.add(buttonPanel, BorderLayout.NORTH);
 
         String[] columns = { "Id", "Nombre", "Email", "Telefono", "Cargo", "Compañia" };
@@ -55,8 +55,7 @@ public class ManageCoordinatorFrame extends JInternalFrame {
             }
         };
 
-        JTable tableManageLogistic = new JTable(tableModel);
-        coordinatorTable = tableManageLogistic;
+        coordinatorTable = new JTable(tableModel);
         coordinatorTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         coordinatorTable.setRowHeight(24);
         coordinatorTable.getColumnModel().getColumn(0).setPreferredWidth(40);

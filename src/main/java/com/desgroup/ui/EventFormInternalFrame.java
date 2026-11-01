@@ -56,8 +56,8 @@ public class EventFormInternalFrame extends JInternalFrame {
     }
 
     private void initComponents() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(6, 5, 6, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -77,19 +77,19 @@ public class EventFormInternalFrame extends JInternalFrame {
         txtCapacity = new JTextField(22);
 
         int row = 0;
-        addRow(panel, gbc, row++, "Nombre del evento:", txtName);
-        addRow(panel, gbc, row++, "Estado:", cmbState);
-        addRow(panel, gbc, row++, "Fecha (AAAA-MM-DD):", txtDate);
-        addRow(panel, gbc, row++, "Hora de inicio (0-23):", txtHour);
-        addRow(panel, gbc, row++, "Hora de fin (1-24):", txtEndHour);
-        addRow(panel, gbc, row++, "Máx. coordinadores:", txtMaxCoordinators);
-        addRow(panel, gbc, row++, "Máx. logísticos:", txtMaxLogistics);
-        addRow(panel, gbc, row++, "Máx. logísticos por coordinador:", txtMaxLogisticsPerCoordinator);
-        addRow(panel, gbc, row++, "País:", txtCountry);
-        addRow(panel, gbc, row++, "Ciudad:", txtCity);
-        addRow(panel, gbc, row++, "Nombre del lugar:", txtPlaceName);
-        addRow(panel, gbc, row++, "Dirección:", txtAddress);
-        addRow(panel, gbc, row++, "Capacidad:", txtCapacity);
+        addRow(formPanel, gbc, row++, "Nombre del evento:", txtName);
+        addRow(formPanel, gbc, row++, "Estado:", cmbState);
+        addRow(formPanel, gbc, row++, "Fecha (AAAA-MM-DD):", txtDate);
+        addRow(formPanel, gbc, row++, "Hora de inicio (0-23):", txtHour);
+        addRow(formPanel, gbc, row++, "Hora de fin (1-24):", txtEndHour);
+        addRow(formPanel, gbc, row++, "Máx. coordinadores:", txtMaxCoordinators);
+        addRow(formPanel, gbc, row++, "Máx. logísticos:", txtMaxLogistics);
+        addRow(formPanel, gbc, row++, "Máx. logísticos por coordinador:", txtMaxLogisticsPerCoordinator);
+        addRow(formPanel, gbc, row++, "País:", txtCountry);
+        addRow(formPanel, gbc, row++, "Ciudad:", txtCity);
+        addRow(formPanel, gbc, row++, "Nombre del lugar:", txtPlaceName);
+        addRow(formPanel, gbc, row++, "Dirección:", txtAddress);
+        addRow(formPanel, gbc, row++, "Capacidad:", txtCapacity);
 
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton btnSave = new JButton("Guardar");
@@ -103,19 +103,20 @@ public class EventFormInternalFrame extends JInternalFrame {
         gbc.gridy = row;
         gbc.gridwidth = 2;
         gbc.weightx = 0;
-        panel.add(buttonsPanel, gbc);
+        formPanel.add(buttonsPanel, gbc);
 
-        add(panel);
+        add(formPanel);
         getRootPane().setDefaultButton(btnSave);
     }
 
-    private void addRow(JPanel panel, GridBagConstraints gbc, int row, String label, JComponent field) {
+    private void addRow(JPanel panel, GridBagConstraints gbc, int row, String labelText, JComponent field) {
         gbc.gridwidth = 1;
 
         gbc.gridx = 0;
         gbc.gridy = row;
         gbc.weightx = 0;
-        panel.add(new JLabel(label), gbc);
+        JLabel fieldLabel = new JLabel(labelText);
+        panel.add(fieldLabel, gbc);
 
         gbc.gridx = 1;
         gbc.weightx = 1;

@@ -35,17 +35,13 @@ public class Main {
             }
         }
 
-        // 1. Crea la base de datos si no existe y aplica las migraciones de Flyway.
         DatabaseInitializer.initialize();
 
-        // 2. Fuerza la validación de las entidades contra el esquema ya creado.
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Runtime.getRuntime().addShutdownHook(new Thread(HibernateUtil::shutdown, "hibernate-shutdown"));
 
         AppContext ctx = new AppContext(sessionFactory);
 
-        // 3. Menú de cada rol. Para un rol nuevo se agrega aquí su menú, sin tocar
-        // MainFrame.
         Map<StaffRole, RoleMenu> roleMenus = Map.of(
                 StaffRole.LOGISTIC, new LogisticMenu(ctx.assignmentQueryService, ctx.eventService, ctx.logisticService),
                 StaffRole.COORDINATOR,

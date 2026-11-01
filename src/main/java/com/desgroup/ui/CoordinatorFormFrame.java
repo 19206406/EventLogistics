@@ -57,7 +57,8 @@ public class CoordinatorFormFrame extends JInternalFrame {
             gbc.gridx = 0;
             gbc.gridy = i;
             gbc.weightx = 0;
-            contentPanel.add(new JLabel(labels[i]), gbc);
+            JLabel fieldLabel = new JLabel(labels[i]);
+            contentPanel.add(fieldLabel, gbc);
             gbc.gridx = 1;
             gbc.weightx = 1;
             contentPanel.add(fields[i], gbc);
