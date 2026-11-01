@@ -4,8 +4,10 @@ import javax.swing.JDesktopPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import com.desgroup.interfaces.logicInterfaces.IAssignmentCommandService;
+import com.desgroup.interfaces.logicInterfaces.IAssignmentQueryService;
+import com.desgroup.interfaces.logicInterfaces.IAvailabilityService;
 import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
-import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.models.Staff;
@@ -18,14 +20,20 @@ public class CoordinatorMenu implements RoleMenu {
     private final ILogisticService logisticService;
     private final ICoordinatorService coordinatorService;
     private final IEventService eventService;
-    private final IEventAssignmentService assignmentService;
+    private final IAssignmentCommandService assignmentCommandService;
+    private final IAssignmentQueryService assignmentQueryService;
+    private final IAvailabilityService availabilityService;
 
     public CoordinatorMenu(ILogisticService logisticService, ICoordinatorService coordinatorService,
-            IEventService eventService, IEventAssignmentService assignmentService) {
+            IEventService eventService, IAssignmentCommandService assignmentCommandService,
+            IAssignmentQueryService assignmentQueryService,
+            IAvailabilityService availabilityService) {
         this.logisticService = logisticService;
         this.coordinatorService = coordinatorService;
         this.eventService = eventService;
-        this.assignmentService = assignmentService;
+        this.assignmentCommandService = assignmentCommandService;
+        this.assignmentQueryService = assignmentQueryService;
+        this.availabilityService = availabilityService;
     }
 
     @Override
@@ -35,12 +43,16 @@ public class CoordinatorMenu implements RoleMenu {
 
         JMenuItem itemManageLogistics = new JMenuItem("Administrar logisticos");
         itemManageLogistics.addActionListener(e -> show(desktopPane,
-                new ManageLogisticFrame(logisticService, desktopPane, eventService, assignmentService, currentUser)));
+                new ManageLogisticFrame(logisticService, desktopPane, eventService, assignmentCommandService,
+                        assignmentQueryService, availabilityService, currentUser)));
+
         menu.add(itemManageLogistics);
 
         JMenuItem itemEvents = new JMenuItem("Ver eventos asignados");
+
         itemEvents.addActionListener(e -> assignedEvents.open(desktopPane,
-                () -> new AssignedEventsInternalFrame(assignmentService, eventService, currentUser)));
+                () -> new AssignedEventsInternalFrame(assignmentQueryService, eventService, currentUser)));
+
         menu.add(itemEvents);
 
         JMenuItem itemProfile = new JMenuItem("Ver perfil");

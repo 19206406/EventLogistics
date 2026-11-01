@@ -4,8 +4,10 @@
  */
 package com.desgroup.ui;
 
+import com.desgroup.interfaces.logicInterfaces.IAssignmentCommandService;
+import com.desgroup.interfaces.logicInterfaces.IAssignmentQueryService;
+import com.desgroup.interfaces.logicInterfaces.IAvailabilityService;
 import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
-import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.interfaces.logicInterfaces.IStaffService;
@@ -29,7 +31,9 @@ public class MainFrame extends JFrame {
     private final IStaffService staffService;
     private final ILogisticService logisticService;
     private final IEventService eventService;
-    private final IEventAssignmentService assignmentService;
+    private final IAssignmentCommandService assignmentCommandService;
+    private final IAssignmentQueryService assignmentQueryService;
+    private final IAvailabilityService availabilityService;
     private final ICoordinatorService coordinatorService;
     private final Map<StaffRole, RoleMenu> roleMenus;
 
@@ -38,12 +42,15 @@ public class MainFrame extends JFrame {
     private LoginFrame Back;
 
     public MainFrame(IStaffService staffService, ILogisticService logisticService, IEventService eventService,
-            IEventAssignmentService assignmentService, ICoordinatorService coordinatorService,
+            IAssignmentCommandService assignmentCommandService, IAssignmentQueryService assignmentQueryService,
+            IAvailabilityService availabilityService, ICoordinatorService coordinatorService,
             Map<StaffRole, RoleMenu> roleMenus, Staff currentUser) {
         this.staffService = staffService;
         this.logisticService = logisticService;
         this.eventService = eventService;
-        this.assignmentService = assignmentService;
+        this.assignmentCommandService = assignmentCommandService;
+        this.assignmentQueryService = assignmentQueryService;
+        this.availabilityService = availabilityService;
         this.coordinatorService = coordinatorService;
         this.roleMenus = roleMenus;
         this.currentUser = currentUser;
@@ -82,7 +89,8 @@ public class MainFrame extends JFrame {
     }
 
     public void returnBack() {
-        Back = new LoginFrame(staffService, logisticService, eventService, assignmentService,
+        Back = new LoginFrame(staffService, logisticService, eventService, assignmentCommandService,
+                assignmentQueryService, availabilityService,
                 coordinatorService, roleMenus);
         Back.setVisible(true);
         this.dispose();

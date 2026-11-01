@@ -35,7 +35,10 @@ public final class AppContext {
     public final ILogisticService logisticService;
     public final ICoordinatorService coordinatorService;
     public final IEventService eventService;
-    public final IEventAssignmentService assignmentService;
+    public final IAssignmentCommandService assignmentCommandService;
+    public final IAssignmentQueryService assignmentQueryService;
+    public final IAvailabilityService availabilityService;
+
     public final IManagerService managerService;
 
     private AppContext() {
@@ -78,8 +81,12 @@ public final class AppContext {
         coordinatorService = new CoordinatorService(coordinatorRepo, staffValidator, assignmentRepo,
                 coordinatorPolicy);
         eventService = new EventService(eventRepo, assignmentRepo, eventValidator);
-        assignmentService = new EventAssignmentService(assignmentRepo, eventRepo, logisticRepo, coordinatorRepo,
-                conflictChecker, commonRules, rulesByRole);
+
+        assignmentCommandService = new AssignmentCommandService(assignmentRepo, eventRepo, commonRules, rulesByRole);
+        assignmentQueryService = new AssignmentQueryService(assignmentRepo);
+        availabilityService = new AvailabilityService(logisticRepo, coordinatorRepo, eventRepo, assignmentRepo,
+                conflictChecker);
+
         managerService = new ManagerService(managerRepo);
     }
 }

@@ -1,7 +1,9 @@
 package com.desgroup.ui;
 
+import com.desgroup.interfaces.logicInterfaces.IAssignmentCommandService;
+import com.desgroup.interfaces.logicInterfaces.IAssignmentQueryService;
+import com.desgroup.interfaces.logicInterfaces.IAvailabilityService;
 import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
-import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.models.Coordinator;
 import com.desgroup.models.Event;
@@ -20,16 +22,22 @@ public class AssignCoordinatorToEventFrame extends JInternalFrame {
     private static final String[] ASSIGNED_COLUMNS = { "Assignment Id", "Coordinator Id", "Name", "Email" };
 
     private final IEventService eventService;
-    private final IEventAssignmentService assignmentService;
+    private final IAssignmentCommandService assignmentCommandService;
+    private final IAssignmentQueryService assignmentQueryService;
+    private final IAvailabilityService availabilityService;
     private final ICoordinatorService coordinatorService;
     private final Staff currentUser;
     private final Coordinator preselectedCoordinator;
 
-    public AssignCoordinatorToEventFrame(IEventService eventService, IEventAssignmentService assignmentService,
+    public AssignCoordinatorToEventFrame(IEventService eventService, IAssignmentCommandService assignmentCommandService,
+            IAssignmentQueryService assignmentQueryService,
+            IAvailabilityService availabilityService,
             ICoordinatorService coordinatorService, Staff currentUser, Coordinator preselectedCoordinator) {
         super("Asignar coordinador a evento", true, true, true, true);
         this.eventService = eventService;
-        this.assignmentService = assignmentService;
+        this.assignmentCommandService = assignmentCommandService;
+        this.assignmentQueryService = assignmentQueryService;
+        this.availabilityService = availabilityService;
         this.coordinatorService = coordinatorService;
         this.currentUser = currentUser;
         this.preselectedCoordinator = preselectedCoordinator;
@@ -134,14 +142,14 @@ public class AssignCoordinatorToEventFrame extends JInternalFrame {
         }
 
         int eventId = selectedEvent.getId();
-        for (Coordinator coordinator : assignmentService.getAvailableCoordinators(eventId)) {
+        for (Coordinator coordinator : availabilityService.getAvailableCoordinators(eventId)) {
             availableTableModel.addRow(new Object[] {
                     coordinator.getId(), coordinator.getName(), coordinator.getEmail(),
                     coordinator.getPhone(), coordinator.getCompany()
             });
         }
 
-        List<EventAssignment> coordinatorAssignments = assignmentService.getAssignmentsByEventAndRole(eventId,
+        List<EventAssignment> coordinatorAssignments = assignmentQueryService.getAssignmentsByEventAndRole(eventId,
                 StaffRole.COORDINATOR);
 
         for (EventAssignment assignment : coordinatorAssignments) {
@@ -187,7 +195,7 @@ public class AssignCoordinatorToEventFrame extends JInternalFrame {
         }
 
         try {
-            assignmentService.assign(currentUser, coordinator, selectedEvent.getId());
+            assignmentCommandService.assign(currentUser, coordinator, selectedEvent.getId());
             JOptionPane.showMessageDialog(this, "Se ha asignado correctamente el coordinador.", "Success",
                     JOptionPane.INFORMATION_MESSAGE);
         } catch (BusinessException ex) {
@@ -214,7 +222,7 @@ public class AssignCoordinatorToEventFrame extends JInternalFrame {
             return;
 
         try {
-            assignmentService.unassign(currentUser, assignmentId);
+            assignmentCommandService.unassign(currentUser, assignmentId);
         } catch (BusinessException ex) {
             showError(ex.getMessage());
         }

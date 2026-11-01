@@ -1,6 +1,6 @@
 package com.desgroup.ui;
 
-import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
+import com.desgroup.interfaces.logicInterfaces.IAssignmentQueryService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.models.Event;
 import com.desgroup.models.EventAssignment;
@@ -17,7 +17,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
@@ -42,7 +41,7 @@ public class AssignedEventsInternalFrame extends JInternalFrame {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final String EMPTY_VALUE = "-";
 
-    private final IEventAssignmentService assignmentService;
+    private final IAssignmentQueryService assignmentQueryService;
     private final IEventService eventService;
     private final Staff currentUser;
 
@@ -55,12 +54,12 @@ public class AssignedEventsInternalFrame extends JInternalFrame {
     private JLabel countryValue;
     private JLabel capacityValue;
 
-    public AssignedEventsInternalFrame(IEventAssignmentService assignmentService, IEventService eventService,
+    public AssignedEventsInternalFrame(IAssignmentQueryService assignmentQueryService, IEventService eventService,
             Staff currentUser) {
         super("Eventos asignados", true, true, true, true);
-        this.assignmentService = Objects.requireNonNull(assignmentService);
-        this.eventService = Objects.requireNonNull(eventService);
-        this.currentUser = Objects.requireNonNull(currentUser);
+        this.assignmentQueryService = assignmentQueryService;
+        this.eventService = eventService;
+        this.currentUser = currentUser;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponents();
         loadAssignedEvents();
@@ -165,7 +164,7 @@ public class AssignedEventsInternalFrame extends JInternalFrame {
 
     private void loadAssignedEvents() {
         List<Event> events = new ArrayList<>();
-        for (EventAssignment assignment : assignmentService.getAssignmentsByStaffId(currentUser.getId())) {
+        for (EventAssignment assignment : assignmentQueryService.getAssignmentsByStaffId(currentUser.getId())) {
             Event event = eventService.getEventById(assignment.getEvent().getId());
             if (event != null) {
                 events.add(event);

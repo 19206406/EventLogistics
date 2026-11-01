@@ -4,7 +4,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
+import com.desgroup.interfaces.logicInterfaces.IAssignmentQueryService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.models.Staff;
@@ -13,13 +13,13 @@ import com.desgroup.ui.ViewLogisticProfile;
 
 public class LogisticMenu implements RoleMenu {
 
-    private final IEventAssignmentService assignmentService;
+    private final IAssignmentQueryService assignmentQueryService;
     private final IEventService eventService;
     private final ILogisticService logisticService;
 
-    public LogisticMenu(IEventAssignmentService assignmentService, IEventService eventService,
+    public LogisticMenu(IAssignmentQueryService assignmentQueryService, IEventService eventService,
             ILogisticService logisticService) {
-        this.assignmentService = assignmentService;
+        this.assignmentQueryService = assignmentQueryService;
         this.eventService = eventService;
         this.logisticService = logisticService;
     }
@@ -31,7 +31,7 @@ public class LogisticMenu implements RoleMenu {
 
         JMenuItem itemEvents = new JMenuItem("Ver eventos asignados");
         itemEvents.addActionListener(e -> assignedEvents.open(desktopPane,
-                () -> new AssignedEventsInternalFrame(assignmentService, eventService, currentUser)));
+                () -> new AssignedEventsInternalFrame(assignmentQueryService, eventService, currentUser)));
         menu.add(itemEvents);
 
         JMenuItem itemProfile = new JMenuItem("Ver perfil");

@@ -47,17 +47,21 @@ public class Main {
         // 3. Menú de cada rol. Para un rol nuevo se agrega aquí su menú, sin tocar
         // MainFrame.
         Map<StaffRole, RoleMenu> roleMenus = Map.of(
-                StaffRole.LOGISTIC, new LogisticMenu(ctx.assignmentService, ctx.eventService, ctx.logisticService),
-                StaffRole.COORDINATOR, new CoordinatorMenu(ctx.logisticService, ctx.coordinatorService,
-                        ctx.eventService, ctx.assignmentService),
+                StaffRole.LOGISTIC, new LogisticMenu(ctx.assignmentQueryService, ctx.eventService, ctx.logisticService),
+                StaffRole.COORDINATOR,
+                new CoordinatorMenu(ctx.logisticService, ctx.coordinatorService, ctx.eventService,
+                        ctx.assignmentCommandService, ctx.assignmentQueryService, ctx.availabilityService),
                 StaffRole.MANAGER,
-                new ManagerMenu(ctx.eventService, ctx.coordinatorService, ctx.assignmentService, ctx.managerService));
+                new ManagerMenu(ctx.eventService, ctx.coordinatorService, ctx.assignmentCommandService,
+                        ctx.assignmentQueryService, ctx.availabilityService, ctx.managerService));
 
         EventQueue.invokeLater(() -> new LoginFrame(
                 ctx.staffService,
                 ctx.logisticService,
                 ctx.eventService,
-                ctx.assignmentService,
+                ctx.assignmentCommandService,
+                ctx.assignmentQueryService,
+                ctx.availabilityService,
                 ctx.coordinatorService,
                 roleMenus).setVisible(true));
     }

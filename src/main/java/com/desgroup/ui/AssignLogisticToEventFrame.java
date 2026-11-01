@@ -1,6 +1,8 @@
 package com.desgroup.ui;
 
-import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
+import com.desgroup.interfaces.logicInterfaces.IAssignmentCommandService;
+import com.desgroup.interfaces.logicInterfaces.IAssignmentQueryService;
+import com.desgroup.interfaces.logicInterfaces.IAvailabilityService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.models.*;
@@ -19,16 +21,22 @@ public class AssignLogisticToEventFrame extends JInternalFrame {
     private static final String[] ASSIGNED_COLUMNS = { "Id Asignación", "Id Logistico", "Nombre", "Correo" };
 
     private final IEventService eventService;
-    private final IEventAssignmentService assignmentService;
+    private final IAssignmentCommandService assignmentCommandService;
+    private final IAssignmentQueryService assignmentQueryService;
+    private final IAvailabilityService availabilityService;
     private final ILogisticService logisticService;
     private final Staff currentUser;
     private final Logistic preselectedLogistic;
 
-    public AssignLogisticToEventFrame(IEventService eventService, IEventAssignmentService assignmentService,
+    public AssignLogisticToEventFrame(IEventService eventService, IAssignmentCommandService assignmentCommandService,
+            IAssignmentQueryService assignmentQueryService,
+            IAvailabilityService availabilityService,
             ILogisticService logisticService, Staff currentUser, Logistic preselectedLogistic) {
         super("Asignar logistico a evento", true, true, true, true);
         this.eventService = eventService;
-        this.assignmentService = assignmentService;
+        this.assignmentCommandService = assignmentCommandService;
+        this.assignmentQueryService = assignmentQueryService;
+        this.availabilityService = availabilityService;
         this.logisticService = logisticService;
         this.currentUser = currentUser;
         this.preselectedLogistic = preselectedLogistic;
@@ -134,14 +142,14 @@ public class AssignLogisticToEventFrame extends JInternalFrame {
         }
 
         int eventId = selectedEvent.getId();
-        for (Logistic logistic : assignmentService.getAvailableLogistics(eventId)) {
+        for (Logistic logistic : availabilityService.getAvailableLogistics(eventId)) {
             availableTableModel.addRow(new Object[] {
                     logistic.getId(), logistic.getName(), logistic.getEmail(),
                     logistic.getPhone()
             });
         }
 
-        List<EventAssignment> logisticsAssignments = assignmentService.getAssignmentsByEventAndRole(eventId,
+        List<EventAssignment> logisticsAssignments = assignmentQueryService.getAssignmentsByEventAndRole(eventId,
                 StaffRole.LOGISTIC);
 
         for (EventAssignment assignment : logisticsAssignments) {
@@ -187,7 +195,7 @@ public class AssignLogisticToEventFrame extends JInternalFrame {
         }
 
         try {
-            assignmentService.assign(currentUser, logistic, selectedEvent.getId());
+            assignmentCommandService.assign(currentUser, logistic, selectedEvent.getId());
             JOptionPane.showMessageDialog(this, "Logistico asignado correctamente", "Success",
                     JOptionPane.INFORMATION_MESSAGE);
         } catch (BusinessException ex) {
@@ -214,7 +222,7 @@ public class AssignLogisticToEventFrame extends JInternalFrame {
             return;
 
         try {
-            assignmentService.unassign(currentUser, assignmentId);
+            assignmentCommandService.unassign(currentUser, assignmentId);
         } catch (BusinessException ex) {
             showError(ex.getMessage());
         }

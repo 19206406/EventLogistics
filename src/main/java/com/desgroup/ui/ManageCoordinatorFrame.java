@@ -1,7 +1,9 @@
 package com.desgroup.ui;
 
+import com.desgroup.interfaces.logicInterfaces.IAssignmentCommandService;
+import com.desgroup.interfaces.logicInterfaces.IAssignmentQueryService;
+import com.desgroup.interfaces.logicInterfaces.IAvailabilityService;
 import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
-import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.models.Coordinator;
 import com.desgroup.models.Staff;
@@ -14,16 +16,22 @@ import java.util.List;
 public class ManageCoordinatorFrame extends JInternalFrame {
     private final ICoordinatorService coordinatorService;
     private final IEventService eventService;
-    private final IEventAssignmentService assignmentService;
+    private final IAssignmentCommandService assignmentCommandService;
+    private final IAssignmentQueryService assignmentQueryService;
+    private final IAvailabilityService availabilityService;
     private final Staff currentUser;
     private final JDesktopPane desktopPane;
 
     public ManageCoordinatorFrame(ICoordinatorService coordinatorService, IEventService eventService,
-            IEventAssignmentService assignmentService, Staff currentUser, JDesktopPane desktopPane) {
+            IAssignmentCommandService assignmentCommandService,
+            IAssignmentQueryService assignmentQueryService,
+            IAvailabilityService availabilityService, Staff currentUser, JDesktopPane desktopPane) {
         super("Administrar coordinadores", true, true, true, true);
         this.coordinatorService = coordinatorService;
         this.eventService = eventService;
-        this.assignmentService = assignmentService;
+        this.assignmentCommandService = assignmentCommandService;
+        this.assignmentQueryService = assignmentQueryService;
+        this.availabilityService = availabilityService;
         this.currentUser = currentUser;
         this.desktopPane = desktopPane;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -131,8 +139,9 @@ public class ManageCoordinatorFrame extends JInternalFrame {
             selectedCoordinator = coordinatorService.getCoordinatorById(id);
         }
 
-        AssignCoordinatorToEventFrame form = new AssignCoordinatorToEventFrame(eventService, assignmentService,
-                coordinatorService, currentUser, selectedCoordinator);
+        AssignCoordinatorToEventFrame form = new AssignCoordinatorToEventFrame(eventService, assignmentCommandService,
+                assignmentQueryService, availabilityService, coordinatorService, currentUser,
+                selectedCoordinator);
         desktopPane.add(form);
         form.setVisible(true);
     }

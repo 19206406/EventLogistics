@@ -4,7 +4,9 @@
  */
 package com.desgroup.ui;
 
-import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
+import com.desgroup.interfaces.logicInterfaces.IAssignmentCommandService;
+import com.desgroup.interfaces.logicInterfaces.IAssignmentQueryService;
+import com.desgroup.interfaces.logicInterfaces.IAvailabilityService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.models.Logistic;
@@ -31,17 +33,23 @@ import javax.swing.table.DefaultTableModel;
 public class ManageLogisticFrame extends JInternalFrame {
     private final ILogisticService logisticService;
     private final IEventService eventService;
-    private final IEventAssignmentService assignmentService;
+    private final IAssignmentCommandService assignmentCommandService;
+    private final IAssignmentQueryService assignmentQueryService;
+    private final IAvailabilityService availabilityService;
     private final Staff currentUser;
     private final JDesktopPane desktopPane;
 
     public ManageLogisticFrame(ILogisticService logisticService, JDesktopPane desktopPane, IEventService eventService,
-            IEventAssignmentService assignmentService,
+            IAssignmentCommandService assignmentCommandService,
+            IAssignmentQueryService assignmentQueryService,
+            IAvailabilityService availabilityService,
             Staff currentUser) {
         super("Administrar logisticos", true, true, true, true);
         this.logisticService = logisticService;
         this.eventService = eventService;
-        this.assignmentService = assignmentService;
+        this.assignmentCommandService = assignmentCommandService;
+        this.assignmentQueryService = assignmentQueryService;
+        this.availabilityService = availabilityService;
         this.currentUser = currentUser;
         this.desktopPane = desktopPane;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -149,8 +157,9 @@ public class ManageLogisticFrame extends JInternalFrame {
             selectedLogistic = logisticService.getLogisticById(id);
         }
 
-        AssignLogisticToEventFrame form = new AssignLogisticToEventFrame(eventService, assignmentService, logisticService,
-                currentUser, selectedLogistic);
+        AssignLogisticToEventFrame form = new AssignLogisticToEventFrame(eventService, assignmentCommandService,
+                assignmentQueryService, availabilityService, logisticService, currentUser, selectedLogistic);
+
         desktopPane.add(form);
         form.setVisible(true);
     }
