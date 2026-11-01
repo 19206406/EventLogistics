@@ -15,10 +15,10 @@ public class StaffValidator implements IStaffValidator {
 
     @Override
     public void validate(String name, String email, String phone, String password, Integer currentId) {
-        requireNotBlank(name, "nombre");
-        requireNotBlank(email, "correo");
-        requireNotBlank(phone, "teléfono");
-        requireNotBlank(password, "contraseña");
+        RequiredFields.requireNotBlank(name, "nombre");
+        RequiredFields.requireNotBlank(email, "correo");
+        RequiredFields.requireNotBlank(phone, "teléfono");
+        RequiredFields.requireNotBlank(password, "contraseña");
 
         if (!email.contains("@"))
             throw new BusinessException("El correo no es válido.");
@@ -28,11 +28,5 @@ public class StaffValidator implements IStaffValidator {
         Staff existing = staffRepository.getByEmail(email);
         if (existing != null && !existing.getId().equals(currentId))
             throw new BusinessException("Ya existe un miembro del personal con el correo " + email + ".");
-    }
-
-    @Override
-    public void requireNotBlank(String value, String fieldLabel) {
-        if (value == null || value.isBlank())
-            throw new BusinessException("El campo '" + fieldLabel + "' es obligatorio.");
     }
 }

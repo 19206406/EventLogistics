@@ -6,7 +6,6 @@ import com.desgroup.models.EventAssignment;
 import com.desgroup.utils.StaffRole;
 
 public interface IAssignmentQueryService {
-    List<EventAssignment> getAllAssignment();
 
     EventAssignment getAssignmentById(int id);
 

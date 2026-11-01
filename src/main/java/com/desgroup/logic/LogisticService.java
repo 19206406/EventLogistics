@@ -3,7 +3,7 @@ package com.desgroup.logic;
 import java.util.List;
 
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
-import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
+import com.desgroup.interfaces.repositoriesInterfaces.IAssignmentWriter;
 import com.desgroup.interfaces.repositoriesInterfaces.ILogisticRepository;
 import com.desgroup.interfaces.rulesInterfaces.ISalaryPolicy;
 import com.desgroup.interfaces.rulesInterfaces.IStaffValidator;
@@ -14,11 +14,11 @@ public class LogisticService implements ILogisticService {
 
     private final ILogisticRepository repository;
     private final IStaffValidator staffValidator;
-    private final IEventAssignmentRepository assignmentRepository;
+    private final IAssignmentWriter assignmentRepository;
     private final ISalaryPolicy<Logistic> salaryPolicy;
 
     public LogisticService(ILogisticRepository repository, IStaffValidator staffValidator,
-            IEventAssignmentRepository assignmentRepository, ISalaryPolicy<Logistic> salaryPolicy) {
+            IAssignmentWriter assignmentRepository, ISalaryPolicy<Logistic> salaryPolicy) {
         this.repository = repository;
         this.staffValidator = staffValidator;
         this.assignmentRepository = assignmentRepository;
@@ -75,13 +75,6 @@ public class LogisticService implements ILogisticService {
     }
 
     @Override
-    public void recordHoursWorked(int id, int hours) {
-        Logistic searchLogistic = repository.getById(id);
-        searchLogistic.setWorkingHours(hours);
-        repository.updated(searchLogistic);
-    }
-
-    @Override
     public double calculateSalary(int id) {
         Logistic logistic = repository.getById(id);
         if (logistic == null)
@@ -93,8 +86,8 @@ public class LogisticService implements ILogisticService {
     private void validate(String name, String email, String phone, String password, String zone, String role,
             int score, int workingHours, Integer currentId) {
         staffValidator.validate(name, email, phone, password, currentId);
-        staffValidator.requireNotBlank(zone, "zona");
-        staffValidator.requireNotBlank(role, "rol");
+        RequiredFields.requireNotBlank(zone, "zona");
+        RequiredFields.requireNotBlank(role, "rol");
         if (score < 0)
             throw new BusinessException("El puntaje no puede ser negativo.");
         if (workingHours < 0)

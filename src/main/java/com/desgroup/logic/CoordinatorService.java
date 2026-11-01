@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
 import com.desgroup.interfaces.repositoriesInterfaces.ICoordinatorRepository;
-import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
+import com.desgroup.interfaces.repositoriesInterfaces.IAssignmentWriter;
 import com.desgroup.interfaces.rulesInterfaces.ISalaryPolicy;
 import com.desgroup.interfaces.rulesInterfaces.IStaffValidator;
 import com.desgroup.models.Coordinator;
@@ -14,11 +14,11 @@ public class CoordinatorService implements ICoordinatorService {
 
     private final ICoordinatorRepository coordinatorRepository;
     private final IStaffValidator staffValidator;
-    private final IEventAssignmentRepository assignmentRepository;
+    private final IAssignmentWriter assignmentRepository;
     private final ISalaryPolicy<Coordinator> salaryPolicy;
 
     public CoordinatorService(ICoordinatorRepository coordinatorRepository, IStaffValidator staffValidator,
-            IEventAssignmentRepository assignmentRepository, ISalaryPolicy<Coordinator> salaryPolicy) {
+            IAssignmentWriter assignmentRepository, ISalaryPolicy<Coordinator> salaryPolicy) {
         this.coordinatorRepository = coordinatorRepository;
         this.staffValidator = staffValidator;
         this.assignmentRepository = assignmentRepository;
@@ -84,7 +84,7 @@ public class CoordinatorService implements ICoordinatorService {
     private void validate(String name, String email, String phone, String password, String company,
             Integer currentId) {
         staffValidator.validate(name, email, phone, password, currentId);
-        staffValidator.requireNotBlank(company, "empresa");
+        RequiredFields.requireNotBlank(company, "empresa");
     }
 
 }

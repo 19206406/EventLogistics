@@ -1,6 +1,6 @@
 package com.desgroup.logic.rules;
 
-import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
+import com.desgroup.interfaces.repositoriesInterfaces.IAssignmentReader;
 import com.desgroup.interfaces.rulesInterfaces.AssignmentRule;
 import com.desgroup.models.Event;
 import com.desgroup.models.Staff;
@@ -8,9 +8,9 @@ import com.desgroup.utils.BusinessException;
 
 public class NotAlreadyAssignedRule implements AssignmentRule {
 
-    private final IEventAssignmentRepository eventAssignmentRepository;
+    private final IAssignmentReader eventAssignmentRepository;
 
-    public NotAlreadyAssignedRule(IEventAssignmentRepository eventAssignmentRepository) {
+    public NotAlreadyAssignedRule(IAssignmentReader eventAssignmentRepository) {
         this.eventAssignmentRepository = eventAssignmentRepository;
     }
 

@@ -86,12 +86,13 @@ public final class AppContext {
                 logistISalaryPolicy);
         coordinatorService = new CoordinatorService(coordinatorRepo, staffValidator, assignmentRepo,
                 coordinatorPolicy);
-        eventService = new EventService(eventRepo, assignmentRepo, eventValidator);
+        eventService = new EventService(eventRepo, assignmentRepo, assignmentRepo, eventValidator);
 
-        assignmentCommandService = new AssignmentCommandService(assignmentRepo, eventRepo, commonRules, rulesByRole);
+        assignmentCommandService = new AssignmentCommandService(assignmentRepo, assignmentRepo, eventRepo,
+                commonRules, rulesByRole);
         assignmentQueryService = new AssignmentQueryService(assignmentRepo);
         availabilityService = new AvailabilityService(logisticRepo, coordinatorRepo, eventRepo, assignmentRepo,
-                conflictChecker);
+                assignmentRepo, conflictChecker);
 
         managerService = new ManagerService(managerRepo);
     }

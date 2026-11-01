@@ -2,7 +2,7 @@ package com.desgroup.logic.rules;
 
 import java.util.Set;
 
-import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
+import com.desgroup.interfaces.repositoriesInterfaces.IAssignmentReader;
 import com.desgroup.interfaces.rulesInterfaces.RoleAssignmentRule;
 import com.desgroup.models.Event;
 import com.desgroup.models.Staff;
@@ -11,9 +11,9 @@ import com.desgroup.utils.StaffRole;
 
 public class ActorMustBeAssignedRule implements RoleAssignmentRule {
 
-    private final IEventAssignmentRepository eventAssignmentRepository;
+    private final IAssignmentReader eventAssignmentRepository;
 
-    public ActorMustBeAssignedRule(IEventAssignmentRepository eventAssignmentRepository) {
+    public ActorMustBeAssignedRule(IAssignmentReader eventAssignmentRepository) {
         this.eventAssignmentRepository = eventAssignmentRepository;
     }
 

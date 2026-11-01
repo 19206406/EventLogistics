@@ -11,11 +11,11 @@ public class EventValidator implements IEventValidator {
             String country, String city, String placeName, String address, int capacity,
             int maxCoordinators, int maxLogistics, int maxLogisticsPerCoordinator) {
 
-        requireNotBlank(name, "nombre");
-        requireNotBlank(country, "país");
-        requireNotBlank(city, "ciudad");
-        requireNotBlank(placeName, "lugar");
-        requireNotBlank(address, "dirección");
+        RequiredFields.requireNotBlank(name, "nombre");
+        RequiredFields.requireNotBlank(country, "país");
+        RequiredFields.requireNotBlank(city, "ciudad");
+        RequiredFields.requireNotBlank(placeName, "lugar");
+        RequiredFields.requireNotBlank(address, "dirección");
         if (date == null)
             throw new BusinessException("La fecha es obligatoria.");
 
@@ -32,10 +32,5 @@ public class EventValidator implements IEventValidator {
             throw new BusinessException("Los límites deben ser al menos 1.");
         if (maxLogisticsPerCoordinator > maxLogistics)
             throw new BusinessException("El máximo por coordinador no puede superar el máximo de logísticos.");
-    }
-
-    private void requireNotBlank(String value, String fieldLabel) {
-        if (value == null || value.isBlank())
-            throw new BusinessException("El campo '" + fieldLabel + "' es obligatorio.");
     }
 }

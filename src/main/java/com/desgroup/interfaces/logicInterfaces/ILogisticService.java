@@ -18,7 +18,5 @@ public interface ILogisticService {
 
         void deleteLogistic(int id);
 
-        void recordHoursWorked(int id, int hours);
-
         double calculateSalary(int id);
 }

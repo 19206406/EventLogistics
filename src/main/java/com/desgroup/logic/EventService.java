@@ -1,11 +1,11 @@
 package com.desgroup.logic;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.desgroup.interfaces.logicInterfaces.IEventService;
-import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
+import com.desgroup.interfaces.repositoriesInterfaces.IAssignmentCounter;
+import com.desgroup.interfaces.repositoriesInterfaces.IAssignmentWriter;
 import com.desgroup.interfaces.repositoriesInterfaces.IEventRepository;
 import com.desgroup.interfaces.rulesInterfaces.IEventValidator;
 import com.desgroup.models.Event;
@@ -17,13 +17,15 @@ import com.desgroup.utils.StaffRole;
 public class EventService implements IEventService {
 
     private final IEventRepository eventRepository;
-    private final IEventAssignmentRepository assignmentRepository;
+    private final IAssignmentCounter assignmentCounter;
+    private final IAssignmentWriter assignmentWriter;
     private final IEventValidator eventValidator;
 
-    public EventService(IEventRepository eventRepository, IEventAssignmentRepository assignmentRepository,
-            IEventValidator eventValidator) {
+    public EventService(IEventRepository eventRepository, IAssignmentCounter assignmentCounter,
+            IAssignmentWriter assignmentWriter, IEventValidator eventValidator) {
         this.eventRepository = eventRepository;
-        this.assignmentRepository = assignmentRepository;
+        this.assignmentCounter = assignmentCounter;
+        this.assignmentWriter = assignmentWriter;
         this.eventValidator = eventValidator;
     }
 
@@ -62,9 +64,9 @@ public class EventService implements IEventService {
         eventValidator.validate(name, date, startTime, endTime, country, city, placeName, address, capacity,
                 maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
 
-        if (maxCoordinators < assignmentRepository.countByEventAndRole(idEvent, StaffRole.COORDINATOR))
+        if (maxCoordinators < assignmentCounter.countByEventAndRole(idEvent, StaffRole.COORDINATOR))
             throw new BusinessException("Hay más coordinadores asignados que el nuevo máximo.");
-        if (maxLogistics < assignmentRepository.countByEventAndRole(idEvent, StaffRole.LOGISTIC))
+        if (maxLogistics < assignmentCounter.countByEventAndRole(idEvent, StaffRole.LOGISTIC))
             throw new BusinessException("Hay más logísticos asignados que el nuevo máximo.");
 
         Place place = event.getPlace();
@@ -85,17 +87,8 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public List<Event> getEventsByArrayIds(List<Integer> ids) {
-        List<Event> events = new ArrayList<>();
-        for (int id : ids) {
-            events.add(eventRepository.getById(id));
-        }
-        return events;
-    }
-
-    @Override
     public void deleteEventById(int id) {
-        assignmentRepository.deleteByEvent(id);
+        assignmentWriter.deleteByEvent(id);
         eventRepository.delete(id);
     }
 

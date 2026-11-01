@@ -3,21 +3,16 @@ package com.desgroup.logic;
 import java.util.List;
 
 import com.desgroup.interfaces.logicInterfaces.IAssignmentQueryService;
-import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
+import com.desgroup.interfaces.repositoriesInterfaces.IAssignmentReader;
 import com.desgroup.models.EventAssignment;
 import com.desgroup.utils.StaffRole;
 
 public class AssignmentQueryService implements IAssignmentQueryService {
 
-    private final IEventAssignmentRepository eventAssignmentRepository;
+    private final IAssignmentReader eventAssignmentRepository;
 
-    public AssignmentQueryService(IEventAssignmentRepository eventAssignmentRepository) {
+    public AssignmentQueryService(IAssignmentReader eventAssignmentRepository) {
         this.eventAssignmentRepository = eventAssignmentRepository;
-    }
-
-    @Override
-    public List<EventAssignment> getAllAssignment() {
-        return eventAssignmentRepository.getAll();
     }
 
     @Override

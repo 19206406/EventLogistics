@@ -23,16 +23,6 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
     private static final Class<com.desgroup.models.EventAssignment> ENTITY = com.desgroup.models.EventAssignment.class;
 
     @Override
-    public List<EventAssignment> getAll() {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM EventAssignment", ENTITY).list()
-                    .stream()
-                    .map(EventAssignmentRepository::toDomain)
-                    .toList();
-        }
-    }
-
-    @Override
     public EventAssignment getById(int id) {
         try (Session session = sessionFactory.openSession()) {
             com.desgroup.models.EventAssignment assignment = session.get(ENTITY, id);
@@ -107,26 +97,6 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
                 tx.commit();
 
                 assignment.setId(entity.getId());
-            } catch (Exception e) {
-                tx.rollback();
-                throw e;
-            }
-        }
-    }
-
-    @Override
-    public void updated(EventAssignment assignment) {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction tx = session.beginTransaction();
-            try {
-                com.desgroup.models.EventAssignment entity = session.get(ENTITY, assignment.getId());
-                if (entity != null) {
-                    entity.setStaff(requireStaff(session, assignment.getStaff().getId()));
-                    entity.setEvent(requireEvent(session, assignment.getEvent().getId()));
-                    entity.setAssignedBy(requireStaff(session, assignment.getAssignedBy().getId()));
-                    entity.setStaffRole(assignment.getStaffRole());
-                }
-                tx.commit();
             } catch (Exception e) {
                 tx.rollback();
                 throw e;

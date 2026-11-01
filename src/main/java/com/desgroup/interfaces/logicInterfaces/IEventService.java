@@ -20,7 +20,5 @@ public interface IEventService {
             String city, String placeName, String address, int capacity, int endTime, int maxCoordinators,
             int maxLogistics, int maxLogisticsPerCoordinator);
 
-    List<Event> getEventsByArrayIds(List<Integer> ids);
-
     void deleteEventById(int id);
 }
