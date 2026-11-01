@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.desgroup.models.Coordinator;
 
-public interface ICoordinatorService extends IStaffSalary {
+public interface ICoordinatorService {
 
         List<Coordinator> getAllCoordinators();
 
@@ -17,4 +17,6 @@ public interface ICoordinatorService extends IStaffSalary {
                                 String position, String password, String company);
 
         void deleteCoordinator(int id);
+
+        double calculateSalary(int id);
 }

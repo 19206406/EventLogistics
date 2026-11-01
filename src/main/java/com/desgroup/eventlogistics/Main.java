@@ -44,13 +44,14 @@ public class Main {
 
         AppContext ctx = AppContext.get();
 
-        // 3. Menú de cada rol. Para un rol nuevo se agrega aquí su menú, sin tocar MainFrame.
+        // 3. Menú de cada rol. Para un rol nuevo se agrega aquí su menú, sin tocar
+        // MainFrame.
         Map<StaffRole, RoleMenu> roleMenus = Map.of(
                 StaffRole.LOGISTIC, new LogisticMenu(ctx.assignmentService, ctx.eventService, ctx.logisticService),
                 StaffRole.COORDINATOR, new CoordinatorMenu(ctx.logisticService, ctx.coordinatorService,
                         ctx.eventService, ctx.assignmentService),
-                StaffRole.MANAGER, new ManagerMenu(ctx.eventService, ctx.coordinatorService,
-                        ctx.assignmentService));
+                StaffRole.MANAGER,
+                new ManagerMenu(ctx.eventService, ctx.coordinatorService, ctx.assignmentService, ctx.managerService));
 
         EventQueue.invokeLater(() -> new LoginFrame(
                 ctx.staffService,

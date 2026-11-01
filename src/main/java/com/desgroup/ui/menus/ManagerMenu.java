@@ -7,7 +7,7 @@ import javax.swing.JMenuItem;
 import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
 import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
-import com.desgroup.models.Manager;
+import com.desgroup.interfaces.logicInterfaces.IManagerService;
 import com.desgroup.models.Staff;
 import com.desgroup.ui.ManageCoordinatorFrame;
 import com.desgroup.ui.ManageEventFrame;
@@ -18,12 +18,14 @@ public class ManagerMenu implements RoleMenu {
     private final IEventService eventService;
     private final ICoordinatorService coordinatorService;
     private final IEventAssignmentService assignmentService;
+    private final IManagerService managerService;
 
     public ManagerMenu(IEventService eventService, ICoordinatorService coordinatorService,
-            IEventAssignmentService assignmentService) {
+            IEventAssignmentService assignmentService, IManagerService managerService) {
         this.eventService = eventService;
         this.coordinatorService = coordinatorService;
         this.assignmentService = assignmentService;
+        this.managerService = managerService;
     }
 
     @Override
@@ -41,8 +43,8 @@ public class ManagerMenu implements RoleMenu {
         menu.add(itemManageCoordinators);
 
         JMenuItem itemProfile = new JMenuItem("Ver perfil");
-        // El cast es seguro: este menú solo se registra para StaffRole.MANAGER.
-        itemProfile.addActionListener(e -> show(desktopPane, new ViewManagerProfileFrame((Manager) currentUser)));
+        itemProfile.addActionListener(e -> show(desktopPane,
+                new ViewManagerProfileFrame(managerService.getManagerById(currentUser.getId()))));
         menu.add(itemProfile);
 
         return menu;

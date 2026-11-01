@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.desgroup.models.Logistic;
 
-public interface ILogisticService extends IStaffSalary {
+public interface ILogisticService {
 
         List<Logistic> getAllLogistics();
 
@@ -19,4 +19,6 @@ public interface ILogisticService extends IStaffSalary {
         void deleteLogistic(int id);
 
         void recordHoursWorked(int id, int hours);
+
+        double calculateSalary(int id);
 }

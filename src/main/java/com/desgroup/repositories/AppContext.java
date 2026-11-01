@@ -1,5 +1,7 @@
 package com.desgroup.repositories;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +9,7 @@ import com.desgroup.interfaces.logicInterfaces.*;
 import com.desgroup.interfaces.repositoriesInterfaces.*;
 import com.desgroup.interfaces.rulesInterfaces.AssignmentRule;
 import com.desgroup.interfaces.rulesInterfaces.ISalaryPolicy;
+import com.desgroup.interfaces.rulesInterfaces.RoleAssignmentRule;
 import com.desgroup.logic.*;
 import com.desgroup.logic.rules.ActorMustBeAssignedRule;
 import com.desgroup.logic.rules.CoordinatorCapacityRule;
@@ -33,6 +36,7 @@ public final class AppContext {
     public final ICoordinatorService coordinatorService;
     public final IEventService eventService;
     public final IEventAssignmentService assignmentService;
+    public final IManagerService managerService;
 
     private AppContext() {
         ILogisticRepository logisticRepo = new LogisticRepository();
@@ -40,6 +44,7 @@ public final class AppContext {
         IStaffRepository staffRepo = new StaffRepository();
         IEventRepository eventRepo = new EventRepository();
         IEventAssignmentRepository assignmentRepo = new EventAssignmentRepository();
+        IManagerRepository managerRepo = new ManagerRepository();
 
         ScheduleConflictChecker conflictChecker = new ScheduleConflictChecker(assignmentRepo, eventRepo);
         List<AssignmentRule> commonRules = List.of(
@@ -48,11 +53,17 @@ public final class AppContext {
                 new NotAlreadyAssignedRule(assignmentRepo),
                 new NoScheduleConflictRule(conflictChecker));
 
-        Map<StaffRole, List<AssignmentRule>> rulesByRole = Map.of(
-                StaffRole.COORDINATOR, List.of(new CoordinatorCapacityRule(assignmentRepo)),
-                StaffRole.LOGISTIC, List.of(
-                        new ActorMustBeAssignedRule(assignmentRepo),
-                        new LogisticCapacityRule(assignmentRepo)));
+        List<RoleAssignmentRule> roleRules = List.of(
+                new CoordinatorCapacityRule(assignmentRepo),
+                new ActorMustBeAssignedRule(assignmentRepo), // el orden de la lista se respeta
+                new LogisticCapacityRule(assignmentRepo));
+
+        Map<StaffRole, List<AssignmentRule>> rulesByRole = new EnumMap<>(StaffRole.class);
+        for (RoleAssignmentRule rule : roleRules) {
+            for (StaffRole role : rule.appliesTo()) {
+                rulesByRole.computeIfAbsent(role, r -> new ArrayList<>()).add(rule);
+            }
+        }
 
         ISalaryPolicy<Logistic> logistISalaryPolicy = new LogisticSalaryPolicy(LOGISTIC_HOURLY_RATE);
         ISalaryPolicy<Coordinator> coordinatorPolicy = new CoordinatorSalaryPolicy(assignmentRepo,
@@ -62,10 +73,13 @@ public final class AppContext {
         EventValidator eventValidator = new EventValidator();
 
         staffService = new StaffService(staffRepo);
-        logisticService = new LogisticService(logisticRepo, staffValidator, assignmentRepo, logistISalaryPolicy);
-        coordinatorService = new CoordinatorService(coordinatorRepo, staffValidator, assignmentRepo, coordinatorPolicy);
+        logisticService = new LogisticService(logisticRepo, staffValidator, assignmentRepo,
+                logistISalaryPolicy);
+        coordinatorService = new CoordinatorService(coordinatorRepo, staffValidator, assignmentRepo,
+                coordinatorPolicy);
         eventService = new EventService(eventRepo, assignmentRepo, eventValidator);
         assignmentService = new EventAssignmentService(assignmentRepo, eventRepo, logisticRepo, coordinatorRepo,
                 conflictChecker, commonRules, rulesByRole);
+        managerService = new ManagerService(managerRepo);
     }
 }
