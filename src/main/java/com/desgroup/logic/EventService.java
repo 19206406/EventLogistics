@@ -8,6 +8,7 @@ import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.interfaces.repositoriesInterfaces.IEventRepository;
 import com.desgroup.models.Event;
+import com.desgroup.models.EventState;
 import com.desgroup.models.Place;
 import com.desgroup.utils.BusinessException;
 import com.desgroup.utils.StaffRole;
@@ -36,7 +37,7 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public void createEvent(String name, String state, LocalDate date, int startTime, String country,
+    public void createEvent(String name, EventState state, LocalDate date, int startTime, String country,
             String city, String placeName, String address, int capacity, int endTime, int maxCoordinators,
             int maxLogistics, int maxLogisticsPerCoordinator) {
 
@@ -50,7 +51,7 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public void updateEvent(int idEvent, String name, String state, LocalDate date, int startTime, String country,
+    public void updateEvent(int idEvent, String name, EventState state, LocalDate date, int startTime, String country,
             String city, String placeName, String address, int capacity, int endTime, int maxCoordinators,
             int maxLogistics, int maxLogisticsPerCoordinator) {
         Event event = eventRepository.getById(idEvent);

@@ -6,6 +6,7 @@ import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -41,7 +42,8 @@ public class Event {
     private Place place;
 
     @Column(nullable = false)
-    private String state;
+    @Convert(converter = EventStateConverter.class)
+    private EventState state;
 
     @Column(nullable = false)
     private LocalDate date;
@@ -66,7 +68,7 @@ public class Event {
     @EqualsAndHashCode.Exclude
     private List<EventAssignment> assignments = new ArrayList<>();
 
-    public Event(Integer id, String name, Place place, String state, LocalDate date, Integer startTime) {
+    public Event(Integer id, String name, Place place, EventState state, LocalDate date, Integer startTime) {
         this.name = name;
         this.place = place;
         this.state = state;
@@ -75,7 +77,7 @@ public class Event {
     }
 
     public Event(Integer maxLogistics, Integer maxLogisticsPerCoordinator, Integer maxCoordinators, Integer endTime,
-            Integer startTime, LocalDate date, String state, Place place, String name) {
+            Integer startTime, LocalDate date, EventState state, Place place, String name) {
         this.maxLogistics = maxLogistics;
         this.maxLogisticsPerCoordinator = maxLogisticsPerCoordinator;
         this.maxCoordinators = maxCoordinators;
@@ -98,6 +100,6 @@ public class Event {
     }
 
     public boolean isClosed() {
-        return "Finalizado".equals(state) || "Cancelado".equals(state);
+        return state != null && state.isClosed();
     }
 }

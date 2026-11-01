@@ -4,20 +4,23 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.desgroup.models.Event;
+import com.desgroup.models.EventState;
 
 public interface IEventService {
 
-        List<Event> getAllEvents();
+    List<Event> getAllEvents();
 
-        Event getEventById(int id);
+    Event getEventById(int id);
 
-        void createEvent(String name, String state, LocalDate date, int startTime, String country,
-                         String city, String placeName, String address, int capacity, int endTime, int maxCoordinators, int maxLogistics, int maxLogisticsPerCoordinator);
+    void createEvent(String name, EventState state, LocalDate date, int startTime, String country,
+            String city, String placeName, String address, int capacity, int endTime, int maxCoordinators,
+            int maxLogistics, int maxLogisticsPerCoordinator);
 
-        void updateEvent(int idEvent, String name, String state, LocalDate date, int startTime, String country,
-                          String city, String placeName, String address, int capacity, int endTime, int maxCoordinators, int maxLogistics, int maxLogisticsPerCoordinator);
+    void updateEvent(int idEvent, String name, EventState state, LocalDate date, int startTime, String country,
+            String city, String placeName, String address, int capacity, int endTime, int maxCoordinators,
+            int maxLogistics, int maxLogisticsPerCoordinator);
 
-        List<Event> getEventsByArrayIds(List<Integer> ids);
+    List<Event> getEventsByArrayIds(List<Integer> ids);
 
-        void deleteEventById(int id);
+    void deleteEventById(int id);
 }

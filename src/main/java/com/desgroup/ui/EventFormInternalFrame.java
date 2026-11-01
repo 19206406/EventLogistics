@@ -20,17 +20,16 @@ import javax.swing.JTextField;
 
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.models.Event;
+import com.desgroup.models.EventState;
 import com.desgroup.models.Place;
 import com.desgroup.utils.BusinessException;
 import java.time.LocalDate;
-import java.util.Arrays;
 
 /**
  *
  * @author urreg
  */
 public class EventFormInternalFrame extends JInternalFrame {
-    public static final String[] STATES = { "Programado", "En curso", "Finalizado", "Cancelado" };
     private final IEventService service;
     private final ManageEventFrame manageEventFrame;
     private final Event event;
@@ -64,7 +63,7 @@ public class EventFormInternalFrame extends JInternalFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         txtName = new JTextField(22);
-        cmbState = new JComboBox<>(STATES);
+        cmbState = new JComboBox<>(EventState.values());
         txtDate = new JTextField(22);
         txtHour = new JTextField(22);
         txtEndHour = new JTextField(22);
@@ -126,9 +125,6 @@ public class EventFormInternalFrame extends JInternalFrame {
     private void fillFields(Event event) {
         txtName.setText(event.getName());
 
-        if (event.getState() != null && !Arrays.asList(STATES).contains(event.getState())) {
-            cmbState.addItem(event.getState());
-        }
         cmbState.setSelectedItem(event.getState());
 
         txtDate.setText(event.getDate() == null ? "" : event.getDate().toString());
@@ -151,7 +147,7 @@ public class EventFormInternalFrame extends JInternalFrame {
     private void save() {
         try {
             String name = FormInput.text(txtName);
-            String state = (String) cmbState.getSelectedItem();
+            EventState state = (EventState) cmbState.getSelectedItem();
             LocalDate date = FormInput.parseDate(txtDate, "fecha");
             int startTime = FormInput.parseInt(txtHour, "hora de inicio");
             int endTime = FormInput.parseInt(txtEndHour, "hora de fin");
@@ -182,7 +178,7 @@ public class EventFormInternalFrame extends JInternalFrame {
     }
 
     private JTextField txtName;
-    private JComboBox<String> cmbState;
+    private JComboBox<EventState> cmbState;
     private JTextField txtDate;
     private JTextField txtHour;
     private JTextField txtEndHour;

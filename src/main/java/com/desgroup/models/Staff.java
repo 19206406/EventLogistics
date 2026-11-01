@@ -3,6 +3,8 @@ package com.desgroup.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.desgroup.utils.StaffRole;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
@@ -70,7 +72,13 @@ public abstract class Staff {
         assignment.setStaff(this);
     }
 
+    public abstract StaffRole getStaffRole();
+
     public boolean canAssign(Staff target) {
+        return false;
+    }
+
+    public boolean canUnassignOthers() {
         return false;
     }
 }

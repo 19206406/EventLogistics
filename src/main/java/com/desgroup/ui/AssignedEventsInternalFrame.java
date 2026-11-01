@@ -2,10 +2,8 @@ package com.desgroup.ui;
 
 import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
-import com.desgroup.models.Coordinator;
 import com.desgroup.models.Event;
 import com.desgroup.models.EventAssignment;
-import com.desgroup.models.Logistic;
 import com.desgroup.models.Place;
 import com.desgroup.models.Staff;
 
@@ -85,7 +83,7 @@ public class AssignedEventsInternalFrame extends JInternalFrame {
         JPanel headerPanel = new JPanel(new BorderLayout(10, 0));
 
         JLabel titleLabel = new JLabel("Eventos asignados a " + currentUser.getName()
-                + " (" + getRoleLabel(currentUser) + ")");
+                + " (" + currentUser.getStaffRole().getLabel() + ")");
         titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD, 15f));
         headerPanel.add(titleLabel, BorderLayout.CENTER);
 
@@ -213,16 +211,6 @@ public class AssignedEventsInternalFrame extends JInternalFrame {
         capacityValue.setText(place.getCapacity() + " personas");
     }
 
-    private static String getRoleLabel(Staff staff) {
-        if (staff instanceof Coordinator) {
-            return "Coordinador";
-        }
-        if (staff instanceof Logistic) {
-            return "Logístico";
-        }
-        return staff.getPosition();
-    }
-
     private static String formatHour(int hour) {
         return String.format("%02d:00", hour);
     }
@@ -283,7 +271,7 @@ public class AssignedEventsInternalFrame extends JInternalFrame {
             return switch (column) {
                 case COLUMN_ID -> event.getId();
                 case COLUMN_NAME -> event.getName();
-                case COLUMN_STATE -> event.getState();
+                case COLUMN_STATE -> event.getState().getLabel();
                 case COLUMN_DATE -> event.getDate();
                 case COLUMN_START_TIME -> formatHour(event.getStartTime());
                 case COLUMN_END_TIME -> event.getEndTime() > 0 ? formatHour(event.getEndTime()) : "Sin definir";

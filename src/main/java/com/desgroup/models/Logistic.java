@@ -1,5 +1,7 @@
 package com.desgroup.models;
 
+import com.desgroup.utils.StaffRole;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -44,7 +46,7 @@ public class Logistic extends Staff {
     }
 
     @Override
-    public boolean canAssign(Staff target) {
-        return false;
+    public StaffRole getStaffRole() {
+        return StaffRole.LOGISTIC;
     }
 }

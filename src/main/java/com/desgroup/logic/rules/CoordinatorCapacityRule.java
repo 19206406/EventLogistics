@@ -2,7 +2,6 @@ package com.desgroup.logic.rules;
 
 import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.interfaces.rulesInterfaces.AssignmentRule;
-import com.desgroup.models.Coordinator;
 import com.desgroup.models.Event;
 import com.desgroup.models.Staff;
 import com.desgroup.utils.BusinessException;
@@ -18,9 +17,6 @@ public class CoordinatorCapacityRule implements AssignmentRule {
 
     @Override
     public void check(Staff actor, Staff target, Event event) {
-        if (!(target instanceof Coordinator))
-            return;
-
         if (eventAssignmentRepository.countByEventAndRole(event.getId(), StaffRole.COORDINATOR) >= event
                 .getMaxCoordinators())
             throw new BusinessException("El evento alcanzó el máximo de coordinadores");

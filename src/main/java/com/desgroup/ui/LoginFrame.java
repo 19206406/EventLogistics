@@ -4,6 +4,7 @@
  */
 package com.desgroup.ui;
 
+import java.util.Map;
 import javax.swing.JOptionPane;
 
 import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
@@ -12,6 +13,8 @@ import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.interfaces.logicInterfaces.IStaffService;
 import com.desgroup.models.Staff;
+import com.desgroup.ui.menus.RoleMenu;
+import com.desgroup.utils.StaffRole;
 
 /**
  *
@@ -24,14 +27,17 @@ public class LoginFrame extends javax.swing.JFrame {
     private final IEventService eventService;
     private final IEventAssignmentService assignmentService;
     private final ICoordinatorService coordinatorService;
+    private final Map<StaffRole, RoleMenu> roleMenus;
 
     public LoginFrame(IStaffService staffService, ILogisticService logisticService, IEventService eventService,
-            IEventAssignmentService assignmentService, ICoordinatorService coordinatorService) {
+            IEventAssignmentService assignmentService, ICoordinatorService coordinatorService,
+            Map<StaffRole, RoleMenu> roleMenus) {
         this.staffService = staffService;
         this.logisticService = logisticService;
         this.eventService = eventService;
         this.assignmentService = assignmentService;
         this.coordinatorService = coordinatorService;
+        this.roleMenus = roleMenus;
 
         initComponents();
         setLocationRelativeTo(null);
@@ -157,7 +163,7 @@ public class LoginFrame extends javax.swing.JFrame {
         if (isSuccess != null) {
             MainFrame mainFrame = new MainFrame(staffService, logisticService, eventService,
                     assignmentService,
-                    coordinatorService, isSuccess);
+                    coordinatorService, roleMenus, isSuccess);
             mainFrame.setVisible(true);
             dispose();
         } else {

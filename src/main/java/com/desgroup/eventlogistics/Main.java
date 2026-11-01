@@ -6,9 +6,15 @@ package com.desgroup.eventlogistics;
 
 import com.desgroup.repositories.AppContext;
 import com.desgroup.ui.LoginFrame;
+import com.desgroup.ui.menus.CoordinatorMenu;
+import com.desgroup.ui.menus.LogisticMenu;
+import com.desgroup.ui.menus.ManagerMenu;
+import com.desgroup.ui.menus.RoleMenu;
 import com.desgroup.utils.DatabaseInitializer;
 import com.desgroup.utils.HibernateUtil;
+import com.desgroup.utils.StaffRole;
 import java.awt.EventQueue;
+import java.util.Map;
 import javax.swing.UIManager;
 
 /**
@@ -38,11 +44,20 @@ public class Main {
 
         AppContext ctx = AppContext.get();
 
+        // 3. Menú de cada rol. Para un rol nuevo se agrega aquí su menú, sin tocar MainFrame.
+        Map<StaffRole, RoleMenu> roleMenus = Map.of(
+                StaffRole.LOGISTIC, new LogisticMenu(ctx.assignmentService, ctx.eventService, ctx.logisticService),
+                StaffRole.COORDINATOR, new CoordinatorMenu(ctx.logisticService, ctx.coordinatorService,
+                        ctx.eventService, ctx.assignmentService),
+                StaffRole.MANAGER, new ManagerMenu(ctx.eventService, ctx.coordinatorService,
+                        ctx.assignmentService));
+
         EventQueue.invokeLater(() -> new LoginFrame(
                 ctx.staffService,
                 ctx.logisticService,
                 ctx.eventService,
                 ctx.assignmentService,
-                ctx.coordinatorService).setVisible(true));
+                ctx.coordinatorService,
+                roleMenus).setVisible(true));
     }
 }

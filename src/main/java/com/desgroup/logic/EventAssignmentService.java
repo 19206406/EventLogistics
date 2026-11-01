@@ -1,6 +1,7 @@
 package com.desgroup.logic;
 
 import java.util.List;
+import java.util.Map;
 
 import com.desgroup.interfaces.logicInterfaces.IEventAssignmentService;
 import com.desgroup.interfaces.repositoriesInterfaces.ICoordinatorRepository;
@@ -12,7 +13,6 @@ import com.desgroup.models.Coordinator;
 import com.desgroup.models.Event;
 import com.desgroup.models.EventAssignment;
 import com.desgroup.models.Logistic;
-import com.desgroup.models.Manager;
 import com.desgroup.models.Staff;
 import com.desgroup.utils.BusinessException;
 import com.desgroup.utils.StaffRole;
@@ -24,17 +24,20 @@ public class EventAssignmentService implements IEventAssignmentService {
     private final ILogisticRepository logisticRepository;
     private final ICoordinatorRepository coordinatorRepository;
     private final ScheduleConflictChecker conflictChecker;
-    private final List<AssignmentRule> rules;
+    private final List<AssignmentRule> commonRules;
+    private final Map<StaffRole, List<AssignmentRule>> rulesByRole;
 
     public EventAssignmentService(IEventAssignmentRepository assignmentRepository, IEventRepository eventRepository,
             ILogisticRepository logisticRepository, ICoordinatorRepository coordinatorRepository,
-            ScheduleConflictChecker conflictChecker, List<AssignmentRule> rules) {
+            ScheduleConflictChecker conflictChecker, List<AssignmentRule> commonRules,
+            Map<StaffRole, List<AssignmentRule>> rulesByRole) {
         this.assignmentRepository = assignmentRepository;
         this.eventRepository = eventRepository;
         this.logisticRepository = logisticRepository;
         this.coordinatorRepository = coordinatorRepository;
         this.conflictChecker = conflictChecker;
-        this.rules = rules;
+        this.commonRules = commonRules;
+        this.rulesByRole = rulesByRole;
     }
 
     @Override
@@ -112,8 +115,7 @@ public class EventAssignmentService implements IEventAssignmentService {
     @Override
     public void assign(Staff actor, Staff target, int eventId) {
         Event event = validateAssignment(actor, target, eventId);
-        StaffRole role = resolveRole(target);
-        assignmentRepository.create(new EventAssignment(target, event, actor, role));
+        assignmentRepository.create(new EventAssignment(target, event, actor, target.getStaffRole()));
     }
 
     @Override
@@ -123,7 +125,7 @@ public class EventAssignmentService implements IEventAssignmentService {
             throw new BusinessException("La asignación no existe.");
 
         boolean isOwner = assignment.getAssignedBy().getId().equals(actor.getId());
-        if (!isOwner && !(actor instanceof Manager))
+        if (!isOwner && !actor.canUnassignOthers())
             throw new BusinessException("Solo puede quitar a quienes usted asignó");
 
         if (assignment.getStaffRole() == StaffRole.COORDINATOR)
@@ -137,10 +139,10 @@ public class EventAssignmentService implements IEventAssignmentService {
         if (actor == null || target == null)
             throw new BusinessException("El personal que asigna y el asignado son obligatorios.");
 
-        resolveRole(target);
         Event event = requireEvent(eventId);
-
-        for (AssignmentRule rule : rules)
+        for (AssignmentRule rule : commonRules)
+            rule.check(actor, target, event);
+        for (AssignmentRule rule : rulesByRole.getOrDefault(target.getStaffRole(), List.of()))
             rule.check(actor, target, event);
 
         return event;
@@ -152,14 +154,6 @@ public class EventAssignmentService implements IEventAssignmentService {
             throw new BusinessException("El evento no existe");
 
         return event;
-    }
-
-    private StaffRole resolveRole(Staff target) {
-        if (target instanceof Coordinator)
-            return StaffRole.COORDINATOR;
-        if (target instanceof Logistic)
-            return StaffRole.LOGISTIC;
-        throw new BusinessException("El tipo de personal no puede asignarse a un evento");
     }
 
 }

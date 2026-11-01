@@ -1,12 +1,14 @@
 package com.desgroup.repositories;
 
 import java.util.List;
+import java.util.Map;
 
 import com.desgroup.interfaces.logicInterfaces.*;
 import com.desgroup.interfaces.repositoriesInterfaces.*;
 import com.desgroup.interfaces.rulesInterfaces.AssignmentRule;
 import com.desgroup.interfaces.rulesInterfaces.ISalaryPolicy;
 import com.desgroup.logic.*;
+import com.desgroup.logic.rules.ActorMustBeAssignedRule;
 import com.desgroup.logic.rules.CoordinatorCapacityRule;
 import com.desgroup.logic.rules.EventNotClosedRule;
 import com.desgroup.logic.rules.LogisticCapacityRule;
@@ -15,6 +17,7 @@ import com.desgroup.logic.rules.NotAlreadyAssignedRule;
 import com.desgroup.logic.rules.PermissionRule;
 import com.desgroup.models.Coordinator;
 import com.desgroup.models.Logistic;
+import com.desgroup.utils.StaffRole;
 
 public final class AppContext {
     private static final AppContext INSTANCE = new AppContext();
@@ -39,13 +42,17 @@ public final class AppContext {
         IEventAssignmentRepository assignmentRepo = new EventAssignmentRepository();
 
         ScheduleConflictChecker conflictChecker = new ScheduleConflictChecker(assignmentRepo, eventRepo);
-        List<AssignmentRule> assignmentRules = List.of(
+        List<AssignmentRule> commonRules = List.of(
                 new EventNotClosedRule(),
                 new PermissionRule(),
                 new NotAlreadyAssignedRule(assignmentRepo),
-                new NoScheduleConflictRule(conflictChecker),
-                new CoordinatorCapacityRule(assignmentRepo),
-                new LogisticCapacityRule(assignmentRepo));
+                new NoScheduleConflictRule(conflictChecker));
+
+        Map<StaffRole, List<AssignmentRule>> rulesByRole = Map.of(
+                StaffRole.COORDINATOR, List.of(new CoordinatorCapacityRule(assignmentRepo)),
+                StaffRole.LOGISTIC, List.of(
+                        new ActorMustBeAssignedRule(assignmentRepo),
+                        new LogisticCapacityRule(assignmentRepo)));
 
         ISalaryPolicy<Logistic> logistISalaryPolicy = new LogisticSalaryPolicy(LOGISTIC_HOURLY_RATE);
         ISalaryPolicy<Coordinator> coordinatorPolicy = new CoordinatorSalaryPolicy(assignmentRepo,
@@ -59,6 +66,6 @@ public final class AppContext {
         coordinatorService = new CoordinatorService(coordinatorRepo, staffValidator, assignmentRepo, coordinatorPolicy);
         eventService = new EventService(eventRepo, assignmentRepo, eventValidator);
         assignmentService = new EventAssignmentService(assignmentRepo, eventRepo, logisticRepo, coordinatorRepo,
-                conflictChecker, assignmentRules);
+                conflictChecker, commonRules, rulesByRole);
     }
 }
