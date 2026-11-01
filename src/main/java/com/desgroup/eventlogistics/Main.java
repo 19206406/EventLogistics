@@ -4,7 +4,6 @@
  */
 package com.desgroup.eventlogistics;
 
-import com.desgroup.repositories.AppContext;
 import com.desgroup.ui.LoginFrame;
 import com.desgroup.ui.menus.CoordinatorMenu;
 import com.desgroup.ui.menus.LogisticMenu;
@@ -16,6 +15,7 @@ import com.desgroup.utils.StaffRole;
 import java.awt.EventQueue;
 import java.util.Map;
 import javax.swing.UIManager;
+import org.hibernate.SessionFactory;
 
 /**
  *
@@ -39,10 +39,10 @@ public class Main {
         DatabaseInitializer.initialize();
 
         // 2. Fuerza la validación de las entidades contra el esquema ya creado.
-        HibernateUtil.getSessionFactory();
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Runtime.getRuntime().addShutdownHook(new Thread(HibernateUtil::shutdown, "hibernate-shutdown"));
 
-        AppContext ctx = AppContext.get();
+        AppContext ctx = new AppContext(sessionFactory);
 
         // 3. Menú de cada rol. Para un rol nuevo se agrega aquí su menú, sin tocar
         // MainFrame.
@@ -55,14 +55,6 @@ public class Main {
                 new ManagerMenu(ctx.eventService, ctx.coordinatorService, ctx.assignmentCommandService,
                         ctx.assignmentQueryService, ctx.availabilityService, ctx.managerService));
 
-        EventQueue.invokeLater(() -> new LoginFrame(
-                ctx.staffService,
-                ctx.logisticService,
-                ctx.eventService,
-                ctx.assignmentCommandService,
-                ctx.assignmentQueryService,
-                ctx.availabilityService,
-                ctx.coordinatorService,
-                roleMenus).setVisible(true));
+        EventQueue.invokeLater(() -> new LoginFrame(ctx.staffService, roleMenus).setVisible(true));
     }
 }

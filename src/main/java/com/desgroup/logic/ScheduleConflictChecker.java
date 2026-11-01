@@ -2,10 +2,11 @@ package com.desgroup.logic;
 
 import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.interfaces.repositoriesInterfaces.IEventRepository;
+import com.desgroup.interfaces.rulesInterfaces.IScheduleConflictChecker;
 import com.desgroup.models.Event;
 import com.desgroup.models.EventAssignment;
 
-public class ScheduleConflictChecker {
+public class ScheduleConflictChecker implements IScheduleConflictChecker {
 
     private final IEventAssignmentRepository eventAssignmentRepository;
     private final IEventRepository eventRepository;
@@ -16,6 +17,7 @@ public class ScheduleConflictChecker {
         this.eventRepository = eventRepository;
     }
 
+    @Override
     public boolean hasConflict(int staffId, Event newEvent) {
         for (EventAssignment a : eventAssignmentRepository.getAllByStaff(staffId)) {
             Event other = eventRepository.getById(a.getEvent().getId());

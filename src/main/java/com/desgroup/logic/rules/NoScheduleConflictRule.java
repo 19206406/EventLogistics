@@ -1,16 +1,16 @@
 package com.desgroup.logic.rules;
 
 import com.desgroup.interfaces.rulesInterfaces.AssignmentRule;
-import com.desgroup.logic.ScheduleConflictChecker;
+import com.desgroup.interfaces.rulesInterfaces.IScheduleConflictChecker;
 import com.desgroup.models.Event;
 import com.desgroup.models.Staff;
 import com.desgroup.utils.BusinessException;
 
 public class NoScheduleConflictRule implements AssignmentRule {
 
-    private final ScheduleConflictChecker conflictChecker;
+    private final IScheduleConflictChecker conflictChecker;
 
-    public NoScheduleConflictRule(ScheduleConflictChecker conflictChecker) {
+    public NoScheduleConflictRule(IScheduleConflictChecker conflictChecker) {
         this.conflictChecker = conflictChecker;
     }
 

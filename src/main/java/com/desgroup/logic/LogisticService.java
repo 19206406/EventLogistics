@@ -6,17 +6,18 @@ import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.interfaces.repositoriesInterfaces.ILogisticRepository;
 import com.desgroup.interfaces.rulesInterfaces.ISalaryPolicy;
+import com.desgroup.interfaces.rulesInterfaces.IStaffValidator;
 import com.desgroup.models.Logistic;
 import com.desgroup.utils.BusinessException;
 
 public class LogisticService implements ILogisticService {
 
     private final ILogisticRepository repository;
-    private final StaffValidator staffValidator;
+    private final IStaffValidator staffValidator;
     private final IEventAssignmentRepository assignmentRepository;
     private final ISalaryPolicy<Logistic> salaryPolicy;
 
-    public LogisticService(ILogisticRepository repository, StaffValidator staffValidator,
+    public LogisticService(ILogisticRepository repository, IStaffValidator staffValidator,
             IEventAssignmentRepository assignmentRepository, ISalaryPolicy<Logistic> salaryPolicy) {
         this.repository = repository;
         this.staffValidator = staffValidator;

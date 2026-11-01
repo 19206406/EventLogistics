@@ -11,6 +11,7 @@ import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.models.Staff;
+import com.desgroup.ui.AssignLogisticToEventFrame;
 import com.desgroup.ui.AssignedEventsInternalFrame;
 import com.desgroup.ui.ManageLogisticFrame;
 import com.desgroup.ui.ViewCoordinatorProfile;
@@ -43,8 +44,10 @@ public class CoordinatorMenu implements RoleMenu {
 
         JMenuItem itemManageLogistics = new JMenuItem("Administrar logisticos");
         itemManageLogistics.addActionListener(e -> show(desktopPane,
-                new ManageLogisticFrame(logisticService, desktopPane, eventService, assignmentCommandService,
-                        assignmentQueryService, availabilityService, currentUser)));
+                new ManageLogisticFrame(logisticService, desktopPane,
+                        preselected -> new AssignLogisticToEventFrame(eventService, assignmentCommandService,
+                                assignmentQueryService, availabilityService, logisticService, currentUser,
+                                preselected))));
 
         menu.add(itemManageLogistics);
 

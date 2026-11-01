@@ -3,22 +3,28 @@ package com.desgroup.repositories;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.models.Event;
 import com.desgroup.models.EventAssignment;
 import com.desgroup.models.Staff;
-import com.desgroup.utils.HibernateUtil;
 import com.desgroup.utils.StaffRole;
 
 public class EventAssignmentRepository implements IEventAssignmentRepository {
+
+    private final SessionFactory sessionFactory;
+
+    public EventAssignmentRepository(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     private static final Class<com.desgroup.models.EventAssignment> ENTITY = com.desgroup.models.EventAssignment.class;
 
     @Override
     public List<EventAssignment> getAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             return session.createQuery("FROM EventAssignment", ENTITY).list()
                     .stream()
                     .map(EventAssignmentRepository::toDomain)
@@ -28,7 +34,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     @Override
     public EventAssignment getById(int id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             com.desgroup.models.EventAssignment assignment = session.get(ENTITY, id);
             return assignment == null ? null : toDomain(assignment);
         }
@@ -36,7 +42,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     @Override
     public List<EventAssignment> getAllByStaff(int staffId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             return session
                     .createQuery("FROM EventAssignment a WHERE a.staff.id = :staffId", ENTITY)
                     .setParameter("staffId", staffId)
@@ -49,7 +55,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     @Override
     public List<EventAssignment> getAllByEvent(int eventId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             return session
                     .createQuery("FROM EventAssignment a WHERE a.event.id = :eventId", ENTITY)
                     .setParameter("eventId", eventId)
@@ -62,7 +68,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     @Override
     public int countByEventAndRole(int eventId, StaffRole role) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Long count = session
                     .createQuery("SELECT COUNT(a) FROM EventAssignment a "
                             + "WHERE a.event.id = :eventId AND a.staffRole = :role", Long.class)
@@ -75,7 +81,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     @Override
     public int countByEventAndAssigner(int eventId, int assignerId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Long count = session
                     .createQuery("SELECT COUNT(a) FROM EventAssignment a "
                             + "WHERE a.event.id = :eventId AND a.assignedBy.id = :assignerId", Long.class)
@@ -88,7 +94,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     @Override
     public void create(EventAssignment assignment) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
             try {
                 EventAssignment entity = new com.desgroup.models.EventAssignment(
@@ -110,7 +116,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     @Override
     public void updated(EventAssignment assignment) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
             try {
                 com.desgroup.models.EventAssignment entity = session.get(ENTITY, assignment.getId());
@@ -130,7 +136,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     @Override
     public boolean exists(int staffId, int eventId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Long count = session
                     .createQuery("SELECT COUNT(a) FROM EventAssignment a "
                             + "WHERE a.staff.id = :staffId AND a.event.id = :eventId", Long.class)
@@ -143,7 +149,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     @Override
     public void delete(int id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
             try {
                 com.desgroup.models.EventAssignment assignment = session.get(ENTITY, id);
@@ -160,7 +166,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     @Override
     public void deleteByEvent(int eventId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
             try {
                 session.createMutationQuery("DELETE FROM EventAssignment a WHERE a.event.id = :eventId")
@@ -176,7 +182,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     @Override
     public void deleteByStaff(int staffId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
             try {
                 session.createMutationQuery("DELETE FROM EventAssignment a WHERE a.staff.id = :staffId")
@@ -192,7 +198,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     @Override
     public void deleteByAssigner(int assignerId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
             try {
                 session.createMutationQuery("DELETE FROM EventAssignment a WHERE a.assignedBy.id = :assignerId")
@@ -208,7 +214,7 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
 
     @Override
     public void deleteByEventAndAssigner(int eventId, int assignerId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
             try {
                 session.createMutationQuery("DELETE FROM EventAssignment a "

@@ -4,12 +4,6 @@
  */
 package com.desgroup.ui;
 
-import com.desgroup.interfaces.logicInterfaces.IAssignmentCommandService;
-import com.desgroup.interfaces.logicInterfaces.IAssignmentQueryService;
-import com.desgroup.interfaces.logicInterfaces.IAvailabilityService;
-import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
-import com.desgroup.interfaces.logicInterfaces.IEventService;
-import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.interfaces.logicInterfaces.IStaffService;
 import com.desgroup.models.Staff;
 import com.desgroup.ui.menus.RoleMenu;
@@ -28,30 +22,13 @@ import javax.swing.JMenuItem;
 public class MainFrame extends JFrame {
     private JDesktopPane desktopPane;
 
-    private final IStaffService staffService;
-    private final ILogisticService logisticService;
-    private final IEventService eventService;
-    private final IAssignmentCommandService assignmentCommandService;
-    private final IAssignmentQueryService assignmentQueryService;
-    private final IAvailabilityService availabilityService;
-    private final ICoordinatorService coordinatorService;
+    private final IStaffService staffService; // solo para volver al login
     private final Map<StaffRole, RoleMenu> roleMenus;
 
     private final Staff currentUser;
 
-    private LoginFrame Back;
-
-    public MainFrame(IStaffService staffService, ILogisticService logisticService, IEventService eventService,
-            IAssignmentCommandService assignmentCommandService, IAssignmentQueryService assignmentQueryService,
-            IAvailabilityService availabilityService, ICoordinatorService coordinatorService,
-            Map<StaffRole, RoleMenu> roleMenus, Staff currentUser) {
+    public MainFrame(IStaffService staffService, Map<StaffRole, RoleMenu> roleMenus, Staff currentUser) {
         this.staffService = staffService;
-        this.logisticService = logisticService;
-        this.eventService = eventService;
-        this.assignmentCommandService = assignmentCommandService;
-        this.assignmentQueryService = assignmentQueryService;
-        this.availabilityService = availabilityService;
-        this.coordinatorService = coordinatorService;
         this.roleMenus = roleMenus;
         this.currentUser = currentUser;
         initComponents();
@@ -89,10 +66,7 @@ public class MainFrame extends JFrame {
     }
 
     public void returnBack() {
-        Back = new LoginFrame(staffService, logisticService, eventService, assignmentCommandService,
-                assignmentQueryService, availabilityService,
-                coordinatorService, roleMenus);
-        Back.setVisible(true);
+        new LoginFrame(staffService, roleMenus).setVisible(true);
         this.dispose();
     }
 }

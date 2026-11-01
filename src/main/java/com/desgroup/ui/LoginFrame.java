@@ -7,12 +7,6 @@ package com.desgroup.ui;
 import java.util.Map;
 import javax.swing.JOptionPane;
 
-import com.desgroup.interfaces.logicInterfaces.IAssignmentCommandService;
-import com.desgroup.interfaces.logicInterfaces.IAssignmentQueryService;
-import com.desgroup.interfaces.logicInterfaces.IAvailabilityService;
-import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
-import com.desgroup.interfaces.logicInterfaces.IEventService;
-import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.interfaces.logicInterfaces.IStaffService;
 import com.desgroup.models.Staff;
 import com.desgroup.ui.menus.RoleMenu;
@@ -25,25 +19,10 @@ import com.desgroup.utils.StaffRole;
 public class LoginFrame extends javax.swing.JFrame {
 
     private final IStaffService staffService;
-    private final ILogisticService logisticService;
-    private final IEventService eventService;
-    private final IAssignmentCommandService assignmentCommandService;
-    private final IAssignmentQueryService assignmentQueryService;
-    private final IAvailabilityService availabilityService;
-    private final ICoordinatorService coordinatorService;
     private final Map<StaffRole, RoleMenu> roleMenus;
 
-    public LoginFrame(IStaffService staffService, ILogisticService logisticService, IEventService eventService,
-            IAssignmentCommandService assignmentCommandService, IAssignmentQueryService assignmentQueryService,
-            IAvailabilityService availabilityService, ICoordinatorService coordinatorService,
-            Map<StaffRole, RoleMenu> roleMenus) {
+    public LoginFrame(IStaffService staffService, Map<StaffRole, RoleMenu> roleMenus) {
         this.staffService = staffService;
-        this.logisticService = logisticService;
-        this.eventService = eventService;
-        this.assignmentCommandService = assignmentCommandService;
-        this.assignmentQueryService = assignmentQueryService;
-        this.availabilityService = availabilityService;
-        this.coordinatorService = coordinatorService;
         this.roleMenus = roleMenus;
 
         initComponents();
@@ -169,9 +148,7 @@ public class LoginFrame extends javax.swing.JFrame {
         Staff isSuccess = staffService.login(email, password);
 
         if (isSuccess != null) {
-            MainFrame mainFrame = new MainFrame(staffService, logisticService, eventService,
-                    assignmentCommandService, assignmentQueryService, availabilityService,
-                    coordinatorService, roleMenus, isSuccess);
+            MainFrame mainFrame = new MainFrame(staffService, roleMenus, isSuccess);
             mainFrame.setVisible(true);
             dispose();
         } else {

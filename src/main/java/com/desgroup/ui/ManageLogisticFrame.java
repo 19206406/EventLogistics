@@ -4,13 +4,8 @@
  */
 package com.desgroup.ui;
 
-import com.desgroup.interfaces.logicInterfaces.IAssignmentCommandService;
-import com.desgroup.interfaces.logicInterfaces.IAssignmentQueryService;
-import com.desgroup.interfaces.logicInterfaces.IAvailabilityService;
-import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.models.Logistic;
-import com.desgroup.models.Staff;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -32,26 +27,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ManageLogisticFrame extends JInternalFrame {
     private final ILogisticService logisticService;
-    private final IEventService eventService;
-    private final IAssignmentCommandService assignmentCommandService;
-    private final IAssignmentQueryService assignmentQueryService;
-    private final IAvailabilityService availabilityService;
-    private final Staff currentUser;
     private final JDesktopPane desktopPane;
+    private final AssignFormFactory<Logistic> assignFormFactory;
 
-    public ManageLogisticFrame(ILogisticService logisticService, JDesktopPane desktopPane, IEventService eventService,
-            IAssignmentCommandService assignmentCommandService,
-            IAssignmentQueryService assignmentQueryService,
-            IAvailabilityService availabilityService,
-            Staff currentUser) {
+    public ManageLogisticFrame(ILogisticService logisticService, JDesktopPane desktopPane,
+            AssignFormFactory<Logistic> assignFormFactory) {
         super("Administrar logisticos", true, true, true, true);
         this.logisticService = logisticService;
-        this.eventService = eventService;
-        this.assignmentCommandService = assignmentCommandService;
-        this.assignmentQueryService = assignmentQueryService;
-        this.availabilityService = availabilityService;
-        this.currentUser = currentUser;
         this.desktopPane = desktopPane;
+        this.assignFormFactory = assignFormFactory;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponents();
         loadLogistics();
@@ -157,9 +141,7 @@ public class ManageLogisticFrame extends JInternalFrame {
             selectedLogistic = logisticService.getLogisticById(id);
         }
 
-        AssignLogisticToEventFrame form = new AssignLogisticToEventFrame(eventService, assignmentCommandService,
-                assignmentQueryService, availabilityService, logisticService, currentUser, selectedLogistic);
-
+        JInternalFrame form = assignFormFactory.create(selectedLogistic);
         desktopPane.add(form);
         form.setVisible(true);
     }

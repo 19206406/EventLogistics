@@ -1,10 +1,12 @@
 package com.desgroup.logic;
 
 import java.time.LocalDate;
+import com.desgroup.interfaces.rulesInterfaces.IEventValidator;
 
 import com.desgroup.utils.BusinessException;
 
-public class EventValidator {
+public class EventValidator implements IEventValidator {
+    @Override
     public void validate(String name, LocalDate date, int startTime, int endTime,
             String country, String city, String placeName, String address, int capacity,
             int maxCoordinators, int maxLogistics, int maxLogisticsPerCoordinator) {

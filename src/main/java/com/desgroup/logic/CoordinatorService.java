@@ -6,17 +6,18 @@ import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
 import com.desgroup.interfaces.repositoriesInterfaces.ICoordinatorRepository;
 import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.interfaces.rulesInterfaces.ISalaryPolicy;
+import com.desgroup.interfaces.rulesInterfaces.IStaffValidator;
 import com.desgroup.models.Coordinator;
 import com.desgroup.utils.BusinessException;
 
 public class CoordinatorService implements ICoordinatorService {
 
     private final ICoordinatorRepository coordinatorRepository;
-    private final StaffValidator staffValidator;
+    private final IStaffValidator staffValidator;
     private final IEventAssignmentRepository assignmentRepository;
     private final ISalaryPolicy<Coordinator> salaryPolicy;
 
-    public CoordinatorService(ICoordinatorRepository coordinatorRepository, StaffValidator staffValidator,
+    public CoordinatorService(ICoordinatorRepository coordinatorRepository, IStaffValidator staffValidator,
             IEventAssignmentRepository assignmentRepository, ISalaryPolicy<Coordinator> salaryPolicy) {
         this.coordinatorRepository = coordinatorRepository;
         this.staffValidator = staffValidator;

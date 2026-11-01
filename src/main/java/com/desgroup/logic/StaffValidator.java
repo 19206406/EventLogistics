@@ -1,10 +1,11 @@
 package com.desgroup.logic;
 
 import com.desgroup.interfaces.repositoriesInterfaces.IStaffRepository;
+import com.desgroup.interfaces.rulesInterfaces.IStaffValidator;
 import com.desgroup.models.Staff;
 import com.desgroup.utils.BusinessException;
 
-public class StaffValidator {
+public class StaffValidator implements IStaffValidator {
 
     private final IStaffRepository staffRepository;
 
@@ -12,6 +13,7 @@ public class StaffValidator {
         this.staffRepository = staffRepository;
     }
 
+    @Override
     public void validate(String name, String email, String phone, String password, Integer currentId) {
         requireNotBlank(name, "nombre");
         requireNotBlank(email, "correo");
@@ -28,6 +30,7 @@ public class StaffValidator {
             throw new BusinessException("Ya existe un miembro del personal con el correo " + email + ".");
     }
 
+    @Override
     public void requireNotBlank(String value, String fieldLabel) {
         if (value == null || value.isBlank())
             throw new BusinessException("El campo '" + fieldLabel + "' es obligatorio.");

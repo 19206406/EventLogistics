@@ -7,6 +7,7 @@ import java.util.List;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.interfaces.repositoriesInterfaces.IEventRepository;
+import com.desgroup.interfaces.rulesInterfaces.IEventValidator;
 import com.desgroup.models.Event;
 import com.desgroup.models.EventState;
 import com.desgroup.models.Place;
@@ -17,10 +18,10 @@ public class EventService implements IEventService {
 
     private final IEventRepository eventRepository;
     private final IEventAssignmentRepository assignmentRepository;
-    private final EventValidator eventValidator;
+    private final IEventValidator eventValidator;
 
     public EventService(IEventRepository eventRepository, IEventAssignmentRepository assignmentRepository,
-            EventValidator eventValidator) {
+            IEventValidator eventValidator) {
         this.eventRepository = eventRepository;
         this.assignmentRepository = assignmentRepository;
         this.eventValidator = eventValidator;

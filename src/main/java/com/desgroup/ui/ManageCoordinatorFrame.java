@@ -1,12 +1,7 @@
 package com.desgroup.ui;
 
-import com.desgroup.interfaces.logicInterfaces.IAssignmentCommandService;
-import com.desgroup.interfaces.logicInterfaces.IAssignmentQueryService;
-import com.desgroup.interfaces.logicInterfaces.IAvailabilityService;
 import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
-import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.models.Coordinator;
-import com.desgroup.models.Staff;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -15,25 +10,15 @@ import java.util.List;
 
 public class ManageCoordinatorFrame extends JInternalFrame {
     private final ICoordinatorService coordinatorService;
-    private final IEventService eventService;
-    private final IAssignmentCommandService assignmentCommandService;
-    private final IAssignmentQueryService assignmentQueryService;
-    private final IAvailabilityService availabilityService;
-    private final Staff currentUser;
     private final JDesktopPane desktopPane;
+    private final AssignFormFactory<Coordinator> assignFormFactory;
 
-    public ManageCoordinatorFrame(ICoordinatorService coordinatorService, IEventService eventService,
-            IAssignmentCommandService assignmentCommandService,
-            IAssignmentQueryService assignmentQueryService,
-            IAvailabilityService availabilityService, Staff currentUser, JDesktopPane desktopPane) {
+    public ManageCoordinatorFrame(ICoordinatorService coordinatorService, JDesktopPane desktopPane,
+            AssignFormFactory<Coordinator> assignFormFactory) {
         super("Administrar coordinadores", true, true, true, true);
         this.coordinatorService = coordinatorService;
-        this.eventService = eventService;
-        this.assignmentCommandService = assignmentCommandService;
-        this.assignmentQueryService = assignmentQueryService;
-        this.availabilityService = availabilityService;
-        this.currentUser = currentUser;
         this.desktopPane = desktopPane;
+        this.assignFormFactory = assignFormFactory;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponents();
         loadCoordinator();
@@ -139,9 +124,7 @@ public class ManageCoordinatorFrame extends JInternalFrame {
             selectedCoordinator = coordinatorService.getCoordinatorById(id);
         }
 
-        AssignCoordinatorToEventFrame form = new AssignCoordinatorToEventFrame(eventService, assignmentCommandService,
-                assignmentQueryService, availabilityService, coordinatorService, currentUser,
-                selectedCoordinator);
+        JInternalFrame form = assignFormFactory.create(selectedCoordinator);
         desktopPane.add(form);
         form.setVisible(true);
     }

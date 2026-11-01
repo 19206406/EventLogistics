@@ -11,6 +11,7 @@ import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.logicInterfaces.IManagerService;
 import com.desgroup.models.Staff;
+import com.desgroup.ui.AssignCoordinatorToEventFrame;
 import com.desgroup.ui.ManageCoordinatorFrame;
 import com.desgroup.ui.ManageEventFrame;
 import com.desgroup.ui.ViewManagerProfileFrame;
@@ -46,8 +47,10 @@ public class ManagerMenu implements RoleMenu {
 
         JMenuItem itemManageCoordinators = new JMenuItem("Administrar coordinadores");
         itemManageCoordinators.addActionListener(e -> show(desktopPane,
-                new ManageCoordinatorFrame(coordinatorService, eventService, assignmentCommandService,
-                        assignmentQueryService, availabilityService, currentUser, desktopPane)));
+                new ManageCoordinatorFrame(coordinatorService, desktopPane,
+                        preselected -> new AssignCoordinatorToEventFrame(eventService, assignmentCommandService,
+                                assignmentQueryService, availabilityService, coordinatorService, currentUser,
+                                preselected))));
         menu.add(itemManageCoordinators);
 
         JMenuItem itemProfile = new JMenuItem("Ver perfil");

@@ -7,6 +7,7 @@ import com.desgroup.interfaces.repositoriesInterfaces.ICoordinatorRepository;
 import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.interfaces.repositoriesInterfaces.IEventRepository;
 import com.desgroup.interfaces.repositoriesInterfaces.ILogisticRepository;
+import com.desgroup.interfaces.rulesInterfaces.IScheduleConflictChecker;
 import com.desgroup.models.Coordinator;
 import com.desgroup.models.Event;
 import com.desgroup.models.Logistic;
@@ -19,11 +20,11 @@ public class AvailabilityService implements IAvailabilityService {
     private final ICoordinatorRepository coordinatorRepository;
     private final IEventRepository eventRepository;
     private final IEventAssignmentRepository eventAssignmentRepository;
-    private final ScheduleConflictChecker conflictChecker;
+    private final IScheduleConflictChecker conflictChecker;
 
     public AvailabilityService(ILogisticRepository logisticRepository, ICoordinatorRepository coordinatorRepository,
             IEventRepository eventRepository, IEventAssignmentRepository eventAssignmentRepository,
-            ScheduleConflictChecker conflictChecker) {
+            IScheduleConflictChecker conflictChecker) {
         this.logisticRepository = logisticRepository;
         this.coordinatorRepository = coordinatorRepository;
         this.eventRepository = eventRepository;
