@@ -44,7 +44,7 @@ public class CoordinatorMenu implements RoleMenu {
 
         JMenuItem itemManageLogistics = new JMenuItem("Administrar logisticos");
         itemManageLogistics.addActionListener(e -> show(desktopPane,
-                new ManageLogisticFrame(logisticService, desktopPane,
+                () -> new ManageLogisticFrame(logisticService, desktopPane,
                         preselected -> new AssignLogisticToEventFrame(eventService, assignmentCommandService,
                                 assignmentQueryService, availabilityService, logisticService, currentUser,
                                 preselected))));
@@ -60,7 +60,7 @@ public class CoordinatorMenu implements RoleMenu {
 
         JMenuItem itemProfile = new JMenuItem("Ver perfil");
         itemProfile.addActionListener(e -> show(desktopPane,
-                new ViewCoordinatorProfile(coordinatorService.getCoordinatorById(currentUser.getId()),
+                () -> new ViewCoordinatorProfile(coordinatorService.getCoordinatorById(currentUser.getId()),
                         coordinatorService)));
         menu.add(itemProfile);
 

@@ -7,7 +7,6 @@ import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.models.*;
 import com.desgroup.models.Event;
-import com.desgroup.utils.BusinessException;
 import com.desgroup.utils.StaffRole;
 
 import javax.swing.*;
@@ -65,7 +64,7 @@ public class AssignLogisticToEventFrame extends JInternalFrame {
             }
         });
 
-        eventComboBox.addActionListener(e -> loadLogistics());
+        eventComboBox.addActionListener(e -> UiActions.run(this, this::loadLogistics));
         logisticSlotsLabel = new JLabel();
 
         eventPanel.add(eventLabel);
@@ -121,9 +120,14 @@ public class AssignLogisticToEventFrame extends JInternalFrame {
     }
 
     private void loadEvents() {
+        Event previousEvent = getSelectedEvent();
+        List<Event> events = eventService.getAllEvents();
+
         eventComboBox.removeAllItems();
-        for (Event event : eventService.getAllEvents()) {
+        for (Event event : events) {
             eventComboBox.addItem(event);
+            if (previousEvent != null && event.getId().equals(previousEvent.getId()))
+                eventComboBox.setSelectedItem(event);
         }
         loadLogistics();
     }
@@ -155,9 +159,7 @@ public class AssignLogisticToEventFrame extends JInternalFrame {
         for (EventAssignment assignment : logisticsAssignments) {
             Logistic logistic = logisticService.getLogisticById(assignment.getStaff().getId());
             assignedTableModel.addRow(new Object[] {
-                    assignment.getId(), logistic.getId(),
-                    logistic != null ? logistic.getName() : "Desconocido",
-                    logistic != null ? logistic.getEmail() : ""
+                    assignment.getId(), logistic.getId(), logistic.getName(), logistic.getEmail()
             });
         }
 
@@ -187,21 +189,13 @@ public class AssignLogisticToEventFrame extends JInternalFrame {
         }
 
         int logisticId = (int) availableTableModel.getValueAt(row, 0);
-        Logistic logistic = logisticService.getLogisticById(logisticId);
-        if (logistic == null) {
-            showWarning("El logistico seleccionado no existe");
-            loadLogistics();
-            return;
-        }
-
-        try {
+        boolean assigned = UiActions.run(this, () -> {
+            Logistic logistic = logisticService.getLogisticById(logisticId);
             assignmentCommandService.assign(currentUser, logistic, selectedEvent.getId());
             JOptionPane.showMessageDialog(this, "Logistico asignado correctamente", "Success",
                     JOptionPane.INFORMATION_MESSAGE);
-        } catch (BusinessException ex) {
-            showError(ex.getMessage());
-        }
-        loadLogistics();
+        });
+        refreshAfter(assigned);
     }
 
     private void unassignSelectedLogistic() {
@@ -214,19 +208,18 @@ public class AssignLogisticToEventFrame extends JInternalFrame {
         int assignmentId = (int) assignedTableModel.getValueAt(row, 0);
         String logisticName = (String) assignedTableModel.getValueAt(row, 2);
         int confirmation = JOptionPane.showConfirmDialog(this,
-                "¿Quieres desasignar \"" + logisticName + "\"?\n"
-                        + "También se eliminarán las tareas logísticas asignadas por este coordinador al evento.",
+                "¿Quieres desasignar \"" + logisticName + "\"?",
                 "Confirmar la anulación de la asignación",
                 JOptionPane.YES_NO_OPTION);
         if (confirmation != JOptionPane.YES_OPTION)
             return;
 
-        try {
-            assignmentCommandService.unassign(currentUser, assignmentId);
-        } catch (BusinessException ex) {
-            showError(ex.getMessage());
-        }
-        loadLogistics();
+        refreshAfter(UiActions.run(this, () -> assignmentCommandService.unassign(currentUser, assignmentId)));
+    }
+
+    /** Si la acción falló, el evento pudo cambiar, así que también se recarga la lista de eventos. */
+    private void refreshAfter(boolean succeeded) {
+        UiActions.run(this, succeeded ? this::loadLogistics : this::loadEvents);
     }
 
     private Event getSelectedEvent() {
@@ -235,10 +228,6 @@ public class AssignLogisticToEventFrame extends JInternalFrame {
 
     private void showWarning(String message) {
         JOptionPane.showMessageDialog(this, message, "Warning", JOptionPane.WARNING_MESSAGE);
-    }
-
-    private void showError(String message) {
-        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     private JPanel mainPanel;

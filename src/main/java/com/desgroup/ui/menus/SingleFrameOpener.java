@@ -5,6 +5,8 @@ import java.util.function.Supplier;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 
+import com.desgroup.ui.UiActions;
+
 /**
  * Abre una ventana interna una sola vez: si ya está abierta, la trae al frente
  * en lugar de crear otra.
@@ -22,8 +24,10 @@ final class SingleFrameOpener {
             }
             return;
         }
-        frame = frameFactory.get();
-        desktopPane.add(frame);
-        frame.setVisible(true);
+        UiActions.run(desktopPane, () -> {
+            frame = frameFactory.get();
+            desktopPane.add(frame);
+            frame.setVisible(true);
+        });
     }
 }

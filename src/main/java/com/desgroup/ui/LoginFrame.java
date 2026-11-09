@@ -5,7 +5,6 @@
 package com.desgroup.ui;
 
 import java.util.Map;
-import javax.swing.JOptionPane;
 
 import com.desgroup.interfaces.logicInterfaces.IStaffService;
 import com.desgroup.models.Staff;
@@ -145,17 +144,11 @@ public class LoginFrame extends javax.swing.JFrame {
         String email = txtEmail.getText();
         String password = pwdPassword.getText();
 
-        Staff isSuccess = staffService.login(email, password);
-
-        if (isSuccess != null) {
-            MainFrame mainFrame = new MainFrame(staffService, roleMenus, isSuccess);
-            mainFrame.setVisible(true);
+        UiActions.run(this, () -> {
+            Staff staff = staffService.login(email, password);
+            new MainFrame(staffService, roleMenus, staff).setVisible(true);
             dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "A ocurrido un error al iniciar sesión intenta de nuevo.",
-                    "Advertencia", JOptionPane.WARNING_MESSAGE);
-
-        }
+        });
     }// GEN-LAST:event_btnSubmitActionPerformed
 
     /**

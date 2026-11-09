@@ -1,11 +1,12 @@
 package com.desgroup.repositories;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 
+import com.desgroup.exceptions.BusinessException;
 import com.desgroup.interfaces.repositoriesInterfaces.IEventAssignmentRepository;
 import com.desgroup.models.Event;
 import com.desgroup.models.EventAssignment;
@@ -14,193 +15,118 @@ import com.desgroup.utils.StaffRole;
 
 public class EventAssignmentRepository implements IEventAssignmentRepository {
 
-    private final SessionFactory sessionFactory;
+    private static final Class<EventAssignment> ENTITY = EventAssignment.class;
+
+    private final HibernateExecutor hibernate;
 
     public EventAssignmentRepository(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+        this.hibernate = new HibernateExecutor(sessionFactory);
     }
-
-    private static final Class<com.desgroup.models.EventAssignment> ENTITY = com.desgroup.models.EventAssignment.class;
 
     @Override
     public EventAssignment getById(int id) {
-        try (Session session = sessionFactory.openSession()) {
-            com.desgroup.models.EventAssignment assignment = session.get(ENTITY, id);
+        return hibernate.read(session -> {
+            EventAssignment assignment = session.get(ENTITY, id);
             return assignment == null ? null : toDomain(assignment);
-        }
+        });
     }
 
     @Override
     public List<EventAssignment> getAllByStaff(int staffId) {
-        try (Session session = sessionFactory.openSession()) {
-            return session
-                    .createQuery("FROM EventAssignment a WHERE a.staff.id = :staffId", ENTITY)
-                    .setParameter("staffId", staffId)
-                    .list()
-                    .stream()
-                    .map(EventAssignmentRepository::toDomain)
-                    .toList();
-        }
+        return hibernate.read(session -> session
+                .createQuery("FROM EventAssignment a WHERE a.staff.id = :staffId", ENTITY)
+                .setParameter("staffId", staffId)
+                .list()
+                .stream()
+                .map(EventAssignmentRepository::toDomain)
+                .toList());
     }
 
     @Override
     public List<EventAssignment> getAllByEvent(int eventId) {
-        try (Session session = sessionFactory.openSession()) {
-            return session
-                    .createQuery("FROM EventAssignment a WHERE a.event.id = :eventId", ENTITY)
-                    .setParameter("eventId", eventId)
-                    .list()
-                    .stream()
-                    .map(EventAssignmentRepository::toDomain)
-                    .toList();
-        }
+        return hibernate.read(session -> session
+                .createQuery("FROM EventAssignment a WHERE a.event.id = :eventId", ENTITY)
+                .setParameter("eventId", eventId)
+                .list()
+                .stream()
+                .map(EventAssignmentRepository::toDomain)
+                .toList());
     }
 
     @Override
     public int countByEventAndRole(int eventId, StaffRole role) {
-        try (Session session = sessionFactory.openSession()) {
-            Long count = session
-                    .createQuery("SELECT COUNT(a) FROM EventAssignment a "
-                            + "WHERE a.event.id = :eventId AND a.staffRole = :role", Long.class)
-                    .setParameter("eventId", eventId)
-                    .setParameter("role", role)
-                    .getSingleResult();
-            return count.intValue();
-        }
+        return hibernate.read(session -> session
+                .createQuery("SELECT COUNT(a) FROM EventAssignment a "
+                        + "WHERE a.event.id = :eventId AND a.staffRole = :role", Long.class)
+                .setParameter("eventId", eventId)
+                .setParameter("role", role)
+                .getSingleResult()
+                .intValue());
     }
 
     @Override
     public int countByEventAndAssigner(int eventId, int assignerId) {
-        try (Session session = sessionFactory.openSession()) {
-            Long count = session
-                    .createQuery("SELECT COUNT(a) FROM EventAssignment a "
-                            + "WHERE a.event.id = :eventId AND a.assignedBy.id = :assignerId", Long.class)
-                    .setParameter("eventId", eventId)
-                    .setParameter("assignerId", assignerId)
-                    .getSingleResult();
-            return count.intValue();
-        }
-    }
-
-    @Override
-    public void create(EventAssignment assignment) {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction tx = session.beginTransaction();
-            try {
-                EventAssignment entity = new com.desgroup.models.EventAssignment(
-                        requireStaff(session, assignment.getStaff().getId()),
-                        requireEvent(session, assignment.getEvent().getId()),
-                        requireStaff(session, assignment.getAssignedBy().getId()),
-                        assignment.getStaffRole());
-
-                session.persist(entity);
-                tx.commit();
-
-                assignment.setId(entity.getId());
-            } catch (Exception e) {
-                tx.rollback();
-                throw e;
-            }
-        }
+        return hibernate.read(session -> session
+                .createQuery("SELECT COUNT(a) FROM EventAssignment a "
+                        + "WHERE a.event.id = :eventId AND a.assignedBy.id = :assignerId", Long.class)
+                .setParameter("eventId", eventId)
+                .setParameter("assignerId", assignerId)
+                .getSingleResult()
+                .intValue());
     }
 
     @Override
     public boolean exists(int staffId, int eventId) {
-        try (Session session = sessionFactory.openSession()) {
-            Long count = session
-                    .createQuery("SELECT COUNT(a) FROM EventAssignment a "
-                            + "WHERE a.staff.id = :staffId AND a.event.id = :eventId", Long.class)
-                    .setParameter("staffId", staffId)
-                    .setParameter("eventId", eventId)
-                    .getSingleResult();
-            return count > 0;
-        }
+        return hibernate.read(session -> session
+                .createQuery("SELECT COUNT(a) FROM EventAssignment a "
+                        + "WHERE a.staff.id = :staffId AND a.event.id = :eventId", Long.class)
+                .setParameter("staffId", staffId)
+                .setParameter("eventId", eventId)
+                .getSingleResult() > 0);
+    }
+
+    @Override
+    public void createExclusive(int eventId, int staffId, Supplier<EventAssignment> validatedAssignment) {
+        hibernate.write(session -> {
+            lockRow(session, "event", eventId, "El evento no existe.");
+            lockRow(session, "staff", staffId, "El miembro del personal no existe.");
+
+            EventAssignment assignment = validatedAssignment.get();
+
+            session.persist(new EventAssignment(
+                    requireStaff(session, assignment.getStaff().getId()),
+                    requireEvent(session, assignment.getEvent().getId()),
+                    requireStaff(session, assignment.getAssignedBy().getId()),
+                    assignment.getStaffRole()));
+        });
     }
 
     @Override
     public void delete(int id) {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction tx = session.beginTransaction();
-            try {
-                com.desgroup.models.EventAssignment assignment = session.get(ENTITY, id);
-                if (assignment != null) {
-                    session.remove(assignment);
-                }
-                tx.commit();
-            } catch (Exception e) {
-                tx.rollback();
-                throw e;
-            }
-        }
+        hibernate.write(session -> {
+            EventAssignment assignment = session.get(ENTITY, id);
+            if (assignment != null)
+                session.remove(assignment);
+        });
     }
 
     @Override
-    public void deleteByEvent(int eventId) {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction tx = session.beginTransaction();
-            try {
-                session.createMutationQuery("DELETE FROM EventAssignment a WHERE a.event.id = :eventId")
-                        .setParameter("eventId", eventId)
-                        .executeUpdate();
-                tx.commit();
-            } catch (Exception e) {
-                tx.rollback();
-                throw e;
-            }
-        }
+    public void deleteWithDelegated(int id) {
+        hibernate.write(session -> {
+            EventAssignment assignment = session.get(ENTITY, id);
+            if (assignment == null)
+                return;
+
+            session.createMutationQuery("DELETE FROM EventAssignment a "
+                    + "WHERE a.event.id = :eventId AND a.assignedBy.id = :assignerId")
+                    .setParameter("eventId", assignment.getEvent().getId())
+                    .setParameter("assignerId", assignment.getStaff().getId())
+                    .executeUpdate();
+            session.remove(assignment);
+        });
     }
 
-    @Override
-    public void deleteByStaff(int staffId) {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction tx = session.beginTransaction();
-            try {
-                session.createMutationQuery("DELETE FROM EventAssignment a WHERE a.staff.id = :staffId")
-                        .setParameter("staffId", staffId)
-                        .executeUpdate();
-                tx.commit();
-            } catch (Exception e) {
-                tx.rollback();
-                throw e;
-            }
-        }
-    }
-
-    @Override
-    public void deleteByAssigner(int assignerId) {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction tx = session.beginTransaction();
-            try {
-                session.createMutationQuery("DELETE FROM EventAssignment a WHERE a.assignedBy.id = :assignerId")
-                        .setParameter("assignerId", assignerId)
-                        .executeUpdate();
-                tx.commit();
-            } catch (Exception e) {
-                tx.rollback();
-                throw e;
-            }
-        }
-    }
-
-    @Override
-    public void deleteByEventAndAssigner(int eventId, int assignerId) {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction tx = session.beginTransaction();
-            try {
-                session.createMutationQuery("DELETE FROM EventAssignment a "
-                        + "WHERE a.event.id = :eventId AND a.assignedBy.id = :assignerId")
-                        .setParameter("eventId", eventId)
-                        .setParameter("assignerId", assignerId)
-                        .executeUpdate();
-                tx.commit();
-            } catch (Exception e) {
-                tx.rollback();
-                throw e;
-            }
-        }
-    }
-
-    private static EventAssignment toDomain(com.desgroup.models.EventAssignment assignment) {
+    private static EventAssignment toDomain(EventAssignment assignment) {
         return new EventAssignment(
                 assignment.getId(),
                 assignment.getStaff(),
@@ -209,19 +135,27 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
                 assignment.getStaffRole());
     }
 
+    /** Siempre se bloquea primero el evento y luego la persona, para evitar deadlocks. */
+    private static void lockRow(Session session, String table, int id, String notFoundMessage) {
+        Integer lockedId = session
+                .createNativeQuery("SELECT id FROM " + table + " WHERE id = :id FOR UPDATE", Integer.class)
+                .setParameter("id", id)
+                .uniqueResult();
+        if (lockedId == null)
+            throw new BusinessException(notFoundMessage);
+    }
+
     private static Staff requireStaff(Session session, int staffId) {
         Staff staff = session.get(Staff.class, staffId);
-        if (staff == null) {
-            throw new IllegalArgumentException("No existe el miembro del personal con id " + staffId);
-        }
+        if (staff == null)
+            throw new BusinessException("El miembro del personal no existe.");
         return staff;
     }
 
     private static Event requireEvent(Session session, int eventId) {
         Event event = session.get(Event.class, eventId);
-        if (event == null) {
-            throw new IllegalArgumentException("No existe el evento con id " + eventId);
-        }
+        if (event == null)
+            throw new BusinessException("El evento no existe.");
         return event;
     }
 }

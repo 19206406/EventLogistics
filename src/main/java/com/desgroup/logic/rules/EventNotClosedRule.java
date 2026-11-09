@@ -3,7 +3,7 @@ package com.desgroup.logic.rules;
 import com.desgroup.interfaces.rulesInterfaces.AssignmentRule;
 import com.desgroup.models.Event;
 import com.desgroup.models.Staff;
-import com.desgroup.utils.BusinessException;
+import com.desgroup.exceptions.BusinessException;
 
 public class EventNotClosedRule implements AssignmentRule {
     @Override

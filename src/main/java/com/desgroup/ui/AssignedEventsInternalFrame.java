@@ -88,7 +88,7 @@ public class AssignedEventsInternalFrame extends JInternalFrame {
 
         JButton refreshButton = new JButton("Actualizar");
         refreshButton.setToolTipText("Volver a cargar los eventos asignados");
-        refreshButton.addActionListener(e -> loadAssignedEvents());
+        refreshButton.addActionListener(e -> UiActions.run(this, this::loadAssignedEvents));
         headerPanel.add(refreshButton, BorderLayout.EAST);
 
         summaryLabel = new JLabel();
@@ -166,10 +166,7 @@ public class AssignedEventsInternalFrame extends JInternalFrame {
     private void loadAssignedEvents() {
         List<Event> events = new ArrayList<>();
         for (EventAssignment assignment : assignmentQueryService.getAssignmentsByStaffId(currentUser.getId())) {
-            Event event = eventService.getEventById(assignment.getEvent().getId());
-            if (event != null) {
-                events.add(event);
-            }
+            events.add(eventService.getEventById(assignment.getEvent().getId()));
         }
         tableModel.setEvents(events);
         updateSummary(events.size());

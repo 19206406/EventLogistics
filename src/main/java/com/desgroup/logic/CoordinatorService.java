@@ -2,26 +2,23 @@ package com.desgroup.logic;
 
 import java.util.List;
 
+import com.desgroup.exceptions.BusinessException;
 import com.desgroup.interfaces.logicInterfaces.ICoordinatorService;
 import com.desgroup.interfaces.repositoriesInterfaces.ICoordinatorRepository;
-import com.desgroup.interfaces.repositoriesInterfaces.IAssignmentWriter;
 import com.desgroup.interfaces.rulesInterfaces.ISalaryPolicy;
 import com.desgroup.interfaces.rulesInterfaces.IStaffValidator;
 import com.desgroup.models.Coordinator;
-import com.desgroup.utils.BusinessException;
 
 public class CoordinatorService implements ICoordinatorService {
 
     private final ICoordinatorRepository coordinatorRepository;
     private final IStaffValidator staffValidator;
-    private final IAssignmentWriter assignmentRepository;
     private final ISalaryPolicy<Coordinator> salaryPolicy;
 
     public CoordinatorService(ICoordinatorRepository coordinatorRepository, IStaffValidator staffValidator,
-            IAssignmentWriter assignmentRepository, ISalaryPolicy<Coordinator> salaryPolicy) {
+            ISalaryPolicy<Coordinator> salaryPolicy) {
         this.coordinatorRepository = coordinatorRepository;
         this.staffValidator = staffValidator;
-        this.assignmentRepository = assignmentRepository;
         this.salaryPolicy = salaryPolicy;
     }
 
@@ -32,13 +29,17 @@ public class CoordinatorService implements ICoordinatorService {
 
     @Override
     public Coordinator getCoordinatorById(int id) {
-        return coordinatorRepository.getById(id);
+        Coordinator coordinator = coordinatorRepository.getById(id);
+        if (coordinator == null)
+            throw new BusinessException("El coordinador no existe.");
+
+        return coordinator;
     }
 
     @Override
     public void createCoordinator(String name, String email, String phone, String position, String password,
             String company) {
-        validate(name, email, phone, password, company, null);
+        validate(name, email, phone, position, password, company, null);
 
         Coordinator coordinator = new Coordinator(name, email, phone, position, password, company);
         coordinatorRepository.create(coordinator);
@@ -48,12 +49,9 @@ public class CoordinatorService implements ICoordinatorService {
     public void updatedCoordinator(int id, String name, String email, String phone,
             String position, String password, String company) {
 
-        Coordinator coordinator = coordinatorRepository.getById(id);
+        Coordinator coordinator = getCoordinatorById(id);
 
-        if (coordinator == null)
-            throw new BusinessException("El coordinador no existe.");
-
-        validate(name, email, phone, password, company, id);
+        validate(name, email, phone, position, password, company, id);
 
         coordinator.setName(name);
         coordinator.setEmail(email);
@@ -67,24 +65,19 @@ public class CoordinatorService implements ICoordinatorService {
 
     @Override
     public void deleteCoordinator(int id) {
-        assignmentRepository.deleteByAssigner(id);
-        assignmentRepository.deleteByStaff(id);
-        coordinatorRepository.delete(id);
+        getCoordinatorById(id);
+        coordinatorRepository.deleteWithAssignments(id);
     }
 
     @Override
     public double calculateSalary(int id) {
-        Coordinator coordinator = coordinatorRepository.getById(id);
-        if (coordinator == null)
-            throw new BusinessException("El coordinador no existe");
-
-        return salaryPolicy.calculate(coordinator);
+        return salaryPolicy.calculate(getCoordinatorById(id));
     }
 
-    private void validate(String name, String email, String phone, String password, String company,
+    private void validate(String name, String email, String phone, String position, String password, String company,
             Integer currentId) {
-        staffValidator.validate(name, email, phone, password, currentId);
-        RequiredFields.requireNotBlank(company, "empresa");
+        staffValidator.validate(name, email, phone, position, password, currentId);
+        RequiredFields.requireText(company, "empresa");
     }
 
 }

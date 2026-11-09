@@ -10,13 +10,20 @@ import java.util.Properties;
 public final class DatabaseConfig {
 
     private static final String CONFIG_FILE = "database.properties";
-    private static final Properties PROPERTIES = loadProperties();
+    private static Properties properties;
 
     private DatabaseConfig() {
     }
 
+    private static synchronized Properties properties() {
+        if (properties == null)
+            properties = loadProperties();
+
+        return properties;
+    }
+
     private static Properties loadProperties() {
-        Properties properties = new Properties();
+        Properties loaded = new Properties();
 
         try (InputStream input = DatabaseConfig.class.getClassLoader().getResourceAsStream(CONFIG_FILE)) {
             if (input == null) {
@@ -25,10 +32,10 @@ public final class DatabaseConfig {
             }
 
             try (Reader reader = new InputStreamReader(input, StandardCharsets.UTF_8)) {
-                properties.load(reader);
+                loaded.load(reader);
             }
 
-            return properties;
+            return loaded;
         } catch (IOException e) {
             throw new IllegalStateException("No se pudo leer '" + CONFIG_FILE + "'.", e);
         }
@@ -65,9 +72,9 @@ public final class DatabaseConfig {
     public static Properties getHibernateProperties() {
         Properties hibernateProperties = new Properties();
 
-        for (String name : PROPERTIES.stringPropertyNames()) {
+        for (String name : properties().stringPropertyNames()) {
             if (name.startsWith("hibernate.")) {
-                hibernateProperties.setProperty(name, PROPERTIES.getProperty(name));
+                hibernateProperties.setProperty(name, properties().getProperty(name));
             }
         }
 
@@ -80,7 +87,7 @@ public final class DatabaseConfig {
     }
 
     private static String get(String key) {
-        String value = PROPERTIES.getProperty(key);
+        String value = properties().getProperty(key);
 
         if (value == null || value.isBlank()) {
             throw new IllegalStateException(

@@ -5,7 +5,7 @@ import java.time.format.DateTimeParseException;
 
 import javax.swing.JTextField;
 
-import com.desgroup.utils.BusinessException;
+import com.desgroup.exceptions.BusinessException;
 
 final class FormInput {
 
@@ -20,7 +20,7 @@ final class FormInput {
         try {
             return Integer.parseInt(field.getText().trim());
         } catch (NumberFormatException e) {
-            throw new BusinessException("El campo '" + fieldLabel + "' debe ser un número entero");
+            throw new BusinessException("El campo '" + fieldLabel + "' debe ser un número entero", e);
         }
     }
 
@@ -29,7 +29,7 @@ final class FormInput {
             return LocalDate.parse(field.getText().trim());
         } catch (DateTimeParseException e) {
             throw new BusinessException("El campo '" + fieldLabel
-                    + "' no es válido. Use el formato AAAA-MM-DD (por ejemplo 2026-10-25)");
+                    + "' no es válido. Use el formato AAAA-MM-DD (por ejemplo 2026-10-25)", e);
         }
     }
 }

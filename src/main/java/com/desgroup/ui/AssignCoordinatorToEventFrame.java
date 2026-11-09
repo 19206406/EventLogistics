@@ -9,7 +9,6 @@ import com.desgroup.models.Coordinator;
 import com.desgroup.models.Event;
 import com.desgroup.models.EventAssignment;
 import com.desgroup.models.Staff;
-import com.desgroup.utils.BusinessException;
 import com.desgroup.utils.StaffRole;
 
 import javax.swing.*;
@@ -65,7 +64,7 @@ public class AssignCoordinatorToEventFrame extends JInternalFrame {
                 return this;
             }
         });
-        eventComboBox.addActionListener(e -> loadCoordinators());
+        eventComboBox.addActionListener(e -> UiActions.run(this, this::loadCoordinators));
         coordinatorSlotsLabel = new JLabel();
 
         eventPanel.add(eventLabel);
@@ -121,9 +120,14 @@ public class AssignCoordinatorToEventFrame extends JInternalFrame {
     }
 
     private void loadEvents() {
+        Event previousEvent = getSelectedEvent();
+        List<Event> events = eventService.getAllEvents();
+
         eventComboBox.removeAllItems();
-        for (Event event : eventService.getAllEvents()) {
+        for (Event event : events) {
             eventComboBox.addItem(event);
+            if (previousEvent != null && event.getId().equals(previousEvent.getId()))
+                eventComboBox.setSelectedItem(event);
         }
         loadCoordinators();
     }
@@ -155,9 +159,7 @@ public class AssignCoordinatorToEventFrame extends JInternalFrame {
         for (EventAssignment assignment : coordinatorAssignments) {
             Coordinator coordinator = coordinatorService.getCoordinatorById(assignment.getStaff().getId());
             assignedTableModel.addRow(new Object[] {
-                    assignment.getId(), coordinator.getId(),
-                    coordinator != null ? coordinator.getName() : "Desconocido",
-                    coordinator != null ? coordinator.getEmail() : ""
+                    assignment.getId(), coordinator.getId(), coordinator.getName(), coordinator.getEmail()
             });
         }
 
@@ -187,21 +189,13 @@ public class AssignCoordinatorToEventFrame extends JInternalFrame {
         }
 
         int coordinatorId = (int) availableTableModel.getValueAt(row, 0);
-        Coordinator coordinator = coordinatorService.getCoordinatorById(coordinatorId);
-        if (coordinator == null) {
-            showWarning("El coordinador seleccionado ya no existe.");
-            loadCoordinators();
-            return;
-        }
-
-        try {
+        boolean assigned = UiActions.run(this, () -> {
+            Coordinator coordinator = coordinatorService.getCoordinatorById(coordinatorId);
             assignmentCommandService.assign(currentUser, coordinator, selectedEvent.getId());
             JOptionPane.showMessageDialog(this, "Se ha asignado correctamente el coordinador.", "Success",
                     JOptionPane.INFORMATION_MESSAGE);
-        } catch (BusinessException ex) {
-            showError(ex.getMessage());
-        }
-        loadCoordinators();
+        });
+        refreshAfter(assigned);
     }
 
     private void unassignSelectedCoordinator() {
@@ -221,12 +215,12 @@ public class AssignCoordinatorToEventFrame extends JInternalFrame {
         if (confirmation != JOptionPane.YES_OPTION)
             return;
 
-        try {
-            assignmentCommandService.unassign(currentUser, assignmentId);
-        } catch (BusinessException ex) {
-            showError(ex.getMessage());
-        }
-        loadCoordinators();
+        refreshAfter(UiActions.run(this, () -> assignmentCommandService.unassign(currentUser, assignmentId)));
+    }
+
+    /** Si la acción falló, el evento pudo cambiar, así que también se recarga la lista de eventos. */
+    private void refreshAfter(boolean succeeded) {
+        UiActions.run(this, succeeded ? this::loadCoordinators : this::loadEvents);
     }
 
     private Event getSelectedEvent() {
@@ -235,10 +229,6 @@ public class AssignCoordinatorToEventFrame extends JInternalFrame {
 
     private void showWarning(String message) {
         JOptionPane.showMessageDialog(this, message, "Warning", JOptionPane.WARNING_MESSAGE);
-    }
-
-    private void showError(String message) {
-        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     private JPanel mainPanel;

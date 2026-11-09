@@ -3,7 +3,7 @@ package com.desgroup.logic;
 import com.desgroup.interfaces.logicInterfaces.IManagerService;
 import com.desgroup.interfaces.repositoriesInterfaces.IManagerRepository;
 import com.desgroup.models.Manager;
-import com.desgroup.utils.BusinessException;
+import com.desgroup.exceptions.BusinessException;
 
 public class ManagerService implements IManagerService {
 

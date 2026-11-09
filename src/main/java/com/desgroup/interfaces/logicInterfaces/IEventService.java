@@ -10,6 +10,7 @@ public interface IEventService {
 
     List<Event> getAllEvents();
 
+    /** @throws com.desgroup.exceptions.BusinessException si el evento no existe */
     Event getEventById(int id);
 
     void createEvent(String name, EventState state, LocalDate date, int startTime, String country,

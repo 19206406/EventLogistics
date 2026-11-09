@@ -5,27 +5,24 @@ import java.util.List;
 
 import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.interfaces.repositoriesInterfaces.IAssignmentCounter;
-import com.desgroup.interfaces.repositoriesInterfaces.IAssignmentWriter;
 import com.desgroup.interfaces.repositoriesInterfaces.IEventRepository;
 import com.desgroup.interfaces.rulesInterfaces.IEventValidator;
 import com.desgroup.models.Event;
 import com.desgroup.models.EventState;
 import com.desgroup.models.Place;
-import com.desgroup.utils.BusinessException;
+import com.desgroup.exceptions.BusinessException;
 import com.desgroup.utils.StaffRole;
 
 public class EventService implements IEventService {
 
     private final IEventRepository eventRepository;
     private final IAssignmentCounter assignmentCounter;
-    private final IAssignmentWriter assignmentWriter;
     private final IEventValidator eventValidator;
 
     public EventService(IEventRepository eventRepository, IAssignmentCounter assignmentCounter,
-            IAssignmentWriter assignmentWriter, IEventValidator eventValidator) {
+            IEventValidator eventValidator) {
         this.eventRepository = eventRepository;
         this.assignmentCounter = assignmentCounter;
-        this.assignmentWriter = assignmentWriter;
         this.eventValidator = eventValidator;
     }
 
@@ -36,7 +33,11 @@ public class EventService implements IEventService {
 
     @Override
     public Event getEventById(int id) {
-        return eventRepository.getById(id);
+        Event event = eventRepository.getById(id);
+        if (event == null)
+            throw new BusinessException("El evento no existe.");
+
+        return event;
     }
 
     @Override
@@ -44,7 +45,7 @@ public class EventService implements IEventService {
             String city, String placeName, String address, int capacity, int endTime, int maxCoordinators,
             int maxLogistics, int maxLogisticsPerCoordinator) {
 
-        eventValidator.validate(name, date, startTime, endTime, country, city, placeName, address, capacity,
+        eventValidator.validate(name, state, date, startTime, endTime, country, city, placeName, address, capacity,
                 maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
 
         Place place = new Place(country, city, placeName, address, capacity);
@@ -57,11 +58,9 @@ public class EventService implements IEventService {
     public void updateEvent(int idEvent, String name, EventState state, LocalDate date, int startTime, String country,
             String city, String placeName, String address, int capacity, int endTime, int maxCoordinators,
             int maxLogistics, int maxLogisticsPerCoordinator) {
-        Event event = eventRepository.getById(idEvent);
-        if (event == null)
-            throw new BusinessException("El evento no existe.");
+        Event event = getEventById(idEvent);
 
-        eventValidator.validate(name, date, startTime, endTime, country, city, placeName, address, capacity,
+        eventValidator.validate(name, state, date, startTime, endTime, country, city, placeName, address, capacity,
                 maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
 
         if (maxCoordinators < assignmentCounter.countByEventAndRole(idEvent, StaffRole.COORDINATOR))
@@ -88,8 +87,8 @@ public class EventService implements IEventService {
 
     @Override
     public void deleteEventById(int id) {
-        assignmentWriter.deleteByEvent(id);
-        eventRepository.delete(id);
+        getEventById(id);
+        eventRepository.deleteWithAssignments(id);
     }
 
 }

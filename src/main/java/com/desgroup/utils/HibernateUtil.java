@@ -13,9 +13,11 @@ import com.desgroup.models.Manager;
 import com.desgroup.models.Place;
 import com.desgroup.models.Staff;
 
+import jakarta.persistence.PersistenceException;
+
 public final class HibernateUtil {
 
-    private static final SessionFactory SESSION_FACTORY = buildSessionFactory();
+    private static SessionFactory sessionFactory;
 
     private HibernateUtil() {
     }
@@ -38,19 +40,22 @@ public final class HibernateUtil {
             configuration.addAnnotatedClass(EventAssignment.class);
 
             return configuration.buildSessionFactory();
-        } catch (Throwable ex) {
-            System.err.println("Error al inicializar Hibernate: " + ex);
-            throw new ExceptionInInitializerError(ex);
+        } catch (PersistenceException ex) {
+            throw new IllegalStateException("No se pudo inicializar Hibernate. "
+                    + "Revisa que las entidades coincidan con el esquema de la base de datos.", ex);
         }
     }
 
-    public static SessionFactory getSessionFactory() {
-        return SESSION_FACTORY;
+    public static synchronized SessionFactory getSessionFactory() {
+        if (sessionFactory == null)
+            sessionFactory = buildSessionFactory();
+
+        return sessionFactory;
     }
 
-    public static void shutdown() {
-        if (SESSION_FACTORY != null && !SESSION_FACTORY.isClosed()) {
-            SESSION_FACTORY.close();
+    public static synchronized void shutdown() {
+        if (sessionFactory != null && !sessionFactory.isClosed()) {
+            sessionFactory.close();
         }
     }
 }

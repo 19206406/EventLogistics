@@ -42,12 +42,13 @@ public class ManagerMenu implements RoleMenu {
         JMenu menu = new JMenu("Manager");
 
         JMenuItem itemManageEvents = new JMenuItem("Administrar eventos");
-        itemManageEvents.addActionListener(e -> show(desktopPane, new ManageEventFrame(eventService, desktopPane)));
+        itemManageEvents.addActionListener(
+                e -> show(desktopPane, () -> new ManageEventFrame(eventService, desktopPane)));
         menu.add(itemManageEvents);
 
         JMenuItem itemManageCoordinators = new JMenuItem("Administrar coordinadores");
         itemManageCoordinators.addActionListener(e -> show(desktopPane,
-                new ManageCoordinatorFrame(coordinatorService, desktopPane,
+                () -> new ManageCoordinatorFrame(coordinatorService, desktopPane,
                         preselected -> new AssignCoordinatorToEventFrame(eventService, assignmentCommandService,
                                 assignmentQueryService, availabilityService, coordinatorService, currentUser,
                                 preselected))));
@@ -55,7 +56,7 @@ public class ManagerMenu implements RoleMenu {
 
         JMenuItem itemProfile = new JMenuItem("Ver perfil");
         itemProfile.addActionListener(e -> show(desktopPane,
-                new ViewManagerProfileFrame(managerService.getManagerById(currentUser.getId()))));
+                () -> new ViewManagerProfileFrame(managerService.getManagerById(currentUser.getId()))));
         menu.add(itemProfile);
 
         return menu;

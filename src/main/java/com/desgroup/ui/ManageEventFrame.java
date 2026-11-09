@@ -7,6 +7,7 @@ import com.desgroup.models.Place;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.util.List;
+import java.util.function.Consumer;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -115,54 +116,50 @@ public class ManageEventFrame extends JInternalFrame {
     }
 
     private void openUpdateForm() {
-        Event event = getSelectedEvent("editar");
-        if (event == null) {
-            return;
-        }
-        EventFormInternalFrame form = new EventFormInternalFrame(eventService, this, event);
-        desktopPane.add(form);
-        form.setVisible(true);
+        withSelectedEvent("editar", event -> {
+            EventFormInternalFrame form = new EventFormInternalFrame(eventService, this, event);
+            desktopPane.add(form);
+            form.setVisible(true);
+        });
     }
 
     private void deleteSelectedEvent() {
-        Event event = getSelectedEvent("eliminar");
-        if (event == null) {
-            return;
-        }
-        int confirmation = JOptionPane.showConfirmDialog(this,
-                "¿Desea eliminar el evento \"" + event.getName() + "\"?",
-                "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION);
-        if (confirmation == JOptionPane.YES_OPTION) {
-            eventService.deleteEventById(event.getId());
-            loadEvents();
-        }
+        withSelectedEvent("eliminar", event -> {
+            int confirmation = JOptionPane.showConfirmDialog(this,
+                    "¿Desea eliminar el evento \"" + event.getName() + "\"?",
+                    "Confirmar eliminación",
+                    JOptionPane.YES_NO_OPTION);
+            if (confirmation == JOptionPane.YES_OPTION) {
+                eventService.deleteEventById(event.getId());
+                loadEvents();
+            }
+        });
     }
 
     private void showSelectedEventPlace() {
-        Event event = getSelectedEvent("consultar su lugar");
-        if (event == null) {
-            return;
-        }
-        Place place = event.getPlace();
-        String detail = "Lugar: " + place.getPlaceName()
-                + "\nDirección: " + place.getAddress()
-                + "\nCiudad: " + place.getCity()
-                + "\nPaís: " + place.getCountry()
-                + "\nCapacidad: " + place.getCapacity() + " personas";
-        JOptionPane.showMessageDialog(this, detail,
-                "Lugar del evento \"" + event.getName() + "\"", JOptionPane.INFORMATION_MESSAGE);
+        withSelectedEvent("consultar su lugar", event -> {
+            Place place = event.getPlace();
+            String detail = "Lugar: " + place.getPlaceName()
+                    + "\nDirección: " + place.getAddress()
+                    + "\nCiudad: " + place.getCity()
+                    + "\nPaís: " + place.getCountry()
+                    + "\nCapacidad: " + place.getCapacity() + " personas";
+            JOptionPane.showMessageDialog(this, detail,
+                    "Lugar del evento \"" + event.getName() + "\"", JOptionPane.INFORMATION_MESSAGE);
+        });
     }
 
-    private Event getSelectedEvent(String action) {
+    private void withSelectedEvent(String action, Consumer<Event> eventAction) {
         int row = eventTable.getSelectedRow();
         if (row == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione un evento para " + action + ".",
                     "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return null;
+            return;
         }
         int id = (int) tableModel.getValueAt(row, 0);
-        return eventService.getEventById(id);
+        boolean succeeded = UiActions.run(this, () -> eventAction.accept(eventService.getEventById(id)));
+        if (!succeeded)
+            UiActions.run(this, this::loadEvents);
     }
 
     private JTable eventTable;

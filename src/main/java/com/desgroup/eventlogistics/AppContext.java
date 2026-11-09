@@ -82,11 +82,9 @@ public final class AppContext {
         IEventValidator eventValidator = new EventValidator();
 
         staffService = new StaffService(staffRepo);
-        logisticService = new LogisticService(logisticRepo, staffValidator, assignmentRepo,
-                logistISalaryPolicy);
-        coordinatorService = new CoordinatorService(coordinatorRepo, staffValidator, assignmentRepo,
-                coordinatorPolicy);
-        eventService = new EventService(eventRepo, assignmentRepo, assignmentRepo, eventValidator);
+        logisticService = new LogisticService(logisticRepo, staffValidator, logistISalaryPolicy);
+        coordinatorService = new CoordinatorService(coordinatorRepo, staffValidator, coordinatorPolicy);
+        eventService = new EventService(eventRepo, assignmentRepo, eventValidator);
 
         assignmentCommandService = new AssignmentCommandService(assignmentRepo, assignmentRepo, eventRepo,
                 commonRules, rulesByRole);

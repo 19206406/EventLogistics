@@ -12,7 +12,7 @@ import com.desgroup.interfaces.rulesInterfaces.IScheduleConflictChecker;
 import com.desgroup.models.Coordinator;
 import com.desgroup.models.Event;
 import com.desgroup.models.Logistic;
-import com.desgroup.utils.BusinessException;
+import com.desgroup.exceptions.BusinessException;
 import com.desgroup.utils.StaffRole;
 
 public class AvailabilityService implements IAvailabilityService {

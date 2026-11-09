@@ -4,7 +4,7 @@ import com.desgroup.interfaces.repositoriesInterfaces.IAssignmentReader;
 import com.desgroup.interfaces.rulesInterfaces.AssignmentRule;
 import com.desgroup.models.Event;
 import com.desgroup.models.Staff;
-import com.desgroup.utils.BusinessException;
+import com.desgroup.exceptions.BusinessException;
 
 public class NotAlreadyAssignedRule implements AssignmentRule {
 

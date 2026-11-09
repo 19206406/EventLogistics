@@ -6,7 +6,6 @@ package com.desgroup.ui;
 
 import com.desgroup.interfaces.logicInterfaces.ILogisticService;
 import com.desgroup.models.Logistic;
-import com.desgroup.utils.BusinessException;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -16,7 +15,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -113,34 +111,34 @@ public class LogisticFormFrame extends JInternalFrame {
         passwordField.setText(logisticToEdit.getPassword());
         zoneField.setText(logisticToEdit.getZone());
         roleField.setText(logisticToEdit.getRole());
-        scoreField.setText(Integer.toString(logisticToEdit.getScore()));
+        scoreField.setText(logisticToEdit.getScore() == null ? "0" : logisticToEdit.getScore().toString());
         workingHoursField.setText(Integer.toString(logisticToEdit.getWorkingHours()));
     }
 
     private void save() {
-        try {
-            String name = FormInput.text(nameField);
-            String email = FormInput.text(emailField);
-            String phone = FormInput.text(phoneField);
-            String password = new String(passwordField.getPassword());
-            String position = "Logistico";
-            String zone = FormInput.text(zoneField);
-            String role = FormInput.text(roleField);
-            int score = FormInput.parseInt(scoreField, "puntaje");
-            int workingHours = FormInput.parseInt(workingHoursField, "horas trabajadas");
-
-            if (logisticToEdit == null) {
-                logisticService.createLogistic(name, email, phone, position, zone, role, password, score, workingHours);
-            } else {
-                logisticService.updatedLogistic(logisticToEdit.getId(), name, email, phone, position, zone, role,
-                        password, score, workingHours);
-            }
-        } catch (BusinessException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
+        if (UiActions.run(this, this::saveLogistic)) {
+            UiActions.run(this, parentFrame::loadLogistics);
+            dispose();
         }
-        parentFrame.loadLogistics();
-        dispose();
+    }
+
+    private void saveLogistic() {
+        String name = FormInput.text(nameField);
+        String email = FormInput.text(emailField);
+        String phone = FormInput.text(phoneField);
+        String password = new String(passwordField.getPassword());
+        String position = "Logistico";
+        String zone = FormInput.text(zoneField);
+        String role = FormInput.text(roleField);
+        int score = FormInput.parseInt(scoreField, "puntaje");
+        int workingHours = FormInput.parseInt(workingHoursField, "horas trabajadas");
+
+        if (logisticToEdit == null) {
+            logisticService.createLogistic(name, email, phone, position, zone, role, password, score, workingHours);
+        } else {
+            logisticService.updatedLogistic(logisticToEdit.getId(), name, email, phone, position, zone, role,
+                    password, score, workingHours);
+        }
     }
 
     private JTextField nameField;

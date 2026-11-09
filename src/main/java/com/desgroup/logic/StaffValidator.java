@@ -3,7 +3,7 @@ package com.desgroup.logic;
 import com.desgroup.interfaces.repositoriesInterfaces.IStaffRepository;
 import com.desgroup.interfaces.rulesInterfaces.IStaffValidator;
 import com.desgroup.models.Staff;
-import com.desgroup.utils.BusinessException;
+import com.desgroup.exceptions.BusinessException;
 
 public class StaffValidator implements IStaffValidator {
 
@@ -14,11 +14,13 @@ public class StaffValidator implements IStaffValidator {
     }
 
     @Override
-    public void validate(String name, String email, String phone, String password, Integer currentId) {
-        RequiredFields.requireNotBlank(name, "nombre");
-        RequiredFields.requireNotBlank(email, "correo");
-        RequiredFields.requireNotBlank(phone, "teléfono");
-        RequiredFields.requireNotBlank(password, "contraseña");
+    public void validate(String name, String email, String phone, String position, String password,
+            Integer currentId) {
+        RequiredFields.requireText(name, "nombre");
+        RequiredFields.requireText(email, "correo");
+        RequiredFields.requireText(phone, "teléfono");
+        RequiredFields.requireText(position, "posición");
+        RequiredFields.requireText(password, "contraseña");
 
         if (!email.contains("@"))
             throw new BusinessException("El correo no es válido.");

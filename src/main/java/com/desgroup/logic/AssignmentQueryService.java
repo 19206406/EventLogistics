@@ -2,6 +2,7 @@ package com.desgroup.logic;
 
 import java.util.List;
 
+import com.desgroup.exceptions.BusinessException;
 import com.desgroup.interfaces.logicInterfaces.IAssignmentQueryService;
 import com.desgroup.interfaces.repositoriesInterfaces.IAssignmentReader;
 import com.desgroup.models.EventAssignment;
@@ -17,7 +18,11 @@ public class AssignmentQueryService implements IAssignmentQueryService {
 
     @Override
     public EventAssignment getAssignmentById(int id) {
-        return eventAssignmentRepository.getById(id);
+        EventAssignment assignment = eventAssignmentRepository.getById(id);
+        if (assignment == null)
+            throw new BusinessException("La asignación no existe.");
+
+        return assignment;
     }
 
     @Override

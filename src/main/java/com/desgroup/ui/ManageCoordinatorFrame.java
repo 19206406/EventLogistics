@@ -90,10 +90,12 @@ public class ManageCoordinatorFrame extends JInternalFrame {
             return;
         }
         int id = (int) tableModel.getValueAt(row, 0);
-        Coordinator coordinator = coordinatorService.getCoordinatorById(id);
-        CoordinatorFormFrame form = new CoordinatorFormFrame(coordinatorService, coordinator, this);
-        desktopPane.add(form);
-        form.setVisible(true);
+        runAndReloadOnFailure(() -> {
+            Coordinator coordinator = coordinatorService.getCoordinatorById(id);
+            CoordinatorFormFrame form = new CoordinatorFormFrame(coordinatorService, coordinator, this);
+            desktopPane.add(form);
+            form.setVisible(true);
+        });
     }
 
     private void deleteSelectedCoordinator() {
@@ -110,22 +112,29 @@ public class ManageCoordinatorFrame extends JInternalFrame {
                 "Confirmar eliminación",
                 JOptionPane.YES_NO_OPTION);
         if (confirmation == JOptionPane.YES_OPTION) {
-            coordinatorService.deleteCoordinator(id);
-            loadCoordinator();
+            UiActions.run(this, () -> coordinatorService.deleteCoordinator(id));
+            UiActions.run(this, this::loadCoordinator);
         }
     }
 
     private void openAssignForm() {
         int row = coordinatorTable.getSelectedRow();
-        Coordinator selectedCoordinator = null;
-        if (row != -1) {
-            int id = (int) tableModel.getValueAt(row, 0);
-            selectedCoordinator = coordinatorService.getCoordinatorById(id);
-        }
+        runAndReloadOnFailure(() -> {
+            Coordinator selectedCoordinator = null;
+            if (row != -1) {
+                int id = (int) tableModel.getValueAt(row, 0);
+                selectedCoordinator = coordinatorService.getCoordinatorById(id);
+            }
 
-        JInternalFrame form = assignFormFactory.create(selectedCoordinator);
-        desktopPane.add(form);
-        form.setVisible(true);
+            JInternalFrame form = assignFormFactory.create(selectedCoordinator);
+            desktopPane.add(form);
+            form.setVisible(true);
+        });
+    }
+
+    private void runAndReloadOnFailure(Runnable action) {
+        if (!UiActions.run(this, action))
+            UiActions.run(this, this::loadCoordinator);
     }
 
     private JTable coordinatorTable;

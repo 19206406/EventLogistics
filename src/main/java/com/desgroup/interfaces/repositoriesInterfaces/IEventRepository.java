@@ -13,5 +13,6 @@ public interface IEventRepository {
 
     void updated(Event event);
 
-    void delete(int id);
+    /** Elimina el evento y sus asignaciones en una sola transacción. */
+    void deleteWithAssignments(int id);
 }

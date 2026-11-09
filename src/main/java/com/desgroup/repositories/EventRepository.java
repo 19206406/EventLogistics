@@ -2,82 +2,54 @@ package com.desgroup.repositories;
 
 import java.util.List;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 
 import com.desgroup.interfaces.repositoriesInterfaces.IEventRepository;
 import com.desgroup.models.Event;
 
 public class EventRepository implements IEventRepository {
 
-    private final SessionFactory sessionFactory;
+    private final HibernateExecutor hibernate;
 
     public EventRepository(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+        this.hibernate = new HibernateExecutor(sessionFactory);
     }
 
     @Override
     public List<Event> getAll() {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery(
-                            "SELECT e FROM Event e JOIN FETCH e.place", Event.class)
-                    .list();
-        }
+        return hibernate.read(session -> session.createQuery(
+                        "SELECT e FROM Event e JOIN FETCH e.place", Event.class)
+                .list());
     }
 
     @Override
     public Event getById(int id) {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery(
-                            "SELECT e FROM Event e JOIN FETCH e.place WHERE e.id = :id", Event.class)
-                    .setParameter("id", id)
-                    .uniqueResult();
-        }
+        return hibernate.read(session -> session.createQuery(
+                        "SELECT e FROM Event e JOIN FETCH e.place WHERE e.id = :id", Event.class)
+                .setParameter("id", id)
+                .uniqueResult());
     }
 
     @Override
     public void create(Event event) {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction tx = session.beginTransaction();
-            try {
-                session.persist(event);
-                tx.commit();
-            } catch (Exception e) {
-                tx.rollback();
-                throw e;
-            }
-        }
+        hibernate.write(session -> session.persist(event));
     }
 
     @Override
     public void updated(Event event) {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction tx = session.beginTransaction();
-            try {
-                session.merge(event);
-                tx.commit();
-            } catch (Exception e) {
-                tx.rollback();
-                throw e;
-            }
-        }
+        hibernate.write(session -> session.merge(event));
     }
 
     @Override
-    public void delete(int id) {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction tx = session.beginTransaction();
-            try {
-                Event course = session.get(Event.class, id);
-                if (course != null)
-                    session.remove(course);
-                tx.commit();
-            } catch (Exception e) {
-                tx.rollback();
-                throw e;
-            }
-        }
-    }
+    public void deleteWithAssignments(int id) {
+        hibernate.write(session -> {
+            session.createMutationQuery("DELETE FROM EventAssignment a WHERE a.event.id = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
 
+            Event event = session.get(Event.class, id);
+            if (event != null)
+                session.remove(event);
+        });
+    }
 }

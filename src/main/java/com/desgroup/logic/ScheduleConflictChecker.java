@@ -21,7 +21,7 @@ public class ScheduleConflictChecker implements IScheduleConflictChecker {
     public boolean hasConflict(int staffId, Event newEvent) {
         for (EventAssignment a : eventAssignmentRepository.getAllByStaff(staffId)) {
             Event other = eventRepository.getById(a.getEvent().getId());
-            if (other != null && other.isClosed() && overlaps(other, newEvent))
+            if (other != null && !other.isClosed() && overlaps(other, newEvent))
                 return true;
         }
         return false;

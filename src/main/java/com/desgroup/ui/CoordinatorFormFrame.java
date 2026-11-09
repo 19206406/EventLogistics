@@ -90,28 +90,19 @@ public class CoordinatorFormFrame extends JInternalFrame {
     }
 
     private void save() {
-        String name = nameField.getText().trim();
-        String email = emailField.getText().trim();
-        String phone = phoneField.getText().trim();
+        if (UiActions.run(this, this::saveCoordinator)) {
+            UiActions.run(this, parentFrame::loadCoordinator);
+            dispose();
+        }
+    }
+
+    private void saveCoordinator() {
+        String name = FormInput.text(nameField);
+        String email = FormInput.text(emailField);
+        String phone = FormInput.text(phoneField);
         String password = new String(passwordField.getPassword());
         String position = "Coordinador";
-        String company = companyField.getText().trim();
-
-        if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty()
-                || position.isEmpty() || company.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (!email.contains("@")) {
-            JOptionPane.showMessageDialog(this, "El correo no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (!phone.matches("\\d+")) {
-            JOptionPane.showMessageDialog(this, "El telefono debe contener solo números.", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        String company = FormInput.text(companyField);
 
         if (coordinatorToEdit == null) {
             coordinatorService.createCoordinator(name, email, phone, position, password, company);
@@ -119,9 +110,6 @@ public class CoordinatorFormFrame extends JInternalFrame {
             coordinatorService.updatedCoordinator(coordinatorToEdit.getId(), name, email, phone, position, password,
                     company);
         }
-
-        parentFrame.loadCoordinator();
-        dispose();
     }
 
     private JTextField nameField;

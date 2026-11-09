@@ -2,20 +2,23 @@ package com.desgroup.logic;
 
 import java.time.LocalDate;
 import com.desgroup.interfaces.rulesInterfaces.IEventValidator;
+import com.desgroup.models.EventState;
 
-import com.desgroup.utils.BusinessException;
+import com.desgroup.exceptions.BusinessException;
 
 public class EventValidator implements IEventValidator {
     @Override
-    public void validate(String name, LocalDate date, int startTime, int endTime,
+    public void validate(String name, EventState state, LocalDate date, int startTime, int endTime,
             String country, String city, String placeName, String address, int capacity,
             int maxCoordinators, int maxLogistics, int maxLogisticsPerCoordinator) {
 
-        RequiredFields.requireNotBlank(name, "nombre");
-        RequiredFields.requireNotBlank(country, "país");
-        RequiredFields.requireNotBlank(city, "ciudad");
-        RequiredFields.requireNotBlank(placeName, "lugar");
-        RequiredFields.requireNotBlank(address, "dirección");
+        RequiredFields.requireText(name, "nombre");
+        RequiredFields.requireText(country, "país");
+        RequiredFields.requireText(city, "ciudad");
+        RequiredFields.requireText(placeName, "lugar");
+        RequiredFields.requireText(address, "dirección");
+        if (state == null)
+            throw new BusinessException("El estado es obligatorio.");
         if (date == null)
             throw new BusinessException("La fecha es obligatoria.");
 

@@ -5,6 +5,7 @@
 package com.desgroup.eventlogistics;
 
 import com.desgroup.ui.LoginFrame;
+import com.desgroup.ui.UiActions;
 import com.desgroup.ui.menus.CoordinatorMenu;
 import com.desgroup.ui.menus.LogisticMenu;
 import com.desgroup.ui.menus.ManagerMenu;
@@ -14,7 +15,11 @@ import com.desgroup.utils.HibernateUtil;
 import com.desgroup.utils.StaffRole;
 import java.awt.EventQueue;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import org.hibernate.SessionFactory;
 
 /**
@@ -23,18 +28,39 @@ import org.hibernate.SessionFactory;
  */
 public class Main {
 
+    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) throws Exception {
+    public static void main(String args[]) {
+        UiActions.installGlobalHandler();
+        applyLookAndFeel();
 
-        for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-            if ("Nimbus".equals(info.getName())) {
-                UIManager.setLookAndFeel(info.getClassName());
-                break;
-            }
+        try {
+            start();
+        } catch (RuntimeException ex) {
+            LOGGER.log(Level.SEVERE, "La aplicación no pudo iniciar", ex);
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "No se pudo iniciar EventLogistics",
+                    JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
         }
+    }
 
+    private static void applyLookAndFeel() {
+        try {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ReflectiveOperationException | UnsupportedLookAndFeelException ex) {
+            LOGGER.log(Level.WARNING, "No se pudo aplicar Nimbus; se usa la apariencia por defecto", ex);
+        }
+    }
+
+    private static void start() {
         DatabaseInitializer.initialize();
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();

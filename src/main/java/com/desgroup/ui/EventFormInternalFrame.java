@@ -14,7 +14,6 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -22,7 +21,6 @@ import com.desgroup.interfaces.logicInterfaces.IEventService;
 import com.desgroup.models.Event;
 import com.desgroup.models.EventState;
 import com.desgroup.models.Place;
-import com.desgroup.utils.BusinessException;
 import java.time.LocalDate;
 
 /**
@@ -146,36 +144,35 @@ public class EventFormInternalFrame extends JInternalFrame {
     }
 
     private void save() {
-        try {
-            String name = FormInput.text(txtName);
-            EventState state = (EventState) cmbState.getSelectedItem();
-            LocalDate date = FormInput.parseDate(txtDate, "fecha");
-            int startTime = FormInput.parseInt(txtHour, "hora de inicio");
-            int endTime = FormInput.parseInt(txtEndHour, "hora de fin");
-            String country = FormInput.text(txtCountry);
-            String city = FormInput.text(txtCity);
-            String placeName = FormInput.text(txtPlaceName);
-            String address = FormInput.text(txtAddress);
-            int capacity = FormInput.parseInt(txtCapacity, "capacidad");
-            int maxCoordinators = FormInput.parseInt(txtMaxCoordinators, "máximo de coordinadores");
-            int maxLogistics = FormInput.parseInt(txtMaxLogistics, "máximo de logísticos");
-            int maxLogisticsPerCoordinator = FormInput.parseInt(txtMaxLogisticsPerCoordinator,
-                    "máximo de logísticos por coordinador");
-
-            if (event == null) {
-                service.createEvent(name, state, date, startTime, country, city, placeName, address, capacity,
-                        endTime, maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
-            } else {
-                service.updateEvent(event.getId(), name, state, date, startTime, country, city, placeName,
-                        address, capacity, endTime, maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
-            }
-        } catch (BusinessException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
+        if (UiActions.run(this, this::saveEvent)) {
+            UiActions.run(this, manageEventFrame::loadEvents);
+            dispose();
         }
+    }
 
-        manageEventFrame.loadEvents();
-        dispose();
+    private void saveEvent() {
+        String name = FormInput.text(txtName);
+        EventState state = (EventState) cmbState.getSelectedItem();
+        LocalDate date = FormInput.parseDate(txtDate, "fecha");
+        int startTime = FormInput.parseInt(txtHour, "hora de inicio");
+        int endTime = FormInput.parseInt(txtEndHour, "hora de fin");
+        String country = FormInput.text(txtCountry);
+        String city = FormInput.text(txtCity);
+        String placeName = FormInput.text(txtPlaceName);
+        String address = FormInput.text(txtAddress);
+        int capacity = FormInput.parseInt(txtCapacity, "capacidad");
+        int maxCoordinators = FormInput.parseInt(txtMaxCoordinators, "máximo de coordinadores");
+        int maxLogistics = FormInput.parseInt(txtMaxLogistics, "máximo de logísticos");
+        int maxLogisticsPerCoordinator = FormInput.parseInt(txtMaxLogisticsPerCoordinator,
+                "máximo de logísticos por coordinador");
+
+        if (event == null) {
+            service.createEvent(name, state, date, startTime, country, city, placeName, address, capacity,
+                    endTime, maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
+        } else {
+            service.updateEvent(event.getId(), name, state, date, startTime, country, city, placeName,
+                    address, capacity, endTime, maxCoordinators, maxLogistics, maxLogisticsPerCoordinator);
+        }
     }
 
     private JTextField txtName;

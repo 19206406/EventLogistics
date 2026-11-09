@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.flywaydb.core.Flyway;
+import org.flywaydb.core.api.FlywayException;
 import org.flywaydb.core.api.output.MigrateResult;
 
 public final class DatabaseInitializer {
@@ -70,17 +71,21 @@ public final class DatabaseInitializer {
     private static void runMigrations() {
         System.out.println("Aplicando migraciones de Flyway...");
 
-        Flyway flyway = Flyway.configure()
-                .dataSource(DatabaseConfig.getJdbcUrl(), DatabaseConfig.getUser(), DatabaseConfig.getPassword())
-                .locations("classpath:db/migration")
-                .load();
+        try {
+            Flyway flyway = Flyway.configure()
+                    .dataSource(DatabaseConfig.getJdbcUrl(), DatabaseConfig.getUser(), DatabaseConfig.getPassword())
+                    .locations("classpath:db/migration")
+                    .load();
 
-        MigrateResult result = flyway.migrate();
+            MigrateResult result = flyway.migrate();
 
-        if (result.migrationsExecuted == 0) {
-            System.out.println("No había migraciones pendientes. Esquema actualizado.");
-        } else {
-            System.out.println("Migraciones ejecutadas: " + result.migrationsExecuted);
+            if (result.migrationsExecuted == 0) {
+                System.out.println("No había migraciones pendientes. Esquema actualizado.");
+            } else {
+                System.out.println("Migraciones ejecutadas: " + result.migrationsExecuted);
+            }
+        } catch (FlywayException e) {
+            throw new IllegalStateException("No se pudieron aplicar las migraciones de la base de datos.", e);
         }
     }
 

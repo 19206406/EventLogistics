@@ -107,10 +107,12 @@ public class ManageLogisticFrame extends JInternalFrame {
             return;
         }
         int id = (int) tableModel.getValueAt(row, 0);
-        Logistic logistic = logisticService.getLogisticById(id);
-        LogisticFormFrame form = new LogisticFormFrame(logisticService, logistic, this);
-        desktopPane.add(form);
-        form.setVisible(true);
+        runAndReloadOnFailure(() -> {
+            Logistic logistic = logisticService.getLogisticById(id);
+            LogisticFormFrame form = new LogisticFormFrame(logisticService, logistic, this);
+            desktopPane.add(form);
+            form.setVisible(true);
+        });
     }
 
     private void deleteSelectedLogistic() {
@@ -127,22 +129,29 @@ public class ManageLogisticFrame extends JInternalFrame {
                 "Confirmar eliminación",
                 JOptionPane.YES_NO_OPTION);
         if (confirmation == JOptionPane.YES_OPTION) {
-            logisticService.deleteLogistic(id);
-            loadLogistics();
+            UiActions.run(this, () -> logisticService.deleteLogistic(id));
+            UiActions.run(this, this::loadLogistics);
         }
     }
 
     private void openAssignForm() {
         int row = logisticTable.getSelectedRow();
-        Logistic selectedLogistic = null;
-        if (row != -1) {
-            int id = (int) tableModel.getValueAt(row, 0);
-            selectedLogistic = logisticService.getLogisticById(id);
-        }
+        runAndReloadOnFailure(() -> {
+            Logistic selectedLogistic = null;
+            if (row != -1) {
+                int id = (int) tableModel.getValueAt(row, 0);
+                selectedLogistic = logisticService.getLogisticById(id);
+            }
 
-        JInternalFrame form = assignFormFactory.create(selectedLogistic);
-        desktopPane.add(form);
-        form.setVisible(true);
+            JInternalFrame form = assignFormFactory.create(selectedLogistic);
+            desktopPane.add(form);
+            form.setVisible(true);
+        });
+    }
+
+    private void runAndReloadOnFailure(Runnable action) {
+        if (!UiActions.run(this, action))
+            UiActions.run(this, this::loadLogistics);
     }
 
     private JTable logisticTable;

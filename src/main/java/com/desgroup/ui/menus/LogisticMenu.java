@@ -36,7 +36,7 @@ public class LogisticMenu implements RoleMenu {
 
         JMenuItem itemProfile = new JMenuItem("Ver perfil");
         itemProfile.addActionListener(e -> show(desktopPane,
-                new ViewLogisticProfile(logisticService.getLogisticById(currentUser.getId()), logisticService)));
+                () -> new ViewLogisticProfile(logisticService.getLogisticById(currentUser.getId()), logisticService)));
         menu.add(itemProfile);
 
         return menu;
