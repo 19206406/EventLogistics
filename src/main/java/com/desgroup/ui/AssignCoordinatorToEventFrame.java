@@ -218,7 +218,6 @@ public class AssignCoordinatorToEventFrame extends JInternalFrame {
         refreshAfter(UiActions.run(this, () -> assignmentCommandService.unassign(currentUser, assignmentId)));
     }
 
-    /** Si la acción falló, el evento pudo cambiar, así que también se recarga la lista de eventos. */
     private void refreshAfter(boolean succeeded) {
         UiActions.run(this, succeeded ? this::loadCoordinators : this::loadEvents);
     }

@@ -15,6 +15,5 @@ public interface ILogisticRepository {
 
     void updated(Logistic logistic);
 
-    /** Elimina al logístico y sus asignaciones en una sola transacción. */
     void deleteWithAssignments(int id);
 }

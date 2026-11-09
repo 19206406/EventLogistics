@@ -135,7 +135,6 @@ public class EventAssignmentRepository implements IEventAssignmentRepository {
                 assignment.getStaffRole());
     }
 
-    /** Siempre se bloquea primero el evento y luego la persona, para evitar deadlocks. */
     private static void lockRow(Session session, String table, int id, String notFoundMessage) {
         Integer lockedId = session
                 .createNativeQuery("SELECT id FROM " + table + " WHERE id = :id FOR UPDATE", Integer.class)

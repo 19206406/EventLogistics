@@ -14,10 +14,6 @@ import com.desgroup.exceptions.DataAccessException;
 
 import jakarta.persistence.PersistenceException;
 
-/**
- * Único punto donde se abren sesiones y transacciones. Hibernate hace commit o
- * rollback, y aquí se traducen sus excepciones a las del proyecto.
- */
 final class HibernateExecutor {
 
     private static final String TECHNICAL_ERROR = "No se pudo completar la operación en la base de datos.";

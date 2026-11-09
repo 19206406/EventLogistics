@@ -30,9 +30,6 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
- * Internal frame that shows the events assigned to the current user.
- * Shared by coordinators and logistics: the content depends only on the
- * logged staff member, so the same component serves both menus.
  *
  * @author urreg
  */
@@ -212,9 +209,6 @@ public class AssignedEventsInternalFrame extends JInternalFrame {
         return String.format("%02d:00", hour);
     }
 
-    /**
-     * Read-only table model backed by the list of assigned events.
-     */
     private static final class AssignedEventsTableModel extends AbstractTableModel {
 
         static final int COLUMN_ID = 0;
@@ -277,9 +271,6 @@ public class AssignedEventsInternalFrame extends JInternalFrame {
         }
     }
 
-    /**
-     * Renders {@link LocalDate} cells with the local date format.
-     */
     private static final class LocalDateRenderer extends DefaultTableCellRenderer {
 
         LocalDateRenderer() {

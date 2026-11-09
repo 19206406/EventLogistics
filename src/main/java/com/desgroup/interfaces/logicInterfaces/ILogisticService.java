@@ -8,7 +8,6 @@ public interface ILogisticService {
 
         List<Logistic> getAllLogistics();
 
-        /** @throws com.desgroup.exceptions.BusinessException si el logístico no existe */
         Logistic getLogisticById(int id);
 
         void createLogistic(String name, String email, String phone, String position, String zone,

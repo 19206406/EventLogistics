@@ -7,10 +7,6 @@ import javax.swing.JInternalFrame;
 
 import com.desgroup.ui.UiActions;
 
-/**
- * Abre una ventana interna una sola vez: si ya está abierta, la trae al frente
- * en lugar de crear otra.
- */
 final class SingleFrameOpener {
 
     private JInternalFrame frame;

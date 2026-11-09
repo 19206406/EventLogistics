@@ -12,8 +12,6 @@ public class EventStateConverter implements AttributeConverter<EventState, Strin
             return null;
 
         return state.getLabel();
-
-        // return state == null ? null : state.getLabel();
     }
 
     @Override
@@ -23,7 +21,5 @@ public class EventStateConverter implements AttributeConverter<EventState, Strin
             return null;
 
         return EventState.fromLabel(dbValue);
-
-        // return dbValue == null ? null : EventState.fromLabel(dbValue);
     }
 }

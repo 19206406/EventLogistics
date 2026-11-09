@@ -18,9 +18,6 @@ public class ViewManagerProfileFrame extends javax.swing.JInternalFrame {
 
     private final Manager manager;
 
-    /**
-     * Creates new form ViewManagerProfileFrame
-     */
     public ViewManagerProfileFrame(Manager manager) {
         super("Datos del Gerente", true, true, true, true);
         this.manager = manager;

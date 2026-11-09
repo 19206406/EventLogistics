@@ -16,6 +16,5 @@ public interface ICoordinatorRepository {
 
     void updated(Coordinator coordinator);
 
-    /** Elimina al coordinador y todas sus asignaciones en una sola transacción. */
     void deleteWithAssignments(int id);
 }

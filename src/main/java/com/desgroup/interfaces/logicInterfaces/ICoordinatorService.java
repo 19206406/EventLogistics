@@ -8,14 +8,13 @@ public interface ICoordinatorService {
 
         List<Coordinator> getAllCoordinators();
 
-        /** @throws com.desgroup.exceptions.BusinessException si el coordinador no existe */
         Coordinator getCoordinatorById(int id);
 
         void createCoordinator(String name, String email, String phone, String position, String password,
                         String company);
 
         void updatedCoordinator(int id, String name, String email, String phone,
-                                String position, String password, String company);
+                        String position, String password, String company);
 
         void deleteCoordinator(int id);
 

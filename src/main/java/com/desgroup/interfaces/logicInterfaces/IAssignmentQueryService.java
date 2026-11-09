@@ -7,7 +7,6 @@ import com.desgroup.utils.StaffRole;
 
 public interface IAssignmentQueryService {
 
-    /** @throws com.desgroup.exceptions.BusinessException si la asignación no existe */
     EventAssignment getAssignmentById(int id);
 
     List<EventAssignment> getAssignmentsByStaffId(int staffId);

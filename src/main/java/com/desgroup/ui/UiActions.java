@@ -10,10 +10,6 @@ import javax.swing.SwingUtilities;
 import com.desgroup.exceptions.BusinessException;
 import com.desgroup.exceptions.DataAccessException;
 
-/**
- * Punto único donde la interfaz convierte las excepciones en mensajes para el
- * usuario.
- */
 public final class UiActions {
 
     private static final Logger LOGGER = Logger.getLogger(UiActions.class.getName());
@@ -21,12 +17,6 @@ public final class UiActions {
     private UiActions() {
     }
 
-    /**
-     * Ejecuta una acción de la interfaz y muestra al usuario cualquier error
-     * esperado.
-     *
-     * @return true si la acción terminó sin errores
-     */
     public static boolean run(Component parent, Runnable action) {
         try {
             action.run();
@@ -41,7 +31,6 @@ public final class UiActions {
         return false;
     }
 
-    /** Red de seguridad para los errores de programación que nadie capturó. */
     public static void installGlobalHandler() {
         Thread.setDefaultUncaughtExceptionHandler((thread, error) -> {
             LOGGER.log(Level.SEVERE, "Error inesperado en el hilo " + thread.getName(), error);
