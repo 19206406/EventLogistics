@@ -8,17 +8,17 @@ import com.desgroup.models.EventState;
 
 public interface IEventService {
 
-        List<Event> getAllEvents();
+    List<Event> getAllEvents();
 
-        Event getEventById(int id);
+    Event getEventById(int id);
 
-        void createEvent(String name, EventState state, LocalDate date, int startTime, String country,
-                        String city, String placeName, String address, int capacity, int endTime, int maxCoordinators,
-                        int maxLogistics, int maxLogisticsPerCoordinator);
+    void createEvent(String name, EventState state, LocalDate date, int startTime, String country,
+            String city, String placeName, String address, int capacity, int endTime, int maxCoordinators,
+            int maxLogistics, int maxLogisticsPerCoordinator);
 
-        void updateEvent(int idEvent, String name, EventState state, LocalDate date, int startTime, String country,
-                        String city, String placeName, String address, int capacity, int endTime, int maxCoordinators,
-                        int maxLogistics, int maxLogisticsPerCoordinator);
+    void updateEvent(int idEvent, String name, EventState state, LocalDate date, int startTime, String country,
+            String city, String placeName, String address, int capacity, int endTime, int maxCoordinators,
+            int maxLogistics, int maxLogisticsPerCoordinator);
 
-        void deleteEventById(int id);
+    void deleteEventById(int id);
 }

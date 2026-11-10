@@ -6,17 +6,17 @@ import com.desgroup.models.Coordinator;
 
 public interface ICoordinatorService {
 
-        List<Coordinator> getAllCoordinators();
+    List<Coordinator> getAllCoordinators();
 
-        Coordinator getCoordinatorById(int id);
+    Coordinator getCoordinatorById(int id);
 
-        void createCoordinator(String name, String email, String phone, String position, String password,
-                        String company);
+    void createCoordinator(String name, String email, String phone, String position, String password,
+            String company);
 
-        void updatedCoordinator(int id, String name, String email, String phone,
-                        String position, String password, String company);
+    void updatedCoordinator(int id, String name, String email, String phone,
+            String position, String password, String company);
 
-        void deleteCoordinator(int id);
+    void deleteCoordinator(int id);
 
-        double calculateSalary(int id);
+    double calculateSalary(int id);
 }

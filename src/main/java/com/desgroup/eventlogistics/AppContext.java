@@ -64,7 +64,7 @@ public final class AppContext {
 
         List<RoleAssignmentRule> roleRules = List.of(
                 new CoordinatorCapacityRule(assignmentRepo),
-                new ActorMustBeAssignedRule(assignmentRepo), // el orden de la lista se respeta
+                new ActorMustBeAssignedRule(assignmentRepo),
                 new LogisticCapacityRule(assignmentRepo));
 
         Map<StaffRole, List<AssignmentRule>> rulesByRole = new EnumMap<>(StaffRole.class);

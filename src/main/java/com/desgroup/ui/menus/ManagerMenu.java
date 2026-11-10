@@ -49,8 +49,10 @@ public class ManagerMenu implements RoleMenu {
         JMenuItem itemManageCoordinators = new JMenuItem("Administrar coordinadores");
         itemManageCoordinators.addActionListener(e -> show(desktopPane,
                 () -> new ManageCoordinatorFrame(coordinatorService, desktopPane,
-                        preselected -> new AssignCoordinatorToEventFrame(eventService, assignmentCommandService,
-                                assignmentQueryService, availabilityService, coordinatorService, currentUser,
+                        preselected -> new AssignCoordinatorToEventFrame(eventService,
+                                assignmentCommandService,
+                                assignmentQueryService, availabilityService,
+                                coordinatorService, currentUser,
                                 preselected))));
         menu.add(itemManageCoordinators);
 

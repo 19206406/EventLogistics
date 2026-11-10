@@ -28,7 +28,7 @@ public class LogisticRepository implements ILogisticRepository {
     @Override
     public Logistic getByEmail(String email) {
         return hibernate.read(session -> session.createQuery(
-                        "FROM Logistic s WHERE s.email = :email", Logistic.class)
+                "FROM Logistic s WHERE s.email = :email", Logistic.class)
                 .setParameter("email", email)
                 .uniqueResult());
     }

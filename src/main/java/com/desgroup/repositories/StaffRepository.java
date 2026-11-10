@@ -28,7 +28,7 @@ public class StaffRepository implements IStaffRepository {
     @Override
     public Staff getByEmail(String email) {
         return hibernate.read(session -> session.createQuery(
-                        "FROM Staff s WHERE s.email = :email", Staff.class)
+                "FROM Staff s WHERE s.email = :email", Staff.class)
                 .setParameter("email", email)
                 .uniqueResult());
     }

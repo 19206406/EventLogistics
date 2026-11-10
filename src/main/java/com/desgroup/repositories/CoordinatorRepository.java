@@ -28,7 +28,7 @@ public class CoordinatorRepository implements ICoordinatorRepository {
     @Override
     public Coordinator getByEmail(String email) {
         return hibernate.read(session -> session.createQuery(
-                        "FROM Coordinator s WHERE s.email = :email", Coordinator.class)
+                "FROM Coordinator s WHERE s.email = :email", Coordinator.class)
                 .setParameter("email", email)
                 .uniqueResult());
     }
