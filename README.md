@@ -10,7 +10,7 @@
 ## Descripción
 
 El proyecto que se desarrolló se trata sobre un sistema que se encarga de administrar eventos que deben contener personal logístico. Este sistema se encarga de administrar el personal necesario para cada evento. Además, permite gestionar los eventos en los cuales se debe contar con el personal necesario para atender dicho evento.
-     
+
 ## Funciones principales
 
 Actualmente, el sistema no contiene todas las funcionalidades requeridas; sin embargo, ya contiene algunas funcionalidades principales. Entre ellas se tiene el ingreso de cada tipo de usuario (Logístico, Coordinador y Manager) al sistema, en el cual cada uno solo puede ejecutar las acciones a las que tiene acceso, teniendo en cuenta su rol.
@@ -51,10 +51,6 @@ El proyecto está aplicando los cuatro pilares de la programación orientada a o
 
 La aplicación usa PostgreSQL y **Flyway** para versionar el esquema. Hibernate
 solo valida que las entidades coincidan con las tablas; no las crea ni las borra.
-
-> **Importante:** las tablas ya están creadas, pero los repositorios actuales
-> (`StaffRepository`, `EventRepository`, etc.) todavía trabajan en memoria. La
-> conexión real de la interfaz con PostgreSQL es el siguiente paso.
 
 ### Requisitos
 
@@ -117,25 +113,17 @@ Para ejecutar el proyecto, se debe clonar el repositorio del proyecto específic
 
 Luego, simplemente se deberá ejecutar el proyecto para probar cada una de las funcionalidades, ya que por el momento no se ha terminado un usuario superusuario que le permita ejecutar todas las acciones del sistema.
 
-Por esta razón, se debe ingresar con cada diferente tipo de usuario: Logístico, Coordinador y Manager. Los usuarios correspondientes a estos son:
+Por esta razón, se debe ingresar con cada diferente tipo de usuario: Logístico, Coordinador y Manager. El superusuario correspondiente es:
 
-### Logístico
-
-**Usuario o correo:** [sebastian@gmail.com](mailto:sebastian@gmail.com)
-
-**Contraseña:** sebas123
-
-### Coordinador
-
-**Usuario o correo:** [robert@gmail.com](mailto:robert@gmail.com)
-
-**Contraseña:** robert123
-
-### Manager
-
-**Usuario o correo:** admin
-
-**Contraseña:** admin123
+```SQL
+WITH s AS (
+INSERT INTO staff (name, email, phone, staff_position, password, staff_type)
+VALUES ('Admin', 'admin@gmail.com', '3000000000', 'Gerente', 'admin123',
+'MANAGER')
+RETURNING id
+)
+INSERT INTO manager (id, company) SELECT id, 'DesGroup' FROM s;
+```
 
 ### Repositorio (Github)
 

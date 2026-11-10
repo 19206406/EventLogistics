@@ -79,20 +79,4 @@ public class Main {
 
         EventQueue.invokeLater(() -> new LoginFrame(ctx.staffService, roleMenus).setVisible(true));
     }
-
-    /*
-     * WITH s AS (
-     * INSERT INTO staff (name, email, phone, staff_position, password, staff_type)
-     * VALUES ('Admin', 'admin@gmail.com', '3000000000', 'Gerente', 'admin123',
-     * 'MANAGER')
-     * RETURNING id
-     * )
-     * INSERT INTO manager (id, company) SELECT id, 'DesGroup' FROM s;
-     */
-
-    // Sebastian Urrego Graciano
-    // Juan David Ortiz Diaz
-    // Olger Rafael Mercado Alvarez
-    // Juan Esteban Ballesteros Sanchez
-
 }
