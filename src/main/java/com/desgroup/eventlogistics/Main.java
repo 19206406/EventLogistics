@@ -90,4 +90,9 @@ public class Main {
      * INSERT INTO manager (id, company) SELECT id, 'DesGroup' FROM s;
      */
 
+    // Sebastian Urrego Graciano
+    // Juan David Ortiz Diaz
+    // Olger Rafael Mercado Alvarez
+    // Juan Esteban Ballesteros Sanchez
+
 }
